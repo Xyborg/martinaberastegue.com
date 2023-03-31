@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Anmeldung Berlin - Buscador de Citas Automático </title>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+	<!-- Bootstrap JS and jQuery -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.min.js"></script>	
+	<style>
+body{background-color: #fff8f8;}.container{margin-top:50px}#response{font-size:18px;margin-bottom:20px}#countdown{font-size:20px;font-weight:700;margin-bottom:20px;display:inline-block}#dates{margin-top:20px}#dates div{font-size:16px;margin-bottom:10px}
+	</style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-126284-9"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-126284-9');
+    </script>
+</head>
+<body>
+	<div class="container">
+		<p align="center"><img src="https://service.berlin.de/i9f/r1/images/logo_berlin_m_srgb.svg"></p>
+		<h1 class="text-center mb-5">Anmeldung en Berlin</h1>
+		<h2 class="text-center mb-5">Buscador Citas</h2>
+		<div class="row">
+			<div class="col-md-8 mx-auto">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Fechas Disponibles:</h5>
+						<div id="dates"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">&nbsp;</div>
+		<div class="row">
+			<div class="col-md-8 mx-auto">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Próxima Actualización en:</h5>
+						<p id="countdown"></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+	<footer class="py-3 my-4">
+		<p class="text-center text-muted">&copy; 2023 Berlin Fácil</p>
+	</footer>
+	</div>
+    <script>
+        // Connect to the WebSocket
+        var socket = new WebSocket("wss://allaboutberlin.com/api/appointments");
+        var countdown; // Countdown variable for the countdown timer
+        var countdownInterval; // Interval variable for the countdown timer
+
+        // Function to handle WebSocket messages
+        socket.onmessage = function(event) {
+            var responseData = JSON.parse(event.data);
+            //var responseDiv = document.getElementById("response");
+            var datesDiv = document.getElementById("dates");
+            //responseDiv.innerHTML = event.data; // Print the response data inside the "response" div
+            if (responseData.appointmentDates && responseData.appointmentDates.length > 0) {
+                datesDiv.innerHTML = ""; // Clear the "dates" div
+                for (var i = 0; i < responseData.appointmentDates.length; i++) {
+                    var date = new Date(responseData.appointmentDates[i]);
+                    var formattedDate = formatDate(date);
+                    var dateDiv = document.createElement("div");
+                    dateDiv.innerHTML = formattedDate;
+                    datesDiv.appendChild(dateDiv); // Add the formatted date to the "dates" div
+                }
+            } else {
+                datesDiv.innerHTML = "No hay fechas disponibles. No necesitas recargas la página, las nuevas fechas aparecerán aquí."; // Show a message if no dates are available
+            }
+            var time = new Date(responseData.time).getTime(); // Convert the time to a Unix timestamp
+            startCountdown(time); // Start the countdown timer with the time received in the WebSocket response
+        };
+
+        // Function to format a date in the desired format
+        function formatDate(date) {
+            var monthNames = [
+                "Enero", "Febrero", "Marzo",
+                "Abril", "Mayo", "Junio", "Julio",
+                "Agosto", "Septiembre", "Octubre",
+                "Noviembre", "Diciembre"
+                ];
+            var dayNames = [
+                "Domingo", "Lunes", "Martes",
+                "Miércoles", "Jueves", "Viernes", "Sábado"
+                ];
+
+            var dayName = dayNames[date.getUTCDay()];
+            var monthName = monthNames[date.getUTCMonth()];
+            var day = date.getUTCDate();
+            var weekDiff = Math.floor((date - Date.now()) / (7 * 24 * 60 * 60 * 1000)) + 1;
+            var weekText = (weekDiff === 1 ? " próximo" : ", en " + weekDiff + " semanas");
+
+            return "<div class=\"row\"><div class=\"col-8\">"+ monthName + " " + day + "<br>" + dayName + weekText + "</div><div class=\"col-4\"><a class=\"btn btn-outline-primary btn-sm\" role=\"button\" href=\"https://service.berlin.de/terminvereinbarung/termin/tag.php?termin=1&anliegen[]=120686&dienstleisterlist=122210,122217,327316,122219,327312,122227,327314,122231,122243,327348,122252,329742,122260,329745,122262,329748,122254,329751,122271,327278,122273,327274,122277,327276,330436,122280,327294,122282,327290,122284,327292,327539,122291,327270,122285,327266,122286,327264,122296,327268,150230,329760,122301,327282,122297,327286,122294,327284,122312,329763,122314,329775,122304,327330,122311,327334,122309,327332,122281,327352,122279,329772,122276,327324,122274,327326,122267,329766,122246,327318,122251,327320,122257,327322,122208,327298,122226,327300&herkunft=http%3A%2F%2Fservice.berlin.de%2Fdienstleistung%2F120686%2F\">Reservar</a></div></div>";
+        }
+
+        // Function to start the countdown timer
+        function startCountdown(time) {
+            countdown = (time + 180000 - Date.now()) / 1000; // Calculate the time remaining in seconds
+            clearInterval(countdownInterval); // Clear the interval if it was already set
+            countdownInterval = setInterval(function() {
+                var countdownDiv = document.getElementById("countdown");
+                var datesDiv = document.getElementById("dates");
+                countdown--;
+                if (countdown < 0) {
+                    clearInterval(countdownInterval); // Stop the countdown when it reaches 0
+                    sendWebSocketMessage(); // Send the WebSocket message again
+                    startCountdown(time); // Restart the countdown
+                    datesDiv.innerHTML = "Consultando citas disponibles..."; // Clear the "dates" div
+                    countdownDiv.innerHTML = ""; // Print the countdown value inside the "countdown" div
+                } else {
+                    countdownDiv.innerHTML = Math.round(countdown) + " segundos"; // Print the countdown value inside the "countdown" div
+                }
+            }, 1000);
+        }
+
+        // Function to make a WebSocket request
+        function sendWebSocketMessage() {
+            if (socket.readyState === WebSocket.OPEN) {
+            socket.send(JSON.stringify({ type: 'get' }));
+            } else {
+            setTimeout(sendWebSocketMessage, 1000); // Wait 1 second and try again
+            }
+        }
+
+        // Send the WebSocket message when the page loads
+        window.onload = function() {
+            sendWebSocketMessage();
+        };
+    </script>
+</body>
+</html>
