@@ -93,7 +93,7 @@ body{background-color: #fff8f8;}.container{margin-top:50px}#response{font-size:1
                     datesDiv.appendChild(dateDiv); // Add the formatted date to the "dates" div
                 }
             } else {
-                datesDiv.innerHTML = "No hay fechas disponibles. No necesitas recargas la página, las nuevas fechas aparecerán aquí."; // Show a message if no dates are available
+                datesDiv.innerHTML = "No hay fechas disponibles. No necesitas recargar la página, las nuevas fechas aparecerán aquí."; // Show a message if no dates are available
             }
             var time = new Date(responseData.time).getTime(); // Convert the time to a Unix timestamp
             startCountdown(time); // Start the countdown timer with the time received in the WebSocket response
