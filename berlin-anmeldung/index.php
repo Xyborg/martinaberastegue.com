@@ -52,7 +52,7 @@ body{background-color: #fff8f8;}.container{margin-top:50px}#response{font-size:1
 	</div>
 	<div class="container">
 	<footer class="py-3 my-4">
-		<p class="text-center text-muted">&copy; 2023 Berlin Fácil</p>
+		<p class="text-center text-muted">&copy; 2023 Martin Aberastegue - Berlin, Alemania</p>
 	</footer>
 	</div>
     <script>
