@@ -93,11 +93,24 @@ body{background-color: #fff8f8;}.container{margin-top:50px}#response{font-size:1
                     datesDiv.appendChild(dateDiv); // Add the formatted date to the "dates" div
                 }
             } else {
-                datesDiv.innerHTML = "No hay fechas disponibles. No necesitas recargar la página, las nuevas fechas aparecerán aquí."; // Show a message if no dates are available
+                // Show a message if no dates are available
+                datesDiv.innerHTML = "No hay fechas disponibles. No necesitas recargar la página, las nuevas fechas aparecerán aquí." + isOnTime();
+                
             }
             var time = new Date(responseData.time).getTime(); // Convert the time to a Unix timestamp
             startCountdown(time); // Start the countdown timer with the time received in the WebSocket response
         };
+
+        function isOnTime() {
+            var currentDate = new Date();
+            var currentDay = currentDate.getDay();
+            var currentHour = currentDate.getHours();
+            var text = "";
+            if (currentDay === 0 || currentDay === 6 || currentHour < 8 || currentHour >= 17) {
+                text = "<br />Hay más citas los días laborales entre las 8 y 17 horas.";
+            }
+            return text;
+        }
 
         // Function to format a date in the desired format
         function formatDate(date) {
