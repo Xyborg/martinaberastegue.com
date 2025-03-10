@@ -738,6 +738,94 @@
             margin-top: 2rem;
             font-style: italic;
         }
+
+        .language-switcher {
+            display: flex;
+            gap: 0.25rem;
+            margin-right: 0.75rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 0.25rem;
+            border-radius: 2rem;
+        }
+
+        .lang-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.75rem;
+            border-radius: 1.5rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            opacity: 0.7;
+        }
+
+        .lang-link:hover {
+            opacity: 1;
+            transform: translateY(-1px);
+        }
+
+        .lang-link.active {
+            background: var(--primary);
+            color: white;
+            opacity: 1;
+        }
+
+        .lang-link .flag {
+            width: 1rem;
+            height: 0.75rem;
+            border-radius: 2px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer-theme-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            margin-top: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .footer-theme-toggle:hover {
+            background: var(--secondary-bg);
+            transform: translateY(-1px);
+        }
+
+        .theme-text {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .language-switcher {
+                margin-right: 0.75rem;
+                padding: 0.25rem;
+            }
+
+            .lang-link {
+                padding: 0.375rem 0.625rem;
+            }
+
+            .footer-theme-toggle {
+                padding: 0.375rem 0.75rem;
+                font-size: 0.75rem;
+            }
+
+            .theme-text {
+                font-size: 0.75rem;
+            }
+
+            .nav-right {
+                gap: 0.75rem;
+            }
+        }
     </style>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-126284-9"></script>
@@ -753,13 +841,29 @@
         <nav class="nav-links">
             <a href="https://www.martinaberastegue.com/" class="brand">Martin Aberastegue</a>
             <div class="nav-right">
+                <div class="language-switcher">
+                    <a href="https://www.martinaberastegue.com/es/" class="lang-link" title="Español">
+                        <svg class="flag" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480">
+                            <path fill="#c60b1e" d="M0 0h640v480H0z"/>
+                            <path fill="#ffc400" d="M0 120h640v240H0z"/>
+                        </svg>
+                        ES
+                    </a>
+                    <a href="https://www.martinaberastegue.com/" class="lang-link active" title="English">
+                        <svg class="flag" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480">
+                            <path fill="#012169" d="M0 0h640v480H0z"/>
+                            <path fill="#FFF" d="m75 0 244 181L562 0h78v62L400 241l240 178v61h-80L320 301 81 480H0v-60l239-178L0 64V0h75z"/>
+                            <path fill="#C8102E" d="m424 281 216 159v40L369 281h55zm-184 20 6 35L54 480H0l240-179zM640 0v3L391 191l2-44L590 0h50zM0 0l239 176h-60L0 42V0z"/>
+                            <path fill="#FFF" d="M241 0v480h160V0H241zM0 160v160h640V160H0z"/>
+                            <path fill="#C8102E" d="M0 193v96h640v-96H0zM273 0v480h96V0h-96z"/>
+                        </svg>
+                        EN
+                    </a>
+                </div>
                 <a href="https://www.linkedin.com/in/aberastegue/" class="get-in-touch" rel="noreferrer noopener" title="Get in Touch">
                     <i class="fas fa-envelope icon"></i>
                     <span class="text">Get in Touch</span>
                 </a>
-                <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
-                    <i class="fas fa-moon"></i>
-                </button>
             </div>
         </nav>
     </header>
@@ -989,26 +1093,10 @@
         <footer class="footer">
             <div class="footer-content">
                 <p>© 2002 - 2025 Martin Aberastegue</p>
-                <div class="language-links">
-                    <a href="https://www.martinaberastegue.com/es/" class="language-link">
-                        <svg class="flag" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480">
-                            <path fill="#c60b1e" d="M0 0h640v480H0z"/>
-                            <path fill="#ffc400" d="M0 120h640v240H0z"/>
-                        </svg>
-                        ESP
-                    </a>
-                    <span class="language-divider">|</span>
-                    <a href="https://www.martinaberastegue.com/" class="language-link active">
-                        <svg class="flag" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480">
-                            <path fill="#012169" d="M0 0h640v480H0z"/>
-                            <path fill="#FFF" d="m75 0 244 181L562 0h78v62L400 241l240 178v61h-80L320 301 81 480H0v-60l239-178L0 64V0h75z"/>
-                            <path fill="#C8102E" d="m424 281 216 159v40L369 281h55zm-184 20 6 35L54 480H0l240-179zM640 0v3L391 191l2-44L590 0h50zM0 0l239 176h-60L0 42V0z"/>
-                            <path fill="#FFF" d="M241 0v480h160V0H241zM0 160v160h640V160H0z"/>
-                            <path fill="#C8102E" d="M0 193v96h640v-96H0zM273 0v480h96V0h-96z"/>
-                        </svg>
-                        ENG
-                    </a>
-                </div>
+                <button class="theme-toggle footer-theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                    <span class="theme-text">Toggle Theme</span>
+                </button>
             </div>
         </footer>
     </div>
