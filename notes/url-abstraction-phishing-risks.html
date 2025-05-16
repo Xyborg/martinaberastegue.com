@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="utf-8">
+    <title>The Hidden Danger of URL Abstraction: How Epiarc Could Backfire Against Phishing - Martin Aberastegue</title>
+    <meta name="description" content="An analysis of how URL abstraction systems like Epiarc could potentially increase phishing risks instead of reducing them, and why transparency might be a better approach." />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="The Hidden Danger of URL Abstraction: How Epiarc Could Backfire Against Phishing - Martin Aberastegue" />
+    <meta property="og:description" content="An analysis of how URL abstraction systems like Epiarc could potentially increase phishing risks instead of reducing them, and why transparency might be a better approach." />
+    <meta property="og:url" content="https://www.martinaberastegue.com/notes/url-abstraction-phishing-risks.html" />
+    <meta property="og:site_name" content="Martin Aberastegue 🚀" />
+    <meta name="image" property="og:image" content="https://www.martinaberastegue.com/images/notes/main_clean-urls-vs-epiarc.png" />
+    <meta name="author" content="Martin Aberastegue">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="canonical" href="https://www.martinaberastegue.com/notes/url-abstraction-phishing-risks.html" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Ctext%20x='0'%20y='14'%3E🚀%3C/text%3E%3C/svg%3E" type="image/svg+xml" />
+    <style>
+        :root {
+            --primary: #6366F1;
+            --text: #1f2937;
+            --background: #ffffff;
+            --secondary-bg: #f8fafc;
+            --border: #e2e8f0;
+            --card-bg: #ffffff;
+            --highlight: #818cf8;
+        }
+
+        .dark {
+            --primary: #818cf8;
+            --text: #f8fafc;
+            --background: #0f172a;
+            --secondary-bg: #1e293b;
+            --border: #334155;
+            --card-bg: #1e293b;
+            --highlight: #6366F1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--background);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: nowrap;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-left: auto;
+        }
+
+        .brand {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .main-content {
+            margin-top: 5rem;
+            padding: 2rem 0;
+        }
+
+        .article-header {
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .article-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text);
+            line-height: 1.2;
+        }
+
+        .article-meta {
+            color: var(--text);
+            opacity: 0.8;
+            font-size: 0.875rem;
+            margin-bottom: 2rem;
+        }
+
+        .article-image {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border-radius: 1rem;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .article-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .article-content {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: var(--text);
+        }
+
+        .article-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .article-content h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin: 2.5rem 0 1rem;
+            color: var(--text);
+        }
+
+        .article-content h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+            color: var(--text);
+        }
+
+        .article-content ul, 
+        .article-content ol {
+            margin: 1rem 0 1.5rem 1.5rem;
+        }
+
+        .article-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .article-content blockquote {
+            border-left: 4px solid var(--primary);
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            opacity: 0.9;
+        }
+
+        .article-content code {
+            background: var(--secondary-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-size: 0.875em;
+        }
+
+        .article-content pre {
+            background: var(--secondary-bg);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        .article-content pre code {
+            background: none;
+            padding: 0;
+        }
+
+        .author-section {
+            margin: 4rem 0;
+            padding: 2rem;
+            background: var(--secondary-bg);
+            border-radius: 1rem;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .author-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .author-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .author-info h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .author-info p {
+            color: var(--text);
+            opacity: 0.8;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .author-social {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .author-social a {
+            color: var(--text);
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+
+        .author-social a:hover {
+            color: var(--primary);
+            opacity: 1;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 2rem;
+            position: relative;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .footer p {
+            color: var(--text);
+            opacity: 0.8;
+            font-size: 0.875rem;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            font-size: 1.25rem;
+            color: var(--text);
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            opacity: 1;
+        }
+
+        .footer-theme-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            margin-top: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .footer-theme-toggle:hover {
+            background: var(--secondary-bg);
+            transform: translateY(-1px);
+        }
+
+        .theme-text {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .language-switcher {
+            display: flex;
+            gap: 0.25rem;
+            margin-right: 0.75rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 0.25rem;
+            border-radius: 2rem;
+        }
+
+        .lang-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.75rem;
+            border-radius: 1.5rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            opacity: 0.7;
+        }
+
+        .lang-link:hover {
+            opacity: 1;
+            transform: translateY(-1px);
+        }
+
+        .lang-link.active {
+            background: var(--primary);
+            color: white;
+            opacity: 1;
+        }
+
+        .lang-link .flag {
+            width: 1rem;
+            height: 0.75rem;
+            border-radius: 2px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .get-in-touch {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--primary);
+            color: white !important;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            text-decoration: none;
+            opacity: 1 !important;
+            transition: all 0.3s ease;
+        }
+
+        .get-in-touch:hover {
+            background: var(--highlight);
+            transform: translateY(-2px);
+        }
+
+        .get-in-touch .icon {
+            display: none;
+        }
+
+        .get-in-touch .text {
+            display: inline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .nav-links {
+                padding: 0.75rem 1rem;
+            }
+
+            .article-title {
+                font-size: 2rem;
+            }
+
+            .article-content {
+                font-size: 1rem;
+            }
+
+            .author-section {
+                flex-direction: column;
+                text-align: center;
+                padding: 1.5rem;
+            }
+
+            .author-social {
+                justify-content: center;
+            }
+
+            .footer-theme-toggle {
+                padding: 0.375rem 0.75rem;
+                font-size: 0.75rem;
+            }
+
+            .theme-text {
+                font-size: 0.75rem;
+            }
+
+            .language-switcher {
+                margin-right: 0.75rem;
+                padding: 0.25rem;
+            }
+
+            .lang-link {
+                padding: 0.375rem 0.625rem;
+            }
+
+            .get-in-touch {
+                padding: 0.5rem;
+                width: 2.5rem;
+                height: 2.5rem;
+                justify-content: center;
+                border-radius: 0.5rem;
+            }
+
+            .get-in-touch .icon {
+                display: block;
+                font-size: 1.25rem;
+            }
+
+            .get-in-touch .text {
+                display: none;
+            }
+
+            .nav-right {
+                gap: 0.75rem;
+            }
+        }
+
+        .table-of-contents {
+            background: var(--secondary-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .table-of-contents h2 {
+            font-size: 1.5rem;
+            margin: 0 0 1rem 0;
+            color: var(--text);
+        }
+
+        .table-of-contents ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .table-of-contents > ul > li {
+            margin-bottom: 1rem;
+        }
+
+        .table-of-contents ul ul {
+            margin: 0.5rem 0 0.5rem 1.5rem;
+        }
+
+        .table-of-contents ul ul li {
+            margin-bottom: 0.5rem;
+            font-size: 0.95em;
+        }
+
+        .table-of-contents a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .table-of-contents a:hover {
+            color: var(--highlight);
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .table-of-contents {
+                padding: 1.5rem;
+            }
+        }
+
+        .toc-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .toc-section a {
+            flex: 1;
+        }
+
+        .toc-toggle {
+            background: none;
+            border: none;
+            padding: 0.25rem;
+            cursor: pointer;
+            color: var(--text);
+            opacity: 0.7;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toc-toggle:hover {
+            opacity: 1;
+        }
+
+        .toc-toggle i {
+            transition: transform 0.2s ease;
+        }
+
+        .toc-toggle.expanded i {
+            transform: rotate(180deg);
+        }
+
+        .toc-subsection {
+            margin: 0.5rem 0 0.5rem 1.5rem;
+            display: none;
+        }
+
+        .toc-subsection.expanded {
+            display: block;
+        }
+
+        .toc-subsection li {
+            margin-bottom: 0.5rem;
+            font-size: 0.95em;
+        }
+
+        .table-of-contents a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: inline-block;
+        }
+
+        .table-of-contents a:hover {
+            color: var(--highlight);
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .table-of-contents {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-126284-9"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-126284-9');
+    </script>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-links">
+            <a href="https://www.martinaberastegue.com/" class="brand">Martin Aberastegue</a>
+            <div class="nav-right">
+                <div class="language-switcher">
+                    <a href="https://www.martinaberastegue.com/es/" class="lang-link" title="Español">
+                        <svg class="flag" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480">
+                            <path fill="#c60b1e" d="M0 0h640v480H0z"/>
+                            <path fill="#ffc400" d="M0 120h640v240H0z"/>
+                        </svg>
+                        ES
+                    </a>
+                    <a href="https://www.martinaberastegue.com/" class="lang-link active" title="English">
+                        <svg class="flag" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480">
+                            <path fill="#012169" d="M0 0h640v480H0z"/>
+                            <path fill="#FFF" d="m75 0 244 181L562 0h78v62L400 241l240 178v61h-80L320 301 81 480H0v-60l239-178L0 64V0h75z"/>
+                            <path fill="#C8102E" d="m424 281 216 159v40L369 281h55zm-184 20 6 35L54 480H0l240-179zM640 0v3L391 191l2-44L590 0h50zM0 0l239 176h-60L0 42V0z"/>
+                            <path fill="#FFF" d="M241 0v480h160V0H241zM0 160v160h640V160H0z"/>
+                            <path fill="#C8102E" d="M0 193v96h640v-96H0zM273 0v480h96V0h-96z"/>
+                        </svg>
+                        EN
+                    </a>
+                </div>
+                <a href="https://www.linkedin.com/in/aberastegue/" class="get-in-touch" rel="noreferrer noopener" title="Get in Touch">
+                    <i class="fas fa-envelope icon"></i>
+                    <span class="text">Get in Touch</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container main-content">
+        <article>
+            <header class="article-header">
+                <h1 class="article-title">The Hidden Danger of URL Abstraction: How Epiarc Could Backfire Against Phishing</h1>
+                <div class="article-meta">
+                    <time datetime="2025-05-17">May 17, 2025</time>
+                    <span> • </span>
+                    <span>15 min read</span>
+                </div>
+                <div class="article-image">
+                    <img src="/images/notes/main_clean-urls-vs-epiarc.png" alt="Clean URLs vs Epiarc abstraction illustration" loading="lazy">
+                </div>
+            </header>
+
+            <div class="article-content">
+                <p>The internet faces an ongoing battle with phishing attacks that compromise user security. This article examines two different approaches to addressing this problem: Clean, readable URLs and Epiarc's human-centric naming system. While both aim to protect users, they take fundamentally different paths with potentially very different security outcomes.</p>
+
+                <div class="table-of-contents">
+                    <h2>In this article</h2>
+                    <ul>
+                        <li><a href="#phishing-url-confusion">How phishing attacks exploit URL confusion</a></li>
+                        <li><a href="#clean-urls">Clean URLs: Transparency and direct recognition</a></li>
+                        <li><a href="#epiarc-approaches">Epiarc and similar abstraction approaches: Adding layers of complexity</a></li>
+                        <li>
+                            <div class="toc-section">
+                                <a href="#attack-surface">The new attack surface: How abstraction creates vulnerabilities</a>
+                                <button class="toc-toggle" aria-label="Toggle subsections">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                            <ul class="toc-subsection">
+                                <li><a href="#linkbase-manipulation">Linkbase manipulation and compromise</a></li>
+                                <li><a href="#entity-confusion">Confusion with similar entity names</a></li>
+                                <li><a href="#security-indicators">Masking critical security indicators</a></li>
+                                <li><a href="#url-ignorance">Training users to ignore URLs entirely</a></li>
+                                <li><a href="#third-party-dependency">Third-party dependency for security decisions</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <div class="toc-section">
+                                <a href="#transparency-approach">Why transparency may be the better approach for phishing prevention</a>
+                                <button class="toc-toggle" aria-label="Toggle subsections">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                            <ul class="toc-subsection">
+                                <li><a href="#direct-verification">Direct verification without intermediaries</a></li>
+                                <li><a href="#existing-infrastructure">Building upon existing infrastructure</a></li>
+                                <li><a href="#consistent-security">Consistent security across contexts</a></li>
+                                <li><a href="#user-empowerment">Empowering users rather than dependency</a></li>
+                                <li><a href="#avoiding-attacks">Avoiding new attack vectors</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <div class="toc-section">
+                                <a href="#path-forward">The path forward: Improving URL readability without sacrificing security</a>
+                                <button class="toc-toggle" aria-label="Toggle subsections">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                            <ul class="toc-subsection">
+                                <li><a href="#domain-highlighting">Enhanced domain highlighting</a></li>
+                                <li><a href="#security-indicators">Contextual security indicators</a></li>
+                                <li><a href="#user-education">User education integrated into browsers</a></li>
+                                <li><a href="#org-approaches">Organization-specific approaches</a></li>
+                                <li><a href="#phishing-detection">Improved phishing detection without abstraction</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <h2 id="phishing-url-confusion">How phishing attacks exploit URL confusion</h2>
+                <p>Phishing attacks have become one of the most prevalent cybersecurity threats in today's digital landscape. According to recent statistics, 36% of all data breaches in the US are caused by phishing attacks, with organizations losing approximately $17,700 per minute to these scams. The problem has grown exponentially, with a 345% increase in unique phishing sites between 2020 and 2021 alone.</p>
+
+                <p>The core vulnerability that phishing exploits is user confusion about URLs. When users receive an email with a link to "securebanklogin.com" instead of their bank's actual domain, many struggle to determine whether it's legitimate. Phishing attacks have evolved to employ sophisticated techniques such as:</p>
+
+                <ol>
+                    <li><strong>Typosquatting</strong>: Creating domains that are slight misspellings of legitimate sites (bankofamerica-secure.com instead of bankofamerica.com)</li>
+                    <li><strong>URL spoofing</strong>: Making the visible link text show one URL while actually linking to another</li>
+                    <li><strong>IDN homograph attacks</strong>: Using Unicode characters that visually resemble Latin letters to create domains that appear identical to legitimate ones</li>
+                    <li><strong>Subdomain manipulation</strong>: Using subdomains to confuse users (login.bank.malicious.com appearing to be from "bank")</li>
+                </ol>
+
+                <p>The average internet user often fails to properly parse these URLs. Studies show that even when users are aware of phishing risks, they frequently misinterpret domain structures or overlook subtle clues in the URL that would reveal malicious intent. According to CloudFlare's 2023 phishing report, deceptive links account for 36% of all phishing threats, making them the most common attack vector.</p>
+
+                <p>This fundamental challenge has prompted two distinctly different approaches to addressing the problem.</p>
+
+                <h2 id="clean-urls">Clean URLs: Transparency and direct recognition</h2>
+                <p>The clean URL approach advocates for transparency and direct visibility of web addresses. The core principle is straightforward: users should always be able to see exactly what domain they're visiting or about to visit, with browsers designed to highlight the actual domain name rather than obfuscate it.</p>
+
+                <p>Clean URLs are characterized by:</p>
+
+                <ul>
+                    <li><strong>Transparency</strong>: The full domain and path structure are visible to users</li>
+                    <li><strong>Readability</strong>: URLs are structured to be human-readable and meaningful</li>
+                    <li><strong>Simplicity</strong>: Avoiding unnecessary parameters, session IDs, or complex paths that confuse users</li>
+                    <li><strong>Direct recognition</strong>: Users can directly evaluate the legitimacy of a site based on its URL</li>
+                </ul>
+
+                <p>Modern browsers already incorporate features to help users identify legitimate sites, such as highlighting the domain name in the address bar or displaying security indicators for HTTPS connections. Some browsers also implement warning systems for known phishing sites through databases like Google Safe Browsing.</p>
+
+                <p>The clean URL approach builds on the existing web infrastructure without adding new layers of abstraction. It doesn't require users to trust third parties to interpret websites for them. Instead, it focuses on education and browser improvements to help users better understand URLs themselves.</p>
+
+                <p>For example, an online banking URL might look like:</p>
+
+                <pre><code>https://www.firstnationalbank.com/online-banking</code></pre>
+
+                <p>With this approach, users who learn basic URL reading skills can verify that the domain is "firstnationalbank.com" (the legitimate bank domain), the connection is encrypted (https), and the path ("/online-banking") is logical for the service they're accessing.</p>
+
+                <p>While not perfect, this system leverages the existing web infrastructure and addresses phishing through transparency rather than abstraction.</p>
+
+                <h2 id="epiarc-approaches">Epiarc and similar abstraction approaches: Adding layers of complexity</h2>
+                <p>Epiarc takes a fundamentally different approach to the URL problem. Founded by Alex Greenland, Epiarc introduces Archetypal Resource Identifiers (ARIs) — human-centric names that sit as a layer of abstraction above URLs. Instead of showing users technical URLs, the system displays familiar, contextual names.</p>
+
+                <p>The core components of the Epiarc system include:</p>
+
+                <ol>
+                    <li><strong>ARIs (Archetypal Resource Identifiers)</strong>: Human-friendly names like "Australian Broadcasting Company" instead of "abc.net.au"</li>
+                    <li><strong>Linkbases</strong>: Repositories of ARI-to-URL mappings that users or organizations can create and share</li>
+                    <li><strong>User Agents</strong>: Software that subscribes to linkbases and handles the resolution of ARIs to actual URLs</li>
+                    <li><strong>Context-dependent naming</strong>: The same ARI (e.g., "ABC") might resolve to different websites depending on context (Australian Broadcasting Corporation in Australia vs. American Broadcasting Company globally)</li>
+                </ol>
+
+                <p>Similar abstraction approaches are being explored elsewhere. For example, the Dia browser displays page titles in the address bar rather than URLs, only showing the actual URL when the user hovers over it.</p>
+
+                <p>The theoretical benefit is that users can interact with websites through names they naturally understand rather than technical URLs. For instance, instead of remembering "https://www.facebook.com," users could simply type "Facebook" as an ARI. The system would then resolve this to the correct URL based on the linkbases the user has subscribed to.</p>
+
+                <p>Proponents argue this is more intuitive for users who don't understand URL structures and could help prevent phishing by allowing people to access sites through trusted names rather than potentially confusing URLs.</p>
+
+                <h2 id="attack-surface">The new attack surface: How abstraction creates vulnerabilities</h2>
+                <p>While Epiarc's approach might seem promising on the surface, it introduces several significant security concerns that could potentially make phishing easier rather than harder:</p>
+
+                <h3 id="linkbase-manipulation">Linkbase manipulation and compromise</h3>
+                <p>The entire security model of Epiarc depends on the integrity of linkbases. If a malicious actor can compromise a linkbase or trick users into subscribing to a fraudulent one, they could map legitimate-sounding ARIs to phishing sites. A compromised linkbase could map "First National Bank" to "malicious-site.com" instead of the actual bank's website. Users would see the familiar "First National Bank" name and have no reason to suspect they're being redirected to a fraudulent site. By the time the actual URL is visible (if ever), the user may have already entered sensitive information. Unlike the direct nature of URLs, users must trust the linkbase providers to maintain accurate and secure mappings. This introduces a new dependency and potentially a single point of failure.</p>
+
+                <h3 id="entity-confusion">Confusion with similar entity names</h3>
+                <p>The context-dependent nature of ARIs creates significant vulnerabilities when dealing with similarly named entities. Consider how "ABC Bank" could refer to multiple different banking institutions across different regions, "Metro Bank" might be a legitimate bank in multiple countries, each with different websites, and "First Federal Credit Union" could be any of dozens of similarly named financial institutions. Without the specificity of domain names, users would need to rely entirely on context to determine which entity they're actually interacting with. This ambiguity provides fertile ground for phishers to exploit confusion.</p>
+
+                <h3 id="security-indicators">Masking critical security indicators</h3>
+                <p>The abstraction approach fundamentally hides important security information that users need to make informed decisions. By hiding the actual URL by default (as seen in the Dia browser example), users lose access to critical information:</p>
+
+                <ul>
+                    <li>Whether the site uses HTTPS encryption</li>
+                    <li>Which specific domain they're connecting to</li>
+                    <li>What country's top-level domain is being used (.us, .co.uk, etc.)</li>
+                    <li>Whether there are suspicious elements in the URL path or parameters</li>
+                </ul>
+
+                <p>When users are trained to rely on names rather than URLs, they lose the ability to spot common phishing indicators like suspicious domains or unusual URL structures.</p>
+
+                <h3 id="url-ignorance">Training users to ignore URLs entirely</h3>
+                <p>Perhaps most concerning is how abstraction systems train users behaviorally. By emphasizing names over URLs, these systems encourage users to ignore the actual technical address of websites entirely. This creates a dangerous habit where users become accustomed to not checking URLs at all, the skill of URL parsing (which many users are already struggling with) atrophies further, and when users encounter links outside of the abstraction system (in emails, messages, etc.), they have even less ability to evaluate them. This behavioral conditioning could make users more vulnerable to phishing in contexts where the abstraction system isn't available.</p>
+
+                <h3 id="third-party-dependency">Third-party dependency for security decisions</h3>
+                <p>Epiarc and similar systems fundamentally shift security decisions from users to third parties. Instead of users evaluating URLs directly, they must trust the developers of the abstraction system, the curators of linkbases, and the integrity of the mapping process. This introduces multiple new points of potential failure and compromise. If any of these elements are breached, users have little ability to detect the problem since they're already trained to trust the system implicitly.</p>
+
+                <h2 id="transparency-approach">Why transparency may be the better approach for phishing prevention</h2>
+                <p>Given the vulnerabilities created by abstraction systems, the transparent clean URL approach offers several significant advantages for phishing prevention:</p>
+
+                <h3 id="direct-verification">Direct verification without intermediaries</h3>
+                <p>Clean URLs allow users to directly verify the legitimacy of a website without trusting any intermediary. While users need education to parse URLs effectively, this skill empowers them rather than making them dependent on third parties.</p>
+
+                <h3 id="existing-infrastructure">Building upon existing infrastructure</h3>
+                <p>The clean URL approach builds upon and improves the existing web infrastructure rather than creating an entirely new layer of abstraction. Modern browsers already implement features to highlight domains and show security indicators. These can be enhanced without introducing radical new dependencies.</p>
+
+                <h3 id="consistent-security">Consistent security across contexts</h3>
+                <p>URL-based security works consistently across all contexts — whether users are clicking links in emails, messages, documents, or applications. The abstraction approach only works within its own ecosystem, creating inconsistent security models across different user experiences.</p>
+
+                <h3 id="user-empowerment">Empowering users rather than dependency</h3>
+                <p>Teaching users to understand URL basics and recognize phishing attempts empowers them with transferable skills. In contrast, abstraction systems create dependency on the system itself, potentially leaving users more vulnerable when operating outside its boundaries.</p>
+
+                <h3 id="avoiding-attacks">Avoiding new attack vectors</h3>
+                <p>While clean URLs have their challenges, they don't introduce the new attack vectors that abstraction systems do, such as linkbase manipulation, context confusion, or third-party compromise.</p>
+
+                <h2 id="path-forward">The path forward: Improving URL readability without sacrificing security</h2>
+                <p>Rather than hiding URLs behind abstraction, a more effective approach might be to improve how browsers present URLs to make them more understandable without sacrificing transparency. Several practical improvements could help:</p>
+
+                <h3 id="domain-highlighting">Enhanced domain highlighting</h3>
+                <p>Modern browsers already highlight the domain name, but this feature could be enhanced. Browsers could use stronger visual cues to separate the domain from the rest of the URL, implement different colors for top-level domains, subdomains, and paths, and provide more intuitive visual warnings for suspicious or unusual domain patterns.</p>
+
+                <h3 id="security-indicators">Contextual security indicators</h3>
+                <p>Browsers could provide more contextual information about websites without hiding the URL. This could include showing how long a domain has been registered, indicating whether this is a user's first visit to this domain, displaying reputation scores or previous user interactions with the site, and warning about recently registered domains (which are often used in phishing).</p>
+
+                <h3 id="user-education">User education integrated into browsers</h3>
+                <p>Rather than assuming users will never understand URLs, browsers could include subtle educational elements. These might include brief explanations of URL components when users hover over different parts of the address bar, progressive teaching of URL reading skills through subtle hints and tips, and gamification elements that reward users for correctly identifying suspicious URLs.</p>
+
+                <h3 id="org-approaches">Organization-specific approaches</h3>
+                <p>Organizations concerned about phishing could implement more targeted solutions. Financial institutions could register multiple common misspellings of their domains and redirect them to the legitimate site, companies could standardize on simpler, more memorable domains for critical services, and organizations could implement custom browser extensions for their employees that provide additional verification for company services.</p>
+
+                <h3 id="phishing-detection">Improved phishing detection without abstraction</h3>
+                <p>Technologies for detecting and preventing phishing can be enhanced without hiding URLs. These improvements could include better browser-based phishing detection using machine learning, improved safe browsing databases with faster updates, email security gateways with more sophisticated URL analysis, and enhanced verification technologies like HTTPS certificates with extended validation.</p>
+
+                <h2>Final Thoughts</h2>
+                <p>While Epiarc and similar abstraction approaches aim to solve the very real problem of phishing, they risk creating more vulnerabilities than they solve. By hiding critical security information from users and introducing new dependencies and attack vectors, these systems could ultimately make phishing easier rather than harder.</p>
+
+                <p>The clean URL approach, focused on transparency and education, offers a more robust path forward. By building upon the existing web infrastructure and empowering users with knowledge rather than hiding information from them, we can develop more effective phishing prevention strategies that don't introduce new security risks.</p>
+
+                <p>The most effective anti-phishing strategy likely lies not in abstracting away URLs entirely, but in making them more understandable while maintaining their visibility. By improving how browsers present URLs and helping users develop better URL reading skills, we can create a more secure web without sacrificing transparency or introducing new attack surfaces.</p>
+            </div>
+
+            <section class="author-section">
+                <div class="author-image">
+                    <img src="https://www.martinaberastegue.com/images/martin-aberastegue.jpg" alt="Martin Aberastegue" loading="lazy">
+                </div>
+                <div class="author-info">
+                    <h3>Martin Aberastegue</h3>
+                    <p>Digital Marketing & Technology Leader with 23+ years of experience driving growth through SEO, MarTech, and Data-Driven Strategy. Expert in scaling businesses through innovative digital solutions.</p>
+                    <p>Based in Germany, working globally to transform businesses through technology and strategic digital initiatives.</p>
+                    <div class="author-social">
+                        <a href="https://www.linkedin.com/in/aberastegue/" target="_blank" rel="noreferrer noopener" title="LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="https://x.com/Xyborg" target="_blank" rel="noreferrer noopener" title="Twitter">
+                            <i class="fab fa-x-twitter"></i>
+                        </a>
+                        <a href="https://github.com/Xyborg" target="_blank" rel="noreferrer noopener" title="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </article>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <p>© 2002 - 2025 Martin Aberastegue</p>
+                <button class="theme-toggle footer-theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                    <span class="theme-text">Toggle Theme</span>
+                </button>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+            updateThemeIcon();
+        }
+
+        function updateThemeIcon() {
+            const isDark = document.documentElement.classList.contains('dark');
+            const themeIcons = document.querySelectorAll('.theme-toggle i');
+            themeIcons.forEach(icon => {
+                icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+            });
+        }
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        if (savedTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+        }
+        updateThemeIcon();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggles = document.querySelectorAll('.toc-toggle');
+            
+            toggles.forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const subsection = this.closest('li').querySelector('.toc-subsection');
+                    const isExpanded = subsection.classList.contains('expanded');
+                    
+                    // Toggle current section
+                    subsection.classList.toggle('expanded');
+                    this.classList.toggle('expanded');
+                    
+                    // Save state to localStorage
+                    const sectionId = subsection.querySelector('a').getAttribute('href');
+                    localStorage.setItem(`toc-${sectionId}`, !isExpanded);
+                });
+                
+                // Restore state from localStorage
+                const subsection = toggle.closest('li').querySelector('.toc-subsection');
+                const sectionId = subsection.querySelector('a').getAttribute('href');
+                const isExpanded = localStorage.getItem(`toc-${sectionId}`) === 'true';
+                
+                if (isExpanded) {
+                    subsection.classList.add('expanded');
+                    toggle.classList.add('expanded');
+                }
+            });
+        });
+    </script>
+
+    <!-- Schema.org data -->
+    <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "Article",
+        "headline": "The Hidden Danger of URL Abstraction: How Epiarc Could Backfire Against Phishing",
+        "description": "An analysis of how URL abstraction systems like Epiarc could potentially increase phishing risks instead of reducing them, and why transparency might be a better approach.",
+        "image": "https://www.martinaberastegue.com/images/notes/main_clean-urls-vs-epiarc.png",
+        "datePublished": "2025-05-17",
+        "dateModified": "2025-05-17",
+        "author": {
+            "@type": "Person",
+            "name": "Martin Aberastegue",
+            "url": "https://www.martinaberastegue.com"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Martin Aberastegue",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://www.martinaberastegue.com/images/martin-aberastegue.jpg"
+            }
+        },
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.martinaberastegue.com/notes/url-abstraction-phishing-risks.html"
+        }
+    }
+    </script>
+</body>
+</html> 
