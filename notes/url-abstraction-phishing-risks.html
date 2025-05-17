@@ -610,6 +610,73 @@
         .toc-toggle.expanded i { /* This class is on the span, target i */
             transform: rotate(180deg);
         }
+
+        .sources-section {
+            background: var(--secondary-bg);
+            border-radius: 1rem;
+            padding: 2rem; /* Consistent padding with other blocks */
+            margin-bottom: 2.5rem;
+        }
+
+        .sources-section ul {
+            list-style: none; /* Remove default bullets */
+            padding-left: 0;  /* Remove default padding */
+            margin: 0;
+        }
+
+        .sources-section li {
+            display: flex; /* Align icon and text */
+            align-items: flex-start; /* Align items to the top if text wraps */
+            margin-bottom: 0.75rem;
+            font-size: 1rem; 
+        }
+
+        .sources-section li:last-child {
+            margin-bottom: 0;
+        }
+
+        .sources-section a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .sources-section a:hover {
+            color: var(--highlight);
+            text-decoration: underline;
+        }
+
+        /* Styles for citation links */
+        .citation-ref a,
+        .source-ref a {
+            text-decoration: none;
+            /* Default color will be --primary, but we can override for source-ref specifically */
+            color: var(--primary);
+            font-weight: normal;
+        }
+
+        sup.source-ref a { /* Style the number link specifically */
+            color: var(--text); /* Use standard text color for the number */
+            opacity: 0.7; /* Make it a bit more subtle */
+        }
+
+        .sources-section li > a { /* Ensure the main source link text remains primary */
+            color: var(--primary);
+        }
+
+        .citation-ref a:hover,
+        .source-ref a:hover {
+            text-decoration: underline;
+        }
+
+        sup.source-ref {
+            margin-right: 6px; /* Spacing between the reference number and the source text */
+        }
+
+        /* Adjust for fixed header when navigating to anchors */
+        [id] {
+            scroll-margin-top: 5rem; /* Adjust this value based on your header's height */
+        }
     </style>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-126284-9"></script>
@@ -707,6 +774,7 @@
                                 <li><a href="#phishing-detection">Improved phishing detection without abstraction</a></li>
                             </ul>
                         </li>
+                        <li class="toc-hidden"><a href="#sources">Sources</a></li>
                     </ul>
                     <button class="toc-expand-button" aria-label="Expand table of contents">
                         <i class="fas fa-chevron-down"></i>
@@ -714,7 +782,10 @@
                 </div>
 
                 <h2 id="phishing-url-confusion">How phishing attacks exploit URL confusion</h2>
-                <p>Phishing attacks have become one of the most prevalent cybersecurity threats in today's digital landscape. According to recent statistics, 36% of all data breaches in the US are caused by phishing attacks, with organizations losing approximately $17,700 per minute to these scams. The problem has grown exponentially, with a 345% increase in unique phishing sites between 2020 and 2021 alone.</p>
+                <p>Phishing attacks have become one of the most prevalent cybersecurity threats in today's digital landscape. According to recent statistics, 36% of all data breaches in the US are caused by phishing attacks, with organizations losing approximately $17,700 per minute to these scams.<sup class="citation-ref"><a href="#source-1" id="ref-1">1</a></sup> The problem has grown exponentially, with a 345% increase in unique phishing sites between 2020 and 2021 alone.<sup class="citation-ref"><a href="#source-2" id="ref-2">2</a></sup></p>
+                <div class="image-container" style="text-align: center; margin: 2rem 0;">
+                    <img src="https://timely-benefit-e63d540317.media.strapiapp.com/Phishing_Trends_2d6106addf.jpg" alt="Phishing Trends Statistics" style="max-width: 100%; height: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
+                </div>
 
                 <p>The core vulnerability that phishing exploits is user confusion about URLs. When users receive an email with a link to "securebanklogin.com" instead of their bank's actual domain, many struggle to determine whether it's legitimate. Phishing attacks have evolved to employ sophisticated techniques such as:</p>
 
@@ -725,7 +796,10 @@
                     <li><strong>Subdomain manipulation</strong>: Using subdomains to confuse users (login.bank.malicious.com appearing to be from "bank")</li>
                 </ol>
 
-                <p>The average internet user often fails to properly parse these URLs. Studies show that even when users are aware of phishing risks, they frequently misinterpret domain structures or overlook subtle clues in the URL that would reveal malicious intent. According to CloudFlare's 2023 phishing report, deceptive links account for 36% of all phishing threats, making them the most common attack vector.</p>
+                <p>The average internet user often fails to properly parse these URLs. Studies show that even when users are aware of phishing risks, they frequently misinterpret domain structures or overlook subtle clues in the URL that would reveal malicious intent. According to CloudFlare's 2023 phishing report, deceptive links account for around 36% of all phishing threats, making them the most common attack vector.<sup class="citation-ref"><a href="#source-3" id="ref-3">3</a></sup></p>
+                <div class="image-container" style="text-align: center; margin: 2rem 0;">
+                    <img src="https://cf-assets.www.cloudflare.com/zkvhlag99gkb/JfZOoAKRayGTRMdjkwQOn/502f97161f6cdd8ba4614e299e5f6fc9/image4-6.png" alt="Phishing Attack Statistics" style="max-width: 100%; height: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
+                </div>
 
                 <p>This fundamental challenge has prompted two distinctly different approaches to addressing the problem.</p>
 
@@ -757,7 +831,7 @@
                 <div class="logo-container" style="text-align: center; margin: 2rem 0;">
                     <img src="/images/notes/logo_epiarc.svg" alt="Epiarc Logo" style="max-width: 200px; height: auto;">
                 </div>
-                <p>Epiarc takes a fundamentally different approach to the URL problem. Founded by Alex Greenland (CEO), Dan Cassey (CTO), and Chris Kilding (Director of Research) — the same team behind <a href="https://epihq.com" rel="nofollow noreferrer noopener" target="_blank">Epi</a> — Epiarc introduces Archetypal Resource Identifiers (ARIs) — human-centric names that sit as a layer of abstraction above URLs. Instead of showing users technical URLs, the system displays familiar, contextual names.</p>
+                <p>Epiarc takes a fundamentally different approach to the URL problem. Founded by <strong>Alex Greenland</strong> (CEO), <strong>Dan Cassey</strong> (CTO), and <strong>Chris Kilding</strong> (Director of Research) — the same team behind <a href="https://epihq.com" rel="nofollow noreferrer noopener" target="_blank">Epi</a> — Epiarc introduces Archetypal Resource Identifiers (ARIs) — human-centric names that sit as a layer of abstraction above URLs. Instead of showing users technical URLs, the system displays familiar, contextual names.</p>
 
                 <p>The core components of the Epiarc system include:</p>
 
@@ -840,11 +914,29 @@
                 <p>Technologies for detecting and preventing phishing can be enhanced without hiding URLs. These improvements could include better browser-based phishing detection using machine learning, improved safe browsing databases with faster updates, email security gateways with more sophisticated URL analysis, and enhanced verification technologies like HTTPS certificates with extended validation.</p>
 
                 <h2>Final Thoughts</h2>
-                <p>While Epiarc and similar abstraction approaches aim to solve the very real problem of phishing, they risk creating more vulnerabilities than they solve. By hiding critical security information from users and introducing new dependencies and attack vectors, these systems could ultimately make phishing easier rather than harder.</p>
+                <p>While Epiarc and comparable abstraction methods strive to address the genuine issue of phishing, they may unintentionally create additional vulnerabilities. By concealing essential security information from users and introducing new dependencies and potential attack vectors, these systems might ultimately facilitate phishing instead of hindering it.</p>
 
                 <p>The clean URL approach, focused on transparency and education, offers a more robust path forward. By building upon the existing web infrastructure and empowering users with knowledge rather than hiding information from them, we can develop more effective phishing prevention strategies that don't introduce new security risks.</p>
 
                 <p>The most effective anti-phishing strategy likely lies not in abstracting away URLs entirely, but in making them more understandable while maintaining their visibility. By improving how browsers present URLs and helping users develop better URL reading skills, we can create a more secure web without sacrificing transparency or introducing new attack surfaces.</p>
+
+                <h2 id="sources">Sources</h2>
+                <div class="sources-section">
+                    <ul>
+                        <li id="source-1">
+                            <sup class="source-ref"><a href="#ref-1">1</a></sup> 
+                            <a href="https://keepnetlabs.com/blog/top-phishing-statistics-and-trends-you-must-know" target="_blank" rel="nofollow noopener noreferrer">Top 40 Phishing Statistics and Trends You Must Know in 2025 - Keepnet Labs</a>
+                        </li>
+                        <li id="source-2">
+                            <sup class="source-ref"><a href="#ref-2">2</a></sup> 
+                            <a href="https://sprinto.com/blog/phishing-statistics/" target="_blank" rel="nofollow noopener noreferrer">100+ Phishing Attack Statistics You Should Know - Sprinto</a>
+                        </li>
+                        <li id="source-3">
+                            <sup class="source-ref"><a href="#ref-3">3</a></sup> 
+                            <a href="https://blog.cloudflare.com/2023-phishing-report/" target="_blank" rel="nofollow noopener noreferrer">Cloudflare's 2023 Phishing Threats Report - Cloudflare Blog</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
 
             <section class="author-section">
