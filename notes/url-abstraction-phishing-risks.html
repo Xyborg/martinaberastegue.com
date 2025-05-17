@@ -467,6 +467,7 @@
             border-radius: 1rem;
             padding: 2rem;
             margin: 2rem 0;
+            position: relative;
         }
 
         .table-of-contents h2 {
@@ -505,78 +506,63 @@
             text-decoration: underline;
         }
 
-        @media (max-width: 768px) {
-            .table-of-contents {
-                padding: 1.5rem;
-            }
+        .table-of-contents .toc-hidden {
+            display: none !important; /* Force hide initially */
         }
 
-        .toc-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 0.5rem;
+        .table-of-contents.toc-collapsed .toc-hidden {
+            display: none !important; /* Ensure hidden items in explicitly collapsed container are GONE */
         }
-
-        .toc-section a {
-            flex: 1;
-        }
-
-        .toc-toggle {
-            background: none;
-            border: none;
-            padding: 0.25rem;
-            cursor: pointer;
-            color: var(--text);
-            opacity: 0.7;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .toc-toggle:hover {
-            opacity: 1;
-        }
-
-        .toc-toggle i {
-            transition: transform 0.2s ease;
-        }
-
-        .toc-toggle.expanded i {
-            transform: rotate(180deg);
+        /* This rule is for when JS explicitly expands it */
+        .table-of-contents.js-toc-expanded .toc-hidden {
+            display: block !important; /* Or list-item if that's the original display for li */
         }
 
         .toc-subsection {
-            margin: 0.5rem 0 0.5rem 1.5rem;
-            display: none;
+            /* margin: 0.5rem 0 0.5rem 1.5rem; */ /* Keep existing margin */
+            display: none; /* Default hidden for subsections */
         }
-
         .toc-subsection.expanded {
-            display: block;
+            display: block; /* Show when expanded */
         }
 
-        .toc-subsection li {
-            margin-bottom: 0.5rem;
-            font-size: 0.95em;
+        /* Ensure expand button is visible when TOC is collapsed */
+        .table-of-contents.toc-collapsed .toc-expand-button {
+            display: flex !important; 
+        }
+        .table-of-contents .toc-expand-button { /* Default state for the button itself */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 0.75rem 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--primary); /* Use primary color for interactivity */
+            opacity: 0.8;
+            transition: opacity 0.2s ease;
+            margin-top: 1rem; /* Space above the button */
+        }
+        .table-of-contents .toc-expand-button:hover {
+            opacity: 1;
         }
 
-        .table-of-contents a {
-            color: var(--primary);
-            text-decoration: none;
-            transition: all 0.2s ease;
-            display: inline-block;
+        /* Styling for the main expand button chevron based on state */
+        .toc-expand-button i {
+            transition: transform 0.2s ease;
+            font-size: 1em; /* Ensure icon size is consistent */
+        }
+        .toc-expand-button.expanded i {
+            transform: rotate(180deg);
         }
 
-        .table-of-contents a:hover {
-            color: var(--highlight);
-            text-decoration: underline;
+        /* Styling for the subsection toggle chevrons based on state */
+        .toc-toggle i { /* Ensure this targets the <i> inside the span */
+            transition: transform 0.2s ease;
         }
-
-        @media (max-width: 768px) {
-            .table-of-contents {
-                padding: 1.5rem;
-            }
+        .toc-toggle.expanded i { /* This class is on the span, target i */
+            transform: rotate(180deg);
         }
     </style>
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -643,27 +629,13 @@
                         <li><a href="#phishing-url-confusion">How phishing attacks exploit URL confusion</a></li>
                         <li><a href="#clean-urls">Clean URLs: Transparency and direct recognition</a></li>
                         <li><a href="#epiarc-approaches">Epiarc and similar abstraction approaches: Adding layers of complexity</a></li>
-                        <li>
-                            <div class="toc-section">
-                                <a href="#attack-surface">The new attack surface: How abstraction creates vulnerabilities</a>
-                                <button class="toc-toggle" aria-label="Toggle subsections">
-                                    <i class="fas fa-chevron-down"></i>
-                                </button>
-                            </div>
-                            <ul class="toc-subsection">
-                                <li><a href="#linkbase-manipulation">Linkbase manipulation and compromise</a></li>
-                                <li><a href="#entity-confusion">Confusion with similar entity names</a></li>
-                                <li><a href="#security-indicators">Masking critical security indicators</a></li>
-                                <li><a href="#url-ignorance">Training users to ignore URLs entirely</a></li>
-                                <li><a href="#third-party-dependency">Third-party dependency for security decisions</a></li>
-                            </ul>
-                        </li>
-                        <li>
+                        <li><a href="#attack-surface">The new attack surface: How abstraction creates vulnerabilities</a></li>
+                        <li class="toc-hidden">
                             <div class="toc-section">
                                 <a href="#transparency-approach">Why transparency may be the better approach for phishing prevention</a>
-                                <button class="toc-toggle" aria-label="Toggle subsections">
+                                <span class="toc-toggle" aria-label="Toggle subsections">
                                     <i class="fas fa-chevron-down"></i>
-                                </button>
+                                </span>
                             </div>
                             <ul class="toc-subsection">
                                 <li><a href="#direct-verification">Direct verification without intermediaries</a></li>
@@ -673,12 +645,12 @@
                                 <li><a href="#avoiding-attacks">Avoiding new attack vectors</a></li>
                             </ul>
                         </li>
-                        <li>
+                        <li class="toc-hidden">
                             <div class="toc-section">
                                 <a href="#path-forward">The path forward: Improving URL readability without sacrificing security</a>
-                                <button class="toc-toggle" aria-label="Toggle subsections">
+                                <span class="toc-toggle" aria-label="Toggle subsections">
                                     <i class="fas fa-chevron-down"></i>
-                                </button>
+                                </span>
                             </div>
                             <ul class="toc-subsection">
                                 <li><a href="#domain-highlighting">Enhanced domain highlighting</a></li>
@@ -689,6 +661,9 @@
                             </ul>
                         </li>
                     </ul>
+                    <button class="toc-expand-button" aria-label="Expand table of contents">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
                 </div>
 
                 <h2 id="phishing-url-confusion">How phishing attacks exploit URL confusion</h2>
@@ -879,32 +854,111 @@
         updateThemeIcon();
 
         document.addEventListener('DOMContentLoaded', function() {
-            const toggles = document.querySelectorAll('.toc-toggle');
+            const tocContainer = document.querySelector('.table-of-contents');
+            const tocExpandButton = document.querySelector('.toc-expand-button');
+            const tocHiddenItems = document.querySelectorAll('.toc-hidden');
+            const subsectionToggles = document.querySelectorAll('.toc-toggle');
+
+            if (!tocContainer || !tocExpandButton) {
+                console.error('TOC critical elements (container or expand button) not found!');
+                return;
+            }
+            if (tocHiddenItems.length === 0) {
+                console.warn('No .toc-hidden items found. TOC might not be collapsible as intended.');
+            }
+
+            // --- Initial Collapsed State Setup (Always runs) ---
+            // console.log('Attempting to set initial TOC state to collapsed.');
+            tocContainer.classList.add('toc-collapsed'); // Main visual class for collapse
+            tocContainer.classList.remove('js-toc-expanded'); // Remove any explicit JS expansion class
+            tocExpandButton.classList.remove('expanded');    // Chevron points down
+            tocHiddenItems.forEach(item => {
+                item.style.display = 'none'; // JS force hide
+            });
             
-            toggles.forEach(toggle => {
-                toggle.addEventListener('click', function() {
-                    const subsection = this.closest('li').querySelector('.toc-subsection');
-                    const isExpanded = subsection.classList.contains('expanded');
-                    
-                    // Toggle current section
-                    subsection.classList.toggle('expanded');
-                    this.classList.toggle('expanded');
-                    
-                    // Save state to localStorage
-                    const sectionId = subsection.querySelector('a').getAttribute('href');
-                    localStorage.setItem(`toc-${sectionId}`, !isExpanded);
+            document.querySelectorAll('.toc-subsection').forEach(sub => {
+                sub.classList.remove('expanded'); // CSS will hide via .toc-subsection:not(.expanded)
+            });
+            subsectionToggles.forEach(toggle => {
+                toggle.classList.remove('expanded'); // Chevron points down
+            });
+            // console.log('Initial state set. tocContainer classes:', tocContainer.classList.toString());
+
+            // --- Restore Main TOC state from localStorage ---
+            const tocStoredAsExpanded = localStorage.getItem('toc-expanded') === 'true';
+            // console.log('localStorage toc-expanded value:', localStorage.getItem('toc-expanded'));
+            if (tocStoredAsExpanded) {
+                // console.log('Restoring TOC to expanded from localStorage.');
+                tocContainer.classList.remove('toc-collapsed');
+                tocContainer.classList.add('js-toc-expanded'); // Mark as JS-expanded
+                tocExpandButton.classList.add('expanded');     // Chevron points up
+                tocHiddenItems.forEach(item => {
+                    item.style.display = 'block'; // JS force show (overrides .toc-hidden CSS)
                 });
-                
-                // Restore state from localStorage
-                const subsection = toggle.closest('li').querySelector('.toc-subsection');
-                const sectionId = subsection.querySelector('a').getAttribute('href');
-                const isExpanded = localStorage.getItem(`toc-${sectionId}`) === 'true';
-                
-                if (isExpanded) {
-                    subsection.classList.add('expanded');
-                    toggle.classList.add('expanded');
+            } else {
+                // console.log('TOC remains collapsed (not expanded in localStorage or first load).');
+                // Initial setup already handled this.
+            }
+
+            // --- Main TOC Expand/Collapse Button ---
+            tocExpandButton.addEventListener('click', function() {
+                const isCurrentlyCollapsed = tocContainer.classList.contains('toc-collapsed');
+                // console.log('Main expand button clicked. Currently collapsed:', isCurrentlyCollapsed);
+                if (isCurrentlyCollapsed) { // If collapsed, expand it
+                    tocContainer.classList.remove('toc-collapsed');
+                    tocContainer.classList.add('js-toc-expanded');
+                    this.classList.add('expanded'); // Update button icon state
+                    tocHiddenItems.forEach(item => { item.style.display = 'block'; });
+                    localStorage.setItem('toc-expanded', 'true');
+                    // console.log('TOC expanded by click. tocContainer classes:', tocContainer.classList.toString());
+                } else { // If expanded, collapse it
+                    tocContainer.classList.add('toc-collapsed');
+                    tocContainer.classList.remove('js-toc-expanded');
+                    this.classList.remove('expanded'); // Update button icon state
+                    tocHiddenItems.forEach(item => { item.style.display = 'none'; });
+                    localStorage.setItem('toc-expanded', 'false');
+                    // console.log('TOC collapsed by click. tocContainer classes:', tocContainer.classList.toString());
                 }
             });
+
+            // --- Subsection Toggles ---
+            subsectionToggles.forEach(toggle => {
+                const sectionLi = toggle.closest('li');
+                if (!sectionLi) {
+                    // console.warn('Subsection toggle found no parent <li>:', toggle);
+                    return;
+                }
+                const subsection = sectionLi.querySelector('.toc-subsection');
+                if (!subsection) {
+                    // console.warn('Subsection toggle found no .toc-subsection in its <li>:', toggle);
+                    return;
+                }
+
+                const firstLinkInSubsection = subsection.querySelector('a');
+                const sectionId = firstLinkInSubsection ? firstLinkInSubsection.getAttribute('href') : null;
+                const storageKey = sectionId ? `toc-subsection-${sectionId}` : null;
+
+                // Restore subsection state from localStorage
+                if (storageKey && localStorage.getItem(storageKey) === 'true') {
+                    subsection.classList.add('expanded'); // CSS will display:block
+                    toggle.classList.add('expanded');     // Rotates chevron
+                    // console.log(`Subsection ${sectionId || 'unknown'} restored to expanded.`);
+                } else {
+                    subsection.classList.remove('expanded');
+                    toggle.classList.remove('expanded');
+                }
+
+                toggle.addEventListener('click', function(event) {
+                    event.preventDefault(); // Good practice for clickable spans
+                    const isNowExpanded = subsection.classList.toggle('expanded');
+                    this.classList.toggle('expanded', isNowExpanded); // Sync icon with state
+                    if (storageKey) {
+                        localStorage.setItem(storageKey, isNowExpanded);
+                        // console.log(`Subsection ${sectionId || 'unknown'} toggled by click. Now expanded: ${isNowExpanded}`);
+                    }
+                });
+            });
+            // console.log('TOC script finished initialization.');
         });
     </script>
 
