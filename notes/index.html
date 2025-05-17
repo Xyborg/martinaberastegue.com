@@ -2,17 +2,17 @@
 <html lang="en" class="light">
 <head>
     <meta charset="utf-8">
-    <title>Article Title - Martin Aberastegue</title>
-    <meta name="description" content="Article description goes here" />
-    <meta property="og:type" content="article" />
-    <meta property="og:title" content="Article Title - Martin Aberastegue" />
-    <meta property="og:description" content="Article description goes here" />
-    <meta property="og:url" content="https://www.martinaberastegue.com/articles/article-slug" />
+    <title>Notes - Martin Aberastegue</title>
+    <meta name="description" content="A collection of notes and articles by Martin Aberastegue on technology, security, and web development." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Notes - Martin Aberastegue" />
+    <meta property="og:description" content="A collection of notes and articles by Martin Aberastegue on technology, security, and web development." />
+    <meta property="og:url" content="https://www.martinaberastegue.com/notes/" />
     <meta property="og:site_name" content="Martin Aberastegue 🚀" />
-    <meta name="image" property="og:image" content="https://www.martinaberastegue.com/images/article-image.jpg" />
+    <meta name="image" property="og:image" content="https://www.martinaberastegue.com/images/notes/og-notes-general.png" />
     <meta name="author" content="Martin Aberastegue">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="canonical" href="https://www.martinaberastegue.com/articles/article-slug" />
+    <link rel="canonical" href="https://www.martinaberastegue.com/notes/" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -126,12 +126,12 @@
             padding: 2rem 0;
         }
 
-        .article-header {
+        .page-header {
             margin-bottom: 3rem;
             text-align: center;
         }
 
-        .article-title {
+        .page-title {
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 1rem;
@@ -139,140 +139,95 @@
             line-height: 1.2;
         }
 
-        .article-meta {
+        .page-description {
+            font-size: 1.125rem;
             color: var(--text);
             opacity: 0.8;
-            font-size: 0.875rem;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .article-image {
-            width: 100%;
-            aspect-ratio: 16/9;
-            border-radius: 1rem;
-            overflow: hidden;
-            margin-bottom: 2rem;
-        }
-
-        .article-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .article-content {
-            font-size: 1.125rem;
-            line-height: 1.8;
-            color: var(--text);
-        }
-
-        .article-content p {
-            margin-bottom: 1.5rem;
-        }
-
-        .article-content h2 {
-            font-size: 1.75rem;
-            font-weight: 600;
-            margin: 2.5rem 0 1rem;
-            color: var(--text);
-        }
-
-        .article-content h3 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin: 2rem 0 1rem;
-            color: var(--text);
-        }
-
-        .article-content ul, 
-        .article-content ol {
-            margin: 1rem 0 1.5rem 1.5rem;
-        }
-
-        .article-content li {
-            margin-bottom: 0.5rem;
-        }
-
-        .article-content blockquote {
-            border-left: 4px solid var(--primary);
-            padding-left: 1.5rem;
-            margin: 1.5rem 0;
-            font-style: italic;
-            opacity: 0.9;
-        }
-
-        .article-content code {
-            background: var(--secondary-bg);
-            padding: 0.2rem 0.4rem;
-            border-radius: 0.25rem;
-            font-size: 0.875em;
-        }
-
-        .article-content pre {
-            background: var(--secondary-bg);
-            padding: 1rem;
-            border-radius: 0.5rem;
-            overflow-x: auto;
-            margin: 1.5rem 0;
-        }
-
-        .article-content pre code {
-            background: none;
+        .article-list {
+            list-style: none;
             padding: 0;
         }
 
-        .author-section {
-            margin: 4rem 0;
-            padding: 2rem;
-            background: var(--secondary-bg);
+        .article-list-item {
+            margin-bottom: 2.5rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
             border-radius: 1rem;
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .author-image {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            overflow: hidden;
-            flex-shrink: 0;
-        }
-
-        .author-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .author-info h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--text);
-        }
-
-        .author-info p {
-            color: var(--text);
-            opacity: 0.8;
-            font-size: 0.875rem;
-            margin-bottom: 1rem;
-        }
-
-        .author-social {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .author-social a {
-            color: var(--text);
-            opacity: 0.8;
+            overflow: hidden; /* To contain the image within rounded corners */
             transition: all 0.3s ease;
         }
 
-        .author-social a:hover {
+        .article-list-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.07);
+        }
+
+        .article-list-image-link {
+            display: block;
+            overflow: hidden;
+        }
+
+        .article-list-image {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border);
+            transition: transform 0.3s ease;
+        }
+
+        .article-list-item:hover .article-list-image {
+            transform: scale(1.03);
+        }
+        
+        .article-list-content {
+            padding: 1.5rem;
+        }
+
+        .article-list-title {
+            font-size: 1.5rem;
+            font-weight: 600;
             color: var(--primary);
-            opacity: 1;
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .article-list-title:hover {
+            text-decoration: underline;
+        }
+
+        .article-list-meta {
+            font-size: 0.875rem;
+            color: var(--text);
+            opacity: 0.7;
+            margin-bottom: 0.75rem;
+        }
+
+        .article-list-description {
+            font-size: 1rem;
+            color: var(--text);
+            opacity: 0.9;
+        }
+
+        .read-more-link {
+            display: inline-block;
+            margin-top: 1rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .read-more-link:hover {
+            text-decoration: underline;
         }
 
         .footer {
@@ -346,7 +301,6 @@
             font-weight: 500;
         }
 
-        /* Add new styles for language switcher */
         .language-switcher {
             display: flex;
             gap: 0.25rem;
@@ -425,22 +379,17 @@
                 padding: 0.75rem 1rem;
             }
 
-            .article-title {
+            .page-title {
                 font-size: 2rem;
             }
 
-            .article-content {
+            .page-description {
                 font-size: 1rem;
+                margin-bottom: 2rem;
             }
 
-            .author-section {
-                flex-direction: column;
-                text-align: center;
-                padding: 1.5rem;
-            }
-
-            .author-social {
-                justify-content: center;
+            .article-list-title {
+                font-size: 1.25rem;
             }
 
             .footer-theme-toggle {
@@ -497,6 +446,7 @@
         <nav class="nav-links">
             <a href="https://www.martinaberastegue.com/" class="brand">Martin Aberastegue</a>
             <div class="nav-right">
+                <a href="/notes/" class="nav-link active"><i class="fas fa-file-alt"></i> Notes</a>
                 <div class="language-switcher">
                     <a href="https://www.martinaberastegue.com/es/" class="lang-link" title="Español">
                         <svg class="flag" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480">
@@ -525,88 +475,40 @@
     </header>
 
     <div class="container main-content">
-        <article>
-            <header class="article-header">
-                <h1 class="article-title">Article Title Goes Here</h1>
-                <div class="article-meta">
-                    <time datetime="2024-03-21">March 21, 2024</time>
-                    <span> • </span>
-                    <span>5 min read</span>
-                </div>
-                <div class="article-image">
-                    <img src="https://www.martinaberastegue.com/images/article-image.jpg" alt="Article featured image" loading="lazy">
-                </div>
-            </header>
+        <header class="page-header">
+            <h1 class="page-title">Notes & Articles</h1>
+            <p class="page-description">Welcome to my personal collection of notes and articles. Here I share insights, reflections, and findings on topics I'm passionate about, including technology, web development, security, and digital trends. Hope you find something useful or thought-provoking!</p>
+        </header>
 
-            <div class="article-content">
-                <!-- Article content goes here -->
-                <p>Your article content goes here. This is a template that you can use to create new articles. The styling is consistent with the main site design and includes support for:</p>
-
-                <h2>Headings</h2>
-                <p>You can use different heading levels to structure your content. The template includes styles for h1, h2, and h3 headings.</p>
-
-                <h3>Subheadings</h3>
-                <p>Use subheadings to break down your content into smaller, more digestible sections.</p>
-
-                <h2>Lists</h2>
-                <ul>
-                    <li>Unordered lists for bullet points</li>
-                    <li>Easy to read and scan</li>
-                    <li>Great for key takeaways</li>
-                </ul>
-
-                <ol>
-                    <li>Ordered lists for steps</li>
-                    <li>Perfect for tutorials</li>
-                    <li>Or numbered points</li>
-                </ol>
-
-                <h2>Blockquotes</h2>
-                <blockquote>
-                    Use blockquotes to highlight important quotes or statements. They stand out visually and help emphasize key points in your article.
-                </blockquote>
-
-                <h2>Code Blocks</h2>
-                <p>For technical articles, you can include code snippets:</p>
-                <pre><code>// Your code here
-function example() {
-    console.log("Hello, World!");
-}</code></pre>
-            </div>
-
-            <section class="author-section">
-                <div class="author-image">
-                    <img src="https://www.martinaberastegue.com/images/martin-aberastegue.jpg" alt="Martin Aberastegue" loading="lazy">
-                </div>
-                <div class="author-info">
-                    <h3>Martin Aberastegue</h3>
-                    <p>Digital Marketing & Technology Leader with 23+ years of experience driving growth through SEO, MarTech, and Data-Driven Strategy. Expert in scaling businesses through innovative digital solutions.</p>
-                    <p>Based in Germany, working globally to transform businesses through technology and strategic digital initiatives.</p>
-                    <div class="author-social">
-                        <a href="https://www.linkedin.com/in/aberastegue/" target="_blank" rel="noreferrer noopener" title="LinkedIn">
-                            <i class="fab fa-linkedin"></i>
-                        </a>
-                        <a href="https://x.com/Xyborg" target="_blank" rel="noreferrer noopener" title="Twitter">
-                            <i class="fab fa-x-twitter"></i>
-                        </a>
-                        <a href="https://github.com/Xyborg" target="_blank" rel="noreferrer noopener" title="GitHub">
-                            <i class="fab fa-github"></i>
-                        </a>
+        <ul class="article-list">
+            <li class="article-list-item">
+                <a href="url-abstraction-phishing-risks.html" class="article-list-image-link">
+                    <img src="/images/notes/main_clean-urls-vs-epiarc.png" alt="Illustration comparing clean URLs vs Epiarc abstraction" class="article-list-image" loading="lazy">
+                </a>
+                <div class="article-list-content">
+                    <a href="url-abstraction-phishing-risks.html" class="article-list-title">The Hidden Danger of URL Abstraction: How Epiarc Could Backfire Against Phishing</a>
+                    <div class="article-list-meta">
+                        <time datetime="2025-05-17">May 17, 2025</time>
+                        <span> • </span>
+                        <span>10 min read</span>
                     </div>
+                    <p class="article-list-description">An analysis of how URL abstraction systems like Epiarc could potentially increase phishing risks instead of reducing them, and why transparency might be a better approach.</p>
+                    <a href="url-abstraction-phishing-risks.html" class="read-more-link">Read article &rarr;</a>
                 </div>
-            </section>
-        </article>
-
-        <footer class="footer">
-            <div class="footer-content">
-                <p>© 2002 - 2025 Martin Aberastegue</p>
-                <button class="theme-toggle footer-theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
-                    <i class="fas fa-moon"></i>
-                    <span class="theme-text">Toggle Theme</span>
-                </button>
-            </div>
-        </footer>
+            </li>
+            <!-- More articles will be listed here -->
+        </ul>
     </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>© 2002 - 2025 Martin Aberastegue</p>
+            <button class="theme-toggle footer-theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+                <i class="fas fa-moon"></i>
+                <span class="theme-text">Toggle Theme</span>
+            </button>
+        </div>
+    </footer>
 
     <script>
         function toggleTheme() {
@@ -633,32 +535,47 @@ function example() {
 
     <!-- Schema.org data -->
     <script type="application/ld+json">
-        {
-            "@context": "http://schema.org",
-            "@type": "Article",
-            "headline": "Article Title Goes Here",
-            "description": "Article description goes here",
-            "image": "https://www.martinaberastegue.com/images/article-image.jpg",
-            "datePublished": "2024-03-21",
-            "dateModified": "2024-03-21",
-            "author": {
-                "@type": "Person",
-                "name": "Martin Aberastegue",
-                "url": "https://www.martinaberastegue.com"
-            },
-            "publisher": {
-                "@type": "Organization",
-                "name": "Martin Aberastegue",
-                "logo": {
-                    "@type": "ImageObject",
-                    "url": "https://www.martinaberastegue.com/images/martin-aberastegue.jpg"
-                }
-            },
-            "mainEntityOfPage": {
-                "@type": "WebPage",
-                "@id": "https://www.martinaberastegue.com/articles/article-slug"
+    {
+        "@context": "http://schema.org",
+        "@type": "WebPage",
+        "name": "Notes - Martin Aberastegue",
+        "description": "A collection of notes and articles by Martin Aberastegue on various topics including technology, security, and web development.",
+        "url": "https://www.martinaberastegue.com/notes/",
+        "author": {
+            "@type": "Person",
+            "name": "Martin Aberastegue",
+            "url": "https://www.martinaberastegue.com"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Martin Aberastegue",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://www.martinaberastegue.com/images/martin-aberastegue.jpg" 
             }
+        },
+        "mainEntity": {
+            "@type": "ItemList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "item": {
+                        "@type": "Article",
+                        "headline": "The Hidden Danger of URL Abstraction: How Epiarc Could Backfire Against Phishing",
+                        "url": "https://www.martinaberastegue.com/notes/url-abstraction-phishing-risks.html",
+                        "datePublished": "2025-05-17",
+                        "description": "An analysis of how URL abstraction systems like Epiarc could potentially increase phishing risks instead of reducing them, and why transparency might be a better approach.",
+                         "image": "https://www.martinaberastegue.com/images/notes/main_clean-urls-vs-epiarc.png",
+                         "author": {
+                            "@type": "Person",
+                            "name": "Martin Aberastegue"
+                         }
+                    }
+                }
+            ]
         }
+    }
     </script>
 </body>
 </html> 
