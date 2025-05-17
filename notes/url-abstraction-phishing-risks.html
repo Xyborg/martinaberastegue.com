@@ -483,15 +483,15 @@
         }
 
         .table-of-contents > ul > li {
-            margin-bottom: 1rem;
+            margin-bottom: 0.6rem;
         }
 
         .table-of-contents ul ul {
-            margin: 0.5rem 0 0.5rem 1.5rem;
+            margin: 0.4rem 0 0.4rem 1.5rem;
         }
 
         .table-of-contents ul ul li {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.3rem;
             font-size: 0.95em;
         }
 
@@ -543,6 +543,7 @@
             opacity: 0.8;
             transition: opacity 0.2s ease;
             margin-top: 1rem; /* Space above the button */
+            font-size: inherit; /* Make button font size same as surrounding text */
         }
         .table-of-contents .toc-expand-button:hover {
             opacity: 1;
@@ -560,6 +561,12 @@
         /* Styling for the subsection toggle chevrons based on state */
         .toc-toggle i { /* Ensure this targets the <i> inside the span */
             transition: transform 0.2s ease;
+            color: var(--primary); /* Ensure consistent color */
+            font-size: 1em; /* Make same size as main expand button icon */
+            opacity: 0.8;
+        }
+        .toc-toggle:hover i {
+            opacity: 1;
         }
         .toc-toggle.expanded i { /* This class is on the span, target i */
             transform: rotate(180deg);
