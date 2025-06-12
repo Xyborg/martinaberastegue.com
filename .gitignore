@@ -29,4 +29,7 @@ Temporary Items
 .vscode/
 .idea/
 *.swp
-*.swo 
+*.swo
+
+# Template files
+article-template.html 
