@@ -805,6 +805,45 @@
           font-size: 0.875rem;
           font-weight: 500;
       }
+      @media (max-width: 600px) {
+            .book-embed-container {
+                margin: 10px !important;
+                border-radius: 8px !important;
+            }
+            .book-embed-badge {
+                top: 8px !important;
+                right: 8px !important;
+                padding: 4px 10px !important;
+                font-size: 0.7em !important;
+            }
+            .book-embed-content {
+                flex-direction: column !important;
+                text-align: center !important;
+                padding: 15px !important;
+                gap: 15px !important;
+            }
+            .book-embed-image {
+                width: 140px !important;
+                margin: 0 auto !important;
+            }
+            .book-embed-text {
+                padding-right: 0 !important;
+            }
+            .book-embed-title {
+                font-size: 1.4em !important;
+            }
+            .book-embed-author {
+                font-size: 0.9em !important;
+            }
+            .book-embed-tagline {
+                font-size: 1em !important;
+                margin-bottom: 20px !important;
+            }
+            .book-embed-button {
+                padding: 14px 32px !important;
+                font-size: 1em !important;
+            }
+        }
     </style>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-126284-9"></script>
@@ -872,6 +911,25 @@
                 <img src="https://www.martinaberastegue.com/images/martin-aberastegue.webp" alt="Martin Aberastegue" loading="lazy">
             </div>
         </section>
+
+        <!-- La Paradoja de Medianoche - Embed Code -->
+        <div class="book-embed-container" style="max-width:650px;margin:20px auto;border:1px solid #ddd;border-radius:10px;overflow:hidden;font-family:Arial,sans-serif;box-sizing:border-box;box-shadow:0 4px 12px rgba(0,0,0,0.1);position:relative;">
+            <div class="book-embed-badge" style="position:absolute;top:12px;right:15px;background:linear-gradient(45deg,#ffd700,#ffed4e);color:#1a1a2e;padding:5px 14px;border-radius:15px;font-size:0.75em;font-weight:bold;z-index:10;box-shadow:0 3px 8px rgba(0,0,0,0.25);text-transform:uppercase;letter-spacing:0.5px;">Mi Libro</div>
+            <div class="book-embed-content" style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);color:white;padding:20px;box-sizing:border-box;display:flex;align-items:center;gap:20px;">
+                <div style="flex-shrink:0;">
+                    <img class="book-embed-image" src="https://laparadojademedianoche.com/la-paradoja-de-medianoche-tapa.webp" alt="La Paradoja de Medianoche" style="width:120px;height:auto;border-radius:5px;">
+                </div>
+                <div class="book-embed-text" style="flex:1;padding-right:40px;text-align:center;">
+                    <h3 class="book-embed-title" style="margin:0 0 8px 0;color:#ffd700;font-size:1.3em;font-weight:bold;line-height:1.2;">La Paradoja de Medianoche</h3>
+                    <p class="book-embed-author" style="margin:0 0 12px 0;font-size:0.85em;color:#b8b8b8;font-weight:500;">La llave del tiempo - Martín Aberastegue</p>
+                    <p class="book-embed-tagline" style="margin:0 0 18px 0;font-size:0.9em;color:#ffd700;font-style:italic;line-height:1.3;">¿Y si parte de nuestra historia no hubiera sucedido nunca?</p>
+                    <a class="book-embed-button" href="https://laparadojademedianoche.com/" target="_blank" rel="noopener" style="display:inline-block;background:linear-gradient(45deg,#ff6b6b,#ee5a52);color:white;padding:12px 28px;text-decoration:none;border-radius:30px;font-weight:bold;font-size:0.9em;transition:all 0.3s ease;text-decoration:none;box-shadow:0 4px 12px rgba(255,107,107,0.3);transform:translateY(0);text-transform:uppercase;letter-spacing:0.5px;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(255,107,107,0.4)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 12px rgba(255,107,107,0.3)'">Comprar Ahora</a>
+                </div>
+            </div>
+            <div style="padding:15px;background:white;box-sizing:border-box;">
+                <p style="margin:0;font-size:0.85em;color:#666;line-height:1.4;">Un thriller histórico con tintes de ciencia ficción que desafía todo lo que creemos saber sobre el pasado.</p>
+            </div>
+        </div>
 
         <section id="projects" class="section">
             <h2 class="section-title">Proyectos Personales</h2>
