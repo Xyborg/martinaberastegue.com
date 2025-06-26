@@ -746,6 +746,14 @@
           background: rgba(255, 126, 95, 0.1);
       }
 
+      /* Analytics Tools */
+      .project-badge i.fa-chart-bar {
+          color: #8b5cf6;
+      }
+      .project-badge:has(.fa-chart-bar) {
+          background: rgba(139, 92, 246, 0.1);
+      }
+
       .stealth-projects {
           text-align: center;
           color: var(--text);
@@ -966,23 +974,23 @@
                     <i class="fas fa-child"></i>
                     Familia y Niños
                 </button>
+                <button class="badge-filter" data-filter="chart-bar">
+                    <i class="fas fa-chart-bar"></i>
+                    Herramientas Publicitarias
+                </button>
             </div>
             <div class="projects-grid">
-                <a href="https://waulog.com/?utm_source=martinaberastegue.com&utm_medium=referral&utm_campaign=ma-links" class="project-card">
+                <a href="https://www.martinaberastegue.com/free-gclid-decoder.html" class="project-card">
                     <div class="project-image">
-                        <span class="featured-overlay">
-                            <i class="fas fa-star"></i>
-                            Destacado
-                        </span>
-                        <img src="https://api.microlink.io/?url=https://waulog.com&screenshot=true&embed=screenshot.url" alt="Vista previa de Waulog" loading="lazy">
+                        <img src="https://api.microlink.io/?url=https://www.martinaberastegue.com/free-gclid-decoder.html&screenshot=true&embed=screenshot.url" alt="Vista previa del Decodificador GCLID" loading="lazy">
                     </div>
                     <div class="project-content">
                         <span class="project-badge">
-                            <i class="fas fa-dog"></i>
-                            Cuidado y Salud Canina
+                            <i class="fas fa-chart-bar"></i>
+                            Herramientas Publicitarias
                         </span>
-                        <h3 class="project-title">Waulog</h3>
-                        <p class="project-description">Tu Compañero Digital Canino</p>
+                        <h3 class="project-title">Decodificador GCLID Gratuito</h3>
+                        <p class="project-description">Decodifica Google Click IDs para extraer timestamps y datos de seguimiento</p>
                     </div>
                 </a>
 
@@ -1019,6 +1027,24 @@
                         </span>
                         <h3 class="project-title">Compensaciones por Retrasos de Vuelos</h3>
                         <p class="project-description">Ayudamos a pasajeros a reclamar compensaciones por retrasos y cancelaciones</p>
+                    </div>
+                </a>
+
+                <a href="https://waulog.com/?utm_source=martinaberastegue.com&utm_medium=referral&utm_campaign=ma-links" class="project-card">
+                    <div class="project-image">
+                        <span class="featured-overlay">
+                            <i class="fas fa-star"></i>
+                            Destacado
+                        </span>
+                        <img src="https://api.microlink.io/?url=https://waulog.com&screenshot=true&embed=screenshot.url" alt="Vista previa de Waulog" loading="lazy">
+                    </div>
+                    <div class="project-content">
+                        <span class="project-badge">
+                            <i class="fas fa-dog"></i>
+                            Cuidado y Salud Canina
+                        </span>
+                        <h3 class="project-title">Waulog</h3>
+                        <p class="project-description">Tu Compañero Digital Canino</p>
                     </div>
                 </a>
 
@@ -1175,7 +1201,8 @@
                 'link': ['fa-link'],
                 'briefcase': ['fa-briefcase'],
                 'passport': ['fa-passport'],
-                'child': ['fa-child']
+                'child': ['fa-child'],
+                'chart-bar': ['fa-chart-bar']
             };
 
             filters.forEach(filter => {

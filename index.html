@@ -746,6 +746,14 @@
             background: rgba(255, 126, 95, 0.1);
         }
 
+        /* Analytics Tools */
+        .project-badge i.fa-chart-bar {
+            color: #8b5cf6;
+        }
+        .project-badge:has(.fa-chart-bar) {
+            background: rgba(139, 92, 246, 0.1);
+        }
+
         .stealth-projects {
             text-align: center;
             color: var(--text);
@@ -1117,23 +1125,23 @@
                     <i class="fas fa-child"></i>
                     Family & Kids
                 </button>
+                <button class="badge-filter" data-filter="chart-bar">
+                    <i class="fas fa-chart-bar"></i>
+                    Advertising Tools
+                </button>
             </div>
             <div class="projects-grid">
-                <a href="https://waulog.com/?utm_source=martinaberastegue.com&utm_medium=referral&utm_campaign=ma-links" class="project-card">
+                <a href="https://www.martinaberastegue.com/free-gclid-decoder.html" class="project-card">
                     <div class="project-image">
-                        <span class="featured-overlay">
-                            <i class="fas fa-star"></i>
-                            Featured
-                        </span>
-                        <img src="https://api.microlink.io/?url=https://waulog.com&screenshot=true&embed=screenshot.url" alt="Waulog Preview" loading="lazy">
+                        <img src="https://api.microlink.io/?url=https://www.martinaberastegue.com/free-gclid-decoder.html&screenshot=true&embed=screenshot.url" alt="GCLID Decoder Preview" loading="lazy">
                     </div>
                     <div class="project-content">
                         <span class="project-badge">
-                            <i class="fas fa-dog"></i>
-                            Dog Care & Health
+                            <i class="fas fa-chart-bar"></i>
+                            Analytics Tools
                         </span>
-                        <h3 class="project-title">Waulog</h3>
-                        <p class="project-description">Your Dog's Digital Companion</p>
+                        <h3 class="project-title">Free GCLID Decoder</h3>
+                        <p class="project-description">Decode Google Click IDs to extract timestamps and tracking data</p>
                     </div>
                 </a>
 
@@ -1170,6 +1178,24 @@
                         </span>
                         <h3 class="project-title">Flight Delay Compensations</h3>
                         <p class="project-description">Help passengers claim compensation for flight delays and cancellations</p>
+                    </div>
+                </a>
+
+                <a href="https://waulog.com/?utm_source=martinaberastegue.com&utm_medium=referral&utm_campaign=ma-links" class="project-card">
+                    <div class="project-image">
+                        <span class="featured-overlay">
+                            <i class="fas fa-star"></i>
+                            Featured
+                        </span>
+                        <img src="https://api.microlink.io/?url=https://waulog.com&screenshot=true&embed=screenshot.url" alt="Waulog Preview" loading="lazy">
+                    </div>
+                    <div class="project-content">
+                        <span class="project-badge">
+                            <i class="fas fa-dog"></i>
+                            Dog Care & Health
+                        </span>
+                        <h3 class="project-title">Waulog</h3>
+                        <p class="project-description">Your Dog's Digital Companion</p>
                     </div>
                 </a>
 
@@ -1321,7 +1347,8 @@
                 'link': ['fa-link'],
                 'briefcase': ['fa-briefcase'],
                 'passport': ['fa-passport'],
-                'child': ['fa-child']
+                'child': ['fa-child'],
+                'chart-bar': ['fa-chart-bar']
             };
 
             filters.forEach(filter => {
