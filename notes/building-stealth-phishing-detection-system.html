@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="utf-8">
+    <title>How I built a stealth phishing detection system - Martin Aberastegue</title>
+    <meta name="description" content="A detailed guide on building a stealth phishing detection system using web beacons and Cloudflare Workers, designed for small and medium businesses." />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="How I built a stealth phishing detection system - Martin Aberastegue" />
+    <meta property="og:description" content="A detailed guide on building a stealth phishing detection system using web beacons and Cloudflare Workers, designed for small and medium businesses." />
+    <meta property="og:url" content="https://www.martinaberastegue.com/notes/building-stealth-phishing-detection-system.html" />
+    <meta property="og:site_name" content="Martin Aberastegue 🚀" />
+    <meta name="image" property="og:image" content="https://www.martinaberastegue.com/images/notes/building-stealth-phishing-detection-system.png" />
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@Xyborg">
+    <meta name="twitter:title" content="How I built a stealth phishing detection system - Martin Aberastegue">
+    <meta name="twitter:description" content="A detailed guide on building a stealth phishing detection system using web beacons and Cloudflare Workers, designed for small and medium businesses.">
+    <meta name="twitter:image" content="https://www.martinaberastegue.com/images/notes/building-stealth-phishing-detection-system.png">
+    <meta name="author" content="Martin Aberastegue">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="canonical" href="https://www.martinaberastegue.com/notes/building-stealth-phishing-detection-system.html" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Ctext%20x='0'%20y='14'%3E🚀%3C/text%3E%3C/svg%3E" type="image/svg+xml" />
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --primary: #6366F1;
+            --text: #1f2937;
+            --background: #ffffff;
+            --secondary-bg: #f8fafc;
+            --border: #e2e8f0;
+            --card-bg: #ffffff;
+            --highlight: #818cf8;
+        }
+
+        .dark {
+            --primary: #818cf8;
+            --text: #f8fafc;
+            --background: #0f172a;
+            --secondary-bg: #1e293b;
+            --border: #334155;
+            --card-bg: #1e293b;
+            --highlight: #6366F1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--background);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: nowrap;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-left: auto;
+        }
+
+        .brand {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .nav-link {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+            display: inline-flex; 
+            align-items: center;  
+            gap: 0.375rem;
+        }
+
+        .nav-link i {
+            color: var(--primary);
+        }
+
+        .nav-link:hover {
+            opacity: 1;
+        }
+
+        .main-content {
+            margin-top: 5rem;
+            padding: 2rem 0;
+        }
+
+        .article-header {
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .article-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text);
+            line-height: 1.2;
+        }
+
+        .article-meta {
+            color: var(--text);
+            opacity: 0.8;
+            font-size: 0.875rem;
+            margin-bottom: 2rem;
+        }
+
+        .article-image {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border-radius: 1rem;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .article-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .article-content {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: var(--text);
+        }
+
+        .article-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .article-content h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin: 2.5rem 0 1rem;
+            color: var(--text);
+        }
+
+        .article-content h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+            color: var(--text);
+        }
+
+        .article-content ul, 
+        .article-content ol {
+            margin: 1rem 0 1.5rem 1.5rem;
+        }
+
+        .article-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .article-content blockquote {
+            border-left: 4px solid var(--primary);
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            opacity: 0.9;
+        }
+
+        .article-content code {
+            background: var(--secondary-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-size: 0.875em;
+        }
+
+        .article-content pre {
+            background: var(--secondary-bg);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        .article-content pre code {
+            background: none;
+            padding: 0;
+        }
+
+        .mermaid {
+            text-align: center;
+            margin: 2em 0;
+            padding: 20px;
+            background: var(--secondary-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .highlight-text {
+            background: #fff9c4;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .note-text {
+            background: #f0f4f7d2;
+            padding: 16px;
+            border-radius: 6px;
+            margin-bottom: 24px;
+            font-size: 1em;
+        }
+
+        .table-of-contents {
+            background: var(--secondary-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .table-of-contents h2 {
+            font-size: 1.5rem;
+            margin: 0 0 1rem 0;
+            color: var(--text);
+        }
+
+        .table-of-contents ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .table-of-contents > ul > li {
+            margin-bottom: 0.6rem;
+        }
+
+        .table-of-contents ul ul {
+            margin: 0.4rem 0 0.4rem 1.5rem;
+        }
+
+        .table-of-contents ul ul li {
+            margin-bottom: 0.3rem;
+            font-size: 0.95em;
+        }
+
+        .table-of-contents a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .table-of-contents a:hover {
+            color: var(--highlight);
+            text-decoration: underline;
+        }
+
+        .table-of-contents .toc-hidden {
+            display: none !important; /* Force hide initially */
+        }
+
+        .table-of-contents.toc-collapsed .toc-hidden {
+            display: none !important; /* Ensure hidden items in explicitly collapsed container are GONE */
+        }
+        /* This rule is for when JS explicitly expands it */
+        .table-of-contents.js-toc-expanded .toc-hidden {
+            display: block !important; /* Or list-item if that's the original display for li */
+        }
+
+        /* Styling for the UL when TOC is collapsed */
+        .table-of-contents.toc-collapsed > ul {
+            max-height: 7.8rem; /* Approx height for 4 items */
+            overflow: hidden;
+            position: relative; /* For the ::after pseudo-element */
+            /* margin-bottom: 0; */ /* Remove margin if button is directly after, or adjust button margin */
+        }
+
+        .table-of-contents.toc-collapsed > ul::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3rem; /* Height of the fade effect */
+            background: linear-gradient(to bottom, transparent, var(--secondary-bg) 90%);
+            pointer-events: none; /* Allows clicks to pass through */
+        }
+
+        .toc-subsection {
+            /* margin: 0.5rem 0 0.5rem 1.5rem; */ /* Keep existing margin */
+            display: none; /* Default hidden for subsections */
+        }
+        .toc-subsection.expanded {
+            display: block; /* Show when expanded */
+        }
+
+        /* Ensure expand button is visible when TOC is collapsed */
+        .table-of-contents.toc-collapsed .toc-expand-button {
+            display: flex !important; 
+        }
+        .table-of-contents .toc-expand-button { /* Default state for the button itself */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 0.75rem 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--primary); /* Use primary color for interactivity */
+            opacity: 0.8;
+            transition: opacity 0.2s ease;
+            margin-top: 1rem; /* Space above the button */
+            font-size: inherit; /* Make button font size same as surrounding text */
+        }
+        .table-of-contents .toc-expand-button:hover {
+            opacity: 1;
+        }
+
+        /* Styling for the main expand button chevron based on state */
+        .toc-expand-button i {
+            transition: transform 0.2s ease;
+            font-size: 1em; /* Ensure icon size is consistent */
+        }
+        .toc-expand-button.expanded i {
+            transform: rotate(180deg);
+        }
+
+        /* Styling for the subsection toggle chevrons based on state */
+        .toc-toggle i { /* Ensure this targets the <i> inside the span */
+            transition: transform 0.2s ease;
+            color: var(--primary); /* Ensure consistent color */
+            font-size: 1em; /* Make same size as main expand button icon */
+            opacity: 0.8;
+        }
+        .toc-toggle:hover i {
+            opacity: 1;
+        }
+        .toc-toggle.expanded i { /* This class is on the span, target i */
+            transform: rotate(180deg);
+        }
+
+        .author-section {
+            margin: 4rem 0;
+            padding: 2rem;
+            background: var(--secondary-bg);
+            border-radius: 1rem;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .author-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .author-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .author-info h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .author-info p {
+            color: var(--text);
+            opacity: 0.8;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .author-social {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .author-social a {
+            color: var(--text);
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+
+        .author-social a:hover {
+            color: var(--primary);
+            opacity: 1;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 2rem;
+            position: relative;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .footer p {
+            color: var(--text);
+            opacity: 0.8;
+            font-size: 0.875rem;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            font-size: 1.25rem;
+            color: var(--text);
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            opacity: 1;
+        }
+
+        .footer-theme-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            margin-top: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .footer-theme-toggle:hover {
+            background: var(--secondary-bg);
+            transform: translateY(-1px);
+        }
+
+        .theme-text {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .language-switcher {
+            display: flex;
+            gap: 0.25rem;
+            margin-right: 0.75rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 0.25rem;
+            border-radius: 2rem;
+        }
+
+        .lang-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.75rem;
+            border-radius: 1.5rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            opacity: 0.7;
+        }
+
+        .lang-link:hover {
+            opacity: 1;
+            transform: translateY(-1px);
+        }
+
+        .lang-link.active {
+            background: var(--primary);
+            color: white;
+            opacity: 1;
+        }
+
+        .lang-link .flag {
+            width: 1rem;
+            height: 0.75rem;
+            border-radius: 2px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .get-in-touch {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--primary);
+            color: white !important;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            text-decoration: none;
+            opacity: 1 !important;
+            transition: all 0.3s ease;
+        }
+
+        .get-in-touch:hover {
+            background: var(--highlight);
+            transform: translateY(-2px);
+        }
+
+        .get-in-touch .icon {
+            display: none;
+        }
+
+        .get-in-touch .text {
+            display: inline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .nav-links {
+                padding: 0.75rem 1rem;
+            }
+
+            .article-title {
+                font-size: 2rem;
+            }
+
+            .article-content {
+                font-size: 1rem;
+            }
+
+            .author-section {
+                flex-direction: column;
+                text-align: center;
+                padding: 1.5rem;
+            }
+
+            .author-social {
+                justify-content: center;
+            }
+
+            .footer-theme-toggle {
+                padding: 0.375rem 0.75rem;
+                font-size: 0.75rem;
+            }
+
+            .theme-text {
+                font-size: 0.75rem;
+            }
+
+            .language-switcher {
+                margin-right: 0.75rem;
+                padding: 0.25rem;
+            }
+
+            .lang-link {
+                padding: 0.375rem 0.625rem;
+            }
+
+            .get-in-touch {
+                padding: 0.5rem;
+                width: 2.5rem;
+                height: 2.5rem;
+                justify-content: center;
+                border-radius: 0.5rem;
+            }
+
+            .get-in-touch .icon {
+                display: block;
+                font-size: 1.25rem;
+            }
+
+            .get-in-touch .text {
+                display: none;
+            }
+
+            .nav-right {
+                gap: 0.75rem;
+            }
+        }
+
+        /* Adjust for fixed header when navigating to anchors */
+        [id] {
+            scroll-margin-top: 5rem;
+        }
+    </style>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-126284-9"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-126284-9');
+    </script>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-links">
+            <a href="https://www.martinaberastegue.com/" class="brand">Martin Aberastegue</a>
+            <div class="nav-right">
+                <a href="/notes/" class="nav-link"><i class="fas fa-file-alt"></i> Notes</a>
+                <div class="language-switcher">
+                    <a href="https://www.martinaberastegue.com/es/" class="lang-link" title="Español">
+                        <svg class="flag" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480">
+                            <path fill="#c60b1e" d="M0 0h640v480H0z"/>
+                            <path fill="#ffc400" d="M0 120h640v240H0z"/>
+                        </svg>
+                        ES
+                    </a>
+                    <a href="https://www.martinaberastegue.com/" class="lang-link active" title="English">
+                        <svg class="flag" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480">
+                            <path fill="#012169" d="M0 0h640v480H0z"/>
+                            <path fill="#FFF" d="m75 0 244 181L562 0h78v62L400 241l240 178v61h-80L320 301 81 480H0v-60l239-178L0 64V0h75z"/>
+                            <path fill="#C8102E" d="m424 281 216 159v40L369 281h55zm-184 20 6 35L54 480H0l240-179zM640 0v3L391 191l2-44L590 0h50zM0 0l239 176h-60L0 42V0z"/>
+                            <path fill="#FFF" d="M241 0v480h160V0H241zM0 160v160h640V160H0z"/>
+                            <path fill="#C8102E" d="M0 193v96h640v-96H0zM273 0v480h96V0h-96z"/>
+                        </svg>
+                        EN
+                    </a>
+                </div>
+                <a href="https://www.linkedin.com/in/aberastegue/" class="get-in-touch" rel="noreferrer noopener" title="Get in Touch">
+                    <i class="fas fa-envelope icon"></i>
+                    <span class="text">Get in Touch</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container main-content">
+        <article>
+            <header class="article-header">
+                <h1 class="article-title">How I built a stealth phishing detection system</h1>
+                <div class="article-meta">
+                    <time datetime="2025-01-17">Sep 1, 2025</time>
+                    <span> • </span>
+                    <span>15 min read</span>
+                </div>
+                <div class="article-image">
+                    <img src="/images/notes/building-stealth-phishing-detection-system.png" alt="How I built a stealth phishing detection system" loading="lazy">
+                </div>
+            </header>
+
+            <div class="article-content">
+                <p>The idea started simple, I wanted to know if anyone was cloning our website or critical parts of it. As a security-conscious person, I wanted to know when attackers tried to impersonate our brand online.</p>
+
+                <p>Imagine this scenario: You wake up one morning to discover that someone has created a fake version of your login or ecommerce checkout page. They've copied your design, your logo, even your domain name with a slight typo. Your customers are being tricked into entering their credentials or buying something on this malicious site. By the time you find out, it's already too late.</p>
+
+                <div style="display: flex; flex-direction: column; align-items: center; margin: 32px 0;">
+                    <img src="/images/notes/petsdeli-phishing-attack.png" alt="Example of a phishing attack targeting PetsDeli" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+                    <div style="margin-top: 10px; font-size: 0.98em; color: #555; text-align: center;">
+                        <em>
+                            This VirusTotal screenshot shows last year's impersonation attack against our brand using <strong>.shop</strong> domains.<br>The same campaign targeted several other brands in Germany.
+                        </em>
+                    </div>
+                </div>
+
+                <p>This happened to several companies I know. The real damage is often to your reputation—people might think the brand was involved or responsible, even though the attack came from scam ads or fake profiles on social networks. I wanted to build something that could catch these attacks the moment they happen, not days or weeks later, and definitely not only after the company gets several complaints about purchases on those fake sites.</p>
+
+                <div class="note-text">
+                    <strong>Disclaimer:</strong> I'm not an infosec expert. I'm a marketing technology (MarTech) guy with some tech and infosec background, but that's not what I do for a living, at least not yet. My approach here might be biased, wrong, and/or not perfect, but I tried to explain my way of thinking and building this system in this article. Any feedback is more than appreciated!
+                </div>
+
+                <div class="table-of-contents">
+                    <h2>In this article</h2>
+                    <ul>
+                        <li><a href="#problem-existing-solutions">The problem with existing solutions</a></li>
+                        <li><a href="#certificate-monitoring">Combining certificate monitoring with real-time detection</a></li>
+                        <li><a href="#building-process">The building process: From idea to implementation</a></li>
+                        <li class="toc-hidden">
+                            <div class="toc-section">
+                                <a href="#accessible-detection-system">Building an accessible detection system</a>
+                                <span class="toc-toggle" aria-label="Toggle subsections">
+                                    <i class="fas fa-chevron-down"></i>
+                                </span>
+                            </div>
+                            <ul class="toc-subsection">
+                                <li><a href="#stealth-beacon-concept">The stealth beacon concept</a></li>
+                                <li><a href="#real-businesses">Making it work for real businesses</a></li>
+                                <li><a href="#technical-stack">The technical stack</a></li>
+                            </ul>
+                        </li>
+                        <li class="toc-hidden">
+                            <div class="toc-section">
+                                <a href="#technical-architecture">Technical architecture decisions</a>
+                                <span class="toc-toggle" aria-label="Toggle subsections">
+                                    <i class="fas fa-chevron-down"></i>
+                                </span>
+                            </div>
+                            <ul class="toc-subsection">
+                                <li><a href="#why-cloudflare-workers">Why Cloudflare Workers?</a></li>
+                                <li><a href="#performance-challenge">The performance challenge</a></li>
+                                <li><a href="#database-choice">Database choice: D1 over alternatives</a></li>
+                                <li><a href="#smart-placement">Cloudflare Smart Placement: a hidden performance win</a></li>
+                                <li><a href="#multi-tenant-challenge">The multi-tenant challenge</a></li>
+                                <li><a href="#multi-tenant-architecture">Multi-tenant architecture design</a></li>
+                                <li><a href="#performance-optimization">Performance optimization strategies</a></li>
+                                <li><a href="#caching-challenge">The caching challenge</a></li>
+                                <li><a href="#security-paradox">The security paradox</a></li>
+                            </ul>
+                        </li>
+                        <li class="toc-hidden">
+                            <div class="toc-section">
+                                <a href="#real-businesses-section">Making it work for real businesses</a>
+                                <span class="toc-toggle" aria-label="Toggle subsections">
+                                    <i class="fas fa-chevron-down"></i>
+                                </span>
+                            </div>
+                            <ul class="toc-subsection">
+                                <li><a href="#onboarding-challenge">The onboarding challenge</a></li>
+                                <li><a href="#team-management">Team management for growing companies</a></li>
+                                <li><a href="#cost-control">Cost control and predictable pricing</a></li>
+                                <li><a href="#integration-workflows">Integration with existing workflows</a></li>
+                                <li><a href="#dashboard-challenge">The dashboard challenge</a></li>
+                                <li><a href="#real-world-testing">Real-world testing and validation</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <button class="toc-expand-button" aria-label="Expand table of contents">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+
+                <h2 id="problem-existing-solutions">The problem with existing solutions</h2>
+
+                <p>Most phishing detection tools are built for enterprise customers with big budgets. Small and medium businesses often can't afford the sophisticated monitoring systems that large corporations use to protect their digital assets. Yet SMBs face the same threats: brand impersonation, customer data theft, and reputation damage.</p>
+
+                <p>The existing solutions I found were either:</p>
+                <ul>
+                    <li><strong>Too expensive</strong>: Enterprise-grade tools costing thousands per month</li>
+                    <li><strong>Too complex</strong>: Requiring dedicated or specialized security teams to manage</li>
+                    <li><strong>Too slow</strong>: On the free tier, alerting you after the damage is already done</li>
+                    <li><strong>Too noisy</strong>: Generating false positives that waste time, or too many alerts that are not actionable</li>
+                </ul>
+
+                <p>I needed something that could detect phishing attempts in real-time, was affordable for smaller businesses, and could be set up in minutes without requiring a security expert.</p>
+
+                <h2 id="certificate-monitoring">Combining certificate monitoring with real-time detection</h2>
+
+                <p>During last year's impersonation attack, I relied heavily on <strong>CertStream</strong> to monitor newly issued SSL certificates containing our brand in the domain name. It was incredibly useful for catching suspicious domains as soon as they appeared. Unfortunately, CertStream is now defunct, so I needed a replacement. That's why I built <img src="https://torito.io/favicon.ico" alt="Torito CertPatrol" style="width: 1em; height: 1em; vertical-align: middle; margin-right: 0.2em; border-radius: 3px;"><a href="https://torito.io/certpatrol/">CertPatrol</a>, a lightweight terminal tool that monitors Certificate Transparency logs for new certificates that might be used for phishing. You run it with parameters to filter domains, then process the output to generate alerts. While this helps identify potential threats, it's only part of the solution.</p>
+
+                <p><span class="highlight-text">Certificate monitoring is great for spotting new domains that look like yours, but it can't tell you if your content is being loaded elsewhere, like on a totally unrelated domain, or even injected into a hacked legitimate website.</span> In these cases, CT log monitoring falls short. What I really needed was a way to know when and where our cloned content is actually being loaded, no matter what domain it's on.</p>
+
+                <h2 id="building-process">The building process: From idea to implementation</h2>
+
+                <p>With the problem defined, I started testing different approaches. The challenge: detect content cloning in real-time, without being easily bypassed, and without hurting web performance.</p>
+
+                <h3>Initial experiments and prototypes</h3>
+
+                <p>I tried a bunch of "clever" ideas—JS fingerprinting, WebSocket callbacks, browser API hacks. Every time I added complexity, it got more brittle: browser extensions, privacy tools, CSP rules, all broke things. The more advanced, the less reliable. In the end, the old-school web beacon (1x1 transparent GIF) is still the most robust and stealthy option for this.</p>
+
+                <p>Invisible tracking pixels are dead simple, and that's the point. They're almost impossible to block without breaking the page, work everywhere, no JS, no dependencies, no browser quirks. They're just part of how the web works, which is why they're so effective here.</p>
+
+                <div class="mermaid">
+                    graph TD
+                        A[User visits cloned site] --> B[Site loads tracking pixel]
+                        B --> C[Pixel request sent to StealthBeacon]
+                        C --> D[StealthBeacon checks request origin]
+                        D --> E[Trigger alert & log event]
+                </div>
+
+                <p>Just logging the referrer is table stakes. I wanted more context, so I started pulling in extra request metadata, user agent, IP, headers, etc. But to be clear: a pixel can't directly detect content injection on legit sites. What it can do is show when your pixel is loaded from an unexpected domain or page, which sometimes happens if your content is injected elsewhere. In practice, we only see the data from visitors who load the pixel (usually potential phishing victims), not the attackers or the injection itself. The pixel is just a tripwire for unauthorized use, not a magic bullet for every attack vector.</p>
+
+                <h3>From prototype to production</h3>
+
+                <p>I wanted to see if I could build the whole system from scratch, so I went with <img src="https://workers.cloudflare.com/favicon.ico" alt="Cloudflare Workers" style="width: 1em; height: 1em; vertical-align: middle; margin-right: 0.2em; border-radius: 3px;"><a href="https://www.cloudflare.com/developer-platform/products/workers/" target="_blank" rel="noopener noreferrer">Cloudflare Workers</a>. Edge compute was perfect: global distribution, low latency, auto-scaling, no infra headaches.</p>
+
+                <p>I spent about a week testing architectures, performance, and optimizing detection logic. The key was balancing accuracy (minimizing false positives) and speed (making sure the pixel loads instantly). In the process I learned a lot about how Cloudflare Workers actually function, since I started with only a pretty basic understanding. Getting hands-on forced me to really dig into the details and quirks of the platform. And reach out to some people I know they have been crushing it with Workers for years, like <img src="https://x.com/favicon.ico" alt="Fermin on X" style="width: 1em; height: 1em; vertical-align: middle; margin-right: 0.2em; border-radius: 3px;"><a href="https://x.com/ferminrp" target="_blank" rel="noopener noreferrer">Fermin</a>.</p>
+
+                <h3>Building the complete system</h3>
+
+                <p>Once the core detection worked, I realized I needed a full system: user management, company isolation, real-time alerts, analytics, and a dashboard for business users.</p>
+
+                <p>Each piece was built iteratively, tested in the real world. Auth went from API keys to full RBAC. The dashboard grew from basic logs to a real threat management interface.</p>
+
+                <p>The result: <strong>StealthBeacon</strong>, a complete system with built-in alerts and everything you need. By using webhooks for the alerts, you can integrate it with your existing tools and workflows such as Slack, Jira, email, N8N workflows, etc. You can still combine it with <img src="https://torito.io/favicon.ico" alt="Torito CertPatrol" style="width: 1em; height: 1em; vertical-align: middle; margin-right: 0.2em; border-radius: 3px;"><a href="https://torito.io/certpatrol/">CertPatrol</a> for broader monitoring.</p>
+
+                <p>Here's how CertPatrol and StealthBeacon work together:</p>
+
+                <div class="mermaid">
+                    graph TD
+                        A[Certificate Monitoring<br/>CertPatrol Terminal Tool] --> B[Detects new domains<br/>similar to yours]
+                        C[Stealth Beacon Detection<br/>Complete System] --> D[Detects when cloned<br/>content is loaded]
+                        B --> E[Early Warning System]
+                        D --> E
+                        E --> F[Immediate Response<br/>Take down requests]
+                        E --> G[Customer Protection<br/>Alert your users]
+                </div>
+
+                <p>This dual approach gives you early detection: you know about potential threats before they go live, and you get instant alerts when someone actually tries to use them. If the attacker is testing the site before launching, you can take it down before it gets reach.</p>
+
+                <h2 id="accessible-detection-system">Building an accessible detection system</h2>
+
+                <p>The challenge, was to create something powerful enough to detect sophisticated attacks, yet simple enough for SMBs to use and afford. I wanted a system that alerts you immediately when a cloned site loads your content, like an early warning system.</p>
+
+                <h3 id="stealth-beacon-concept">The stealth beacon concept</h3>
+
+                <p>The core idea is simple, embed invisible tracking pixels in your legit site that only load from authorized domains. If someone clones your site and loads it from an unauthorized domain, the pixel triggers an alert.</p>
+
+                <div class="mermaid">
+                    graph LR
+                        A[Your Legitimate Site] --> B[Embed Stealth Beacon]
+                        B --> C[Pixel loads normally]
+                        D[Cloned Site] --> E[Same Pixel Request]
+                        E --> F[Unauthorized Domain Detected]
+                        F --> G[Instant Alert Triggered]
+                        G --> H[Webhook Notification]
+                        G --> I[Dashboard Update]
+                </div>
+
+                <p>The pixel always returns a valid 1x1 GIF, so the cloned site keeps working. The attacker never knows they've been detected.</p>
+
+                <h3 id="real-businesses">Making it work for real businesses</h3>
+
+                <p>The technical implementation needed to solve several real-world problems:</p>
+
+                <p><strong>Multi-tenant architecture</strong>: Companies with multiple domains and users with different permission levels need to manage them. I built a role-based access control system that lets you invite team members, assign permissions, and manage everything from a simple dashboard.</p>
+
+                <p><strong>Quota management</strong>: To keep costs predictable, I implemented a quota system with three tiers, <i>Free, Plus, and Enterprise</i>.</p>
+
+                <p><strong>Real-time performance</strong>: The detection system is built for speed. Internal processing for the critical path logic is always under 10ms, with quota checks adding less than 5ms. Your website performance stays unaffected.</p>
+
+                <p><strong>Privacy-first design</strong>: All processing happens server-side. No client-side JavaScript, no tracking cookies, and absolutely <u>no data collection for authorized requests</u>. We only log data when an unauthorized (incident) request is detected, never during normal, legitimate use.</p>
+
+                <h3 id="technical-stack">The technical stack</h3>
+
+                <p>As I decided to build it entirely on <img src="https://workers.cloudflare.com/favicon.ico" alt="Cloudflare Workers" style="width: 1em; height: 1em; vertical-align: middle; margin-right: 0.2em; border-radius: 3px;"><a href="https://www.cloudflare.com/developer-platform/products/workers/" target="_blank" rel="noopener noreferrer">Cloudflare Workers</a>, starting on a free tier plan but designed to scale when necessary. This approach improved speed and performance significantly while keeping costs minimal.</p>
+
+                <p>My system uses invisible tracking pixels that load from your legitimate site but trigger alerts when accessed from unauthorized domains. Cloudflare Workers provide global edge computing with minimal latency, ensuring the detection system responds instantly worldwide. For the database, I used <img src="https://www.cloudflare.com/favicon.ico" alt="Cloudflare D1" style="width: 1em; height: 1em; vertical-align: middle; margin-right: 0.2em; border-radius: 3px;"><a href="https://www.cloudflare.com/developer-platform/products/d1/" target="_blank" rel="noopener noreferrer">Cloudflare D1</a>, which integrates seamlessly with Workers and provides SQLite-compatible storage with automatic scaling.</p>
+
+                <p>Here's the architecture:</p>
+
+                <div class="mermaid">
+                    graph TB
+                        subgraph "Request Flow"
+                            A[Your Website] --> B[Stealth Beacon Pixel]
+                            B --> C[Cloudflare Worker]
+                            C --> D[Token Validation]
+                            D --> E[Domain Check]
+                            E --> F{Authorized Domain?}
+                        end
+                        
+                        subgraph "Response Paths"
+                            F -->|Yes| G[Return 1x1 GIF]
+                            F -->|No| H[Create Incident]
+                            H --> I[Extract Metadata]
+                            I --> J[Send Webhook Alert]
+                            I --> K[Update Dashboard]
+                        end
+                        
+                        subgraph "Data Storage"
+                            L[D1 Database]
+                            L --> M[User Sessions]
+                            L --> N[Domains & Beacons]
+                            L --> O[Incident Logs]
+                            L --> P[Analytics]
+                        end
+                        
+                        C --> L
+                        H --> L
+                        I --> L
+                </div>
+
+                <p>This the architecture I believe if capable of delivering enterprise-grade security with SMB-friendly simplicity and pricing.</p>
+
+                <h2 id="technical-architecture">Technical architecture decisions</h2>
+
+                <p>Every technical decision was driven by the need to balance performance, cost, and accessibility. The challenge was building something that could handle enterprise-scale threats while remaining accessible to smaller businesses. Here's how I approached each architectural choice.</p>
+
+                <h3 id="why-cloudflare-workers">Why Cloudflare Workers?</h3>
+
+                <p>The decision to build entirely on Cloudflare Workers wasn't just about cost—it was about performance, global reach, and honestly, a much better developer experience. Traditional server-based solutions would need multiple servers across regions to get the same coverage. With Workers, every request is processed at the edge, closest to the user, and I didn't have to mess with hard config, complex setup, or slow deploys. I don't rule out testing or moving to <strong>AWS</strong> or <strong>Azure</strong> in the future, but for me, Cloudflare made it dead simple to launch and iterate fast. For an MVP, it's more than enough.</p>
+
+                <p>From a cost perspective, the free tier covers 100,000 requests per day, which is more than enough for testing and small deployments. The pay-per-request model scales naturally with usage, and there are no infrastructure costs to worry about, no servers to provision, maintain, or monitor, etc.</p>
+
+                <h3 id="performance-challenge">The performance challenge</h3>
+
+                <p>When you're embedding tracking pixels on customer websites, performance becomes critical. Every millisecond of delay could impact the user experience. Traditional server-based architectures introduce latency through network hops, load balancers, and database connections.</p>
+
+                <p>Cloudflare Workers solve this by running code at the edge, a very efficient way to process requests. This eliminates the network latency that would otherwise add 50-200ms to each request. The result is pixel requests that complete in under 10ms, making them virtually invisible to end users.</p>
+
+                <h3 id="database-choice">Database choice: D1 over alternatives</h3>
+
+                <p>I spent considerable time evaluating database options before settling on D1. The database choice was particularly critical because it needed to handle the edge computing model while maintaining the performance requirements.</p>
+
+                <p>Traditional databases like PostgreSQL or MySQL would require separate hosting infrastructure. This meant additional servers to provision, connection management to handle, and complex scaling strategies to implement. Each database connection would add latency to our pixel requests, defeating the purpose of the edge computing approach.</p>
+
+                <p>MongoDB felt like overkill for the structured data I was working with. It would have introduced unnecessary complexity without providing significant benefits.</p>
+
+                <p>SQLite was appealing for its simplicity and performance, and I have been using it for years in other projects, but it lacked built-in scaling or replication capabilities. In a multi-tenant system handling potentially millions of requests, I needed something that could scale automatically without manual intervention.</p>
+
+                <p>D1 solved all these problems elegantly. It offers SQLite compatibility with familiar SQL syntax, so there's no learning curve for me. The automatic scaling eliminates the need for manual sharding or replication. It works out of the box with zero configuration, includes built-in backup for automatic data protection, and integrates seamlessly with the same edge network as Workers.</p>
+
+                <h3 id="smart-placement">Cloudflare Smart Placement: a hidden performance win</h3>
+                <p>After deploying the first stable version, I discovered <img src="https://www.cloudflare.com/favicon.ico" alt="Cloudflare Smart Placement" style="width: 1em; height: 1em; vertical-align: middle; margin-right: 0.2em; border-radius: 3px;"><a href="https://developers.cloudflare.com/workers/configuration/smart-placement" target="_blank" rel="noopener noreferrer">Cloudflare Smart Placement</a>, a feature that automatically runs Workers closer to your backend infrastructure instead of just the end user. This was a massive improvement in response time for anything that needed to talk to the database. Instead of always running at the edge nearest the user, Smart Placement figures out the optimal location to minimize latency, especially for backend-heavy workloads.</p>
+
+                <div style="text-align:center; margin: 2em 0;">
+                    <img src="https://developers.cloudflare.com/_astro/workers-smart-placement-enabled.D6RN33at_20sSCa.webp" alt="Cloudflare Smart Placement Diagram" style="max-width: 100%; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.08);">
+                    <div style="color: #888; font-size: 0.95em; margin-top: 0.5em;">
+                        Cloudflare Smart Placement routes Workers to the optimal location for backend access.
+                    </div>
+                </div>
+                <p>For my use case, this meant pixel requests that needed to hit the database could be processed even faster, without the extra round-trip latency to the database region. It's one of those features you don't realize you need until you see the difference in real-world response times.</p>
+
+                <h3 id="multi-tenant-challenge">The multi-tenant challenge</h3>
+
+                <p>Building a system that could serve multiple companies simultaneously while keeping their data completely isolated was one of the most complex challenges. Each company needed their own domains, beacons, users, and incident data, all while sharing the same underlying infrastructure.</p>
+
+                <h3 id="multi-tenant-architecture">Multi-tenant architecture design</h3>
+
+                <p>The system needed to support multiple companies with different user roles and permissions. I designed a clean separation that maintains data isolation while enabling flexible team management.</p>
+
+                <div class="mermaid">
+                    graph TB
+                        subgraph "User Management"
+                            A[Users] --> B[User Sessions]
+                            A --> C[Company Memberships]
+                        end
+                        
+                        subgraph "Company Resources"
+                            D[Companies] --> E[Domains]
+                            D --> F[Beacons]
+                            D --> G[Team Members]
+                        end
+                        
+                        subgraph "Security"
+                            H[Role-Based Access] --> I[Admin Permissions]
+                            H --> J[User Permissions]
+                            H --> K[Viewer Permissions]
+                        end
+                        
+                        C --> D
+                        G --> H
+                </div>
+
+                <p>This design ensures complete company isolation, each company's data is completely separated from others. The flexible user roles (admin, user, viewer) allow companies to control access based on their needs. Team management features let you invite and manage team members easily, and the permission system is designed to scale as companies grow.</p>
+
+                <p>The key for me was also separating user identity from company membership. A single user can belong to multiple companies with different roles in each. This allows for scenarios like security consultants who manage multiple client accounts, or employees who work for different organizations. The role-based access control system ensures that users can only access data for companies they belong to, with permissions appropriate to their role.</p>
+
+                <h3 id="performance-optimization">Performance optimization strategies</h3>
+
+                <p>Speed was critical, the pixel requests couldn't impact website performance. I implemented several layers of optimization to ensure the system remained invisible to end users.</p>
+
+                <p>The caching strategy includes user context caching with a 5-minute TTL for authentication, domain validation caching to avoid repeated database lookups, and sub-millisecond quota checking. Database optimization involved strategic indexing on frequently queried fields, connection pooling to reuse database connections, and query optimization to minimize database round trips.</p>
+
+                <p>The edge computing benefits are particularly powerful here. Global distribution means requests are handled closest to the user, eliminating latency. There are no cold starts since Workers are always ready, and parallel processing allows multiple requests to be handled simultaneously without blocking each other.</p>
+
+                <h3 id="caching-challenge">The caching challenge</h3>
+
+                <p>One of the biggest performance bottlenecks in any web application is database access. Every pixel request needed to validate the beacon token, check if the requesting domain is authorized, and verify quota limits. If each of these required a database query, we'd be looking at 50-100ms response times instead of sub-10ms. I solved this with a multi-layered caching strategy.</p>
+
+                <p>The challenge was balancing cache freshness with performance. Too short TTLs would defeat the purpose, while too long TTLs could lead to stale data. I settled on different TTLs based on how frequently each type of data changes, authentication data changes rarely, so it gets a longer cache, while quota data changes frequently, so it uses a more aggressive caching strategy.</p>
+
+                <h3 id="security-paradox">The security paradox</h3>
+
+                <p>When you build a security tool, you paint a target on your own back. If someone compromises your detection system, they can silence alerts or steal sensitive data. So, I had to treat my own app as a high-value target from day one.</p>
+
+                <p>Everything is locked down: server-side sessions only (no client tokens), HTTP-only cookies, bcrypt for passwords, aggressive session cleanup, and strict rate limiting. All sensitive data is encrypted at rest, security headers are set everywhere, and input validation is non-negotiable. No dynamic SQL, ever—only parameterized queries. Minimal data collection, automatic retention cleanup, GDPR export/deletion, and zero third-party tracking. Basically, I tried to make it harder to break into this than most of the apps it protects.</p>
+
+                <h2 id="real-businesses-section">Making it work for real businesses</h2>
+
+                <p>The technical architecture was only half the battle. The real challenge was making this system practical for real businesses to use. I needed to solve problems that go beyond just detecting threats, problems like user onboarding, team management, cost control, and integration with existing workflows.</p>
+
+                <h3 id="onboarding-challenge">The onboarding challenge</h3>
+
+                <p>Most security tools require weeks of setup, training, and configuration. I wanted something that could be deployed in minutes, not weeks or months. The key was making the initial setup as simple as possible while still providing the power that security teams need.</p>
+
+                <p>The onboarding process starts with a simple signup form. Users create an account, verify their email, and immediately get access to a dashboard. The first step is adding your domain, then you create your first beacon, which generates a unique tracking pixel that you embed on your site.</p>
+
+                <p>The beauty of this approach is that it works immediately. As soon as you add the pixel to your site, the system starts monitoring. There's no complex configuration, no training required, no fancy libraries, no integration headaches. You can literally go from zero to monitoring in under 5 minutes.</p>
+
+                <h3 id="team-management">Team management for growing companies</h3>
+
+                <p>Small companies start with one person managing security, but as they grow, they need to bring in more team members. The system needed to support this natural evolution without requiring a complete overhaul.</p>
+
+                <p>I built a flexible team management system that starts simple but scales with your needs. Initially, you might be the only user with full admin access. As your company grows, you can invite team members with different permission levels, admins who can manage everything, users who can create and manage beacons, and viewers who can only see reports and alerts.</p>
+
+                <p>The invitation system is designed to be frictionless. You simply enter an email address and select a role. The invited user gets an email with a secure link to join. No complex setup, no IT department involvement, no lengthy approval processes. The whole thing is built for SMBs first—simple, fast, and practical for real teams, not weighed down by enterprise red tape or giant org charts.</p>
+
+                <h3 id="cost-control">Cost control and predictable pricing</h3>
+
+                <p>I wanted to eliminate uncertainty. The pricing model is designed around three simple tiers. The free plan covers a small number of hits, perfect for small websites or testing. The Plus plan covers a much higher amount, suitable for most growing businesses. The Enterprise plan is unlimited, ideal for large organizations that want to have an extra layer of protection on top of their more robust and complex solutions.</p>
+
+                <p>The key insight was that most companies don't need unlimited everything. By setting reasonable limits and making them transparent, companies can predict their costs and scale as needed. The quota system ensures that you never get surprise bills. If you hit your limit, the system continues to work (always returning a valid pixel) but stops processing new requests, and incidents until the next month.</p>
+
+                <h3 id="integration-workflows">Integration with existing workflows</h3>
+
+                <p>Security teams don't work in isolation. They need to integrate with existing tools and workflows, like Slack for notifications, Jira for incident tracking, email for alerts, webhooks for custom integrations. The system needed to fit into these existing processes, not replace them.</p>
+
+                <p>I built comprehensive integration capabilities from day one. Webhook notifications can be sent to any endpoint, with payloads that include all the threat information. And I plan to enable email alerts that can be configured with different templates for different threat levels.</p>
+
+                <h3 id="dashboard-challenge">The dashboard challenge</h3>
+
+                <img src="/images/notes/stealthbeacon-dashboard.png" alt="StealthBeacon Dashboard" loading="lazy" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+
+                <p>Security dashboards are notoriously complex and overwhelming. I wanted to create something that was both powerful and approachable, something that a non-technical business owner could understand while still providing the depth that security professionals need.</p>
+
+                <p>The dashboard is organized around the key questions that security teams ask: "What threats are active right now?", "How much are we being targeted?", "What's our current usage?", "Who on our team needs to know about this?"</p>
+
+                <p>The main overview shows active threats with threat levels (low, medium, high, critical) and recent activity. The threats section provides detailed information about each attacking domain, including incident history, geographic distribution (based on where potential victims are visiting the cloned phishing sites from), and recommended actions. The key was making the information actionable. Instead of just showing raw data, the dashboard provides context and recommendations.</p>
+
+                <h3 id="real-world-testing">Real-world testing and validation</h3>
+
+                <p>Before launching, I need to validate that the system would work in real-world conditions. I plan to test it with a couple of companies of different sizes, from small startups to established businesses in the finantial services industry. The feedback will be invaluable.</p>
+
+                <p>I'll incorporate this feedback into the system. Real-world usage always reveals what actually matters, and it's also perfect for trimming out anything that's unused or irrelevant. The idea is to keep things practical and focused.</p>
+
+                <p>Once the system has been thoroughly tested and proven effective in real-world scenarios, I'll launch it publicly. For now, it's still in closed beta. If you're interested in early access or want to try it out for your company, just reach out to me directly.</p>
+            </div>
+
+            <section class="author-section">
+                <div class="author-image">
+                    <img src="https://www.martinaberastegue.com/images/martin-aberastegue.jpg" alt="Martin Aberastegue" loading="lazy">
+                </div>
+                <div class="author-info">
+                    <h3>Martin Aberastegue</h3>
+                    <p>Digital Marketing & Technology Leader with 23+ years of experience driving growth through SEO, MarTech, and Data-Driven Strategy. Expert in scaling businesses through innovative digital solutions.</p>
+                    <p>Based in Germany, working globally to transform businesses through technology and strategic digital initiatives.</p>
+                    <div class="author-social">
+                        <a href="https://www.linkedin.com/in/aberastegue/" target="_blank" rel="noreferrer noopener" title="LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="https://x.com/Xyborg" target="_blank" rel="noreferrer noopener" title="Twitter">
+                            <i class="fab fa-x-twitter"></i>
+                        </a>
+                        <a href="https://github.com/Xyborg" target="_blank" rel="noreferrer noopener" title="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </article>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <p>© 2002 - 2025 Martin Aberastegue</p>
+                <button class="theme-toggle footer-theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                    <span class="theme-text">Toggle Theme</span>
+                </button>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+            updateThemeIcon();
+        }
+
+        function updateThemeIcon() {
+            const isDark = document.documentElement.classList.contains('dark');
+            const themeIcons = document.querySelectorAll('.theme-toggle i');
+            themeIcons.forEach(icon => {
+                icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+            });
+        }
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        if (savedTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+        }
+        updateThemeIcon();
+
+        // Initialize Mermaid diagrams
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Table of Contents functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tocContainer = document.querySelector('.table-of-contents');
+            const tocExpandButton = document.querySelector('.toc-expand-button');
+            const tocHiddenItems = document.querySelectorAll('.toc-hidden');
+            const subsectionToggles = document.querySelectorAll('.toc-toggle');
+
+            if (!tocContainer || !tocExpandButton) {
+                console.error('TOC critical elements (container or expand button) not found!');
+                return;
+            }
+            if (tocHiddenItems.length === 0) {
+                console.warn('No .toc-hidden items found. TOC might not be collapsible as intended.');
+            }
+
+            // --- Initial Collapsed State Setup (Always runs) ---
+            tocContainer.classList.add('toc-collapsed'); // Main visual class for collapse
+            tocContainer.classList.remove('js-toc-expanded'); // Remove any explicit JS expansion class
+            tocExpandButton.classList.remove('expanded');    // Chevron points down
+            tocHiddenItems.forEach(item => {
+                item.style.display = 'none'; // JS force hide
+            });
+            
+            document.querySelectorAll('.toc-subsection').forEach(sub => {
+                sub.classList.remove('expanded'); // CSS will hide via .toc-subsection:not(.expanded)
+            });
+            subsectionToggles.forEach(toggle => {
+                toggle.classList.remove('expanded'); // Chevron points down
+            });
+
+            // --- Restore Main TOC state from localStorage ---
+            const tocStoredAsExpanded = localStorage.getItem('toc-expanded') === 'true';
+            if (tocStoredAsExpanded) {
+                tocContainer.classList.remove('toc-collapsed');
+                tocContainer.classList.add('js-toc-expanded'); // Mark as JS-expanded
+                tocExpandButton.classList.add('expanded');     // Chevron points up
+                tocHiddenItems.forEach(item => {
+                    item.style.display = 'block'; // JS force show (overrides .toc-hidden CSS)
+                });
+            }
+
+            // --- Main TOC Expand/Collapse Button ---
+            tocExpandButton.addEventListener('click', function() {
+                const isCurrentlyCollapsed = tocContainer.classList.contains('toc-collapsed');
+                if (isCurrentlyCollapsed) { // If collapsed, expand it
+                    tocContainer.classList.remove('toc-collapsed');
+                    tocContainer.classList.add('js-toc-expanded');
+                    this.classList.add('expanded'); // Update button icon state
+                    tocHiddenItems.forEach(item => { item.style.display = 'block'; });
+                    localStorage.setItem('toc-expanded', 'true');
+                } else { // If expanded, collapse it
+                    tocContainer.classList.add('toc-collapsed');
+                    tocContainer.classList.remove('js-toc-expanded');
+                    this.classList.remove('expanded'); // Update button icon state
+                    tocHiddenItems.forEach(item => { item.style.display = 'none'; });
+                    localStorage.setItem('toc-expanded', 'false');
+                }
+            });
+
+            // --- Subsection Toggles ---
+            subsectionToggles.forEach(toggle => {
+                const sectionLi = toggle.closest('li');
+                if (!sectionLi) {
+                    return;
+                }
+                const subsection = sectionLi.querySelector('.toc-subsection');
+                if (!subsection) {
+                    return;
+                }
+
+                const firstLinkInSubsection = subsection.querySelector('a');
+                const sectionId = firstLinkInSubsection ? firstLinkInSubsection.getAttribute('href') : null;
+                const storageKey = sectionId ? `toc-subsection-${sectionId}` : null;
+
+                // Restore subsection state from localStorage
+                if (storageKey && localStorage.getItem(storageKey) === 'true') {
+                    subsection.classList.add('expanded'); // CSS will display:block
+                    toggle.classList.add('expanded');     // Rotates chevron
+                } else {
+                    subsection.classList.remove('expanded');
+                    toggle.classList.remove('expanded');
+                }
+
+                toggle.addEventListener('click', function(event) {
+                    event.preventDefault(); // Good practice for clickable spans
+                    const isNowExpanded = subsection.classList.toggle('expanded');
+                    this.classList.toggle('expanded', isNowExpanded); // Sync icon with state
+                    if (storageKey) {
+                        localStorage.setItem(storageKey, isNowExpanded);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <!-- Schema.org data -->
+    <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "Article",
+        "headline": "How I built a stealth phishing detection system",
+        "description": "A detailed guide on building a stealth phishing detection system using web beacons and Cloudflare Workers, designed for small and medium businesses.",
+        "image": "https://www.martinaberastegue.com/images/martin-aberastegue.jpg",
+        "datePublished": "2025-01-17",
+        "dateModified": "2025-01-17",
+        "author": {
+            "@type": "Person",
+            "name": "Martin Aberastegue",
+            "url": "https://www.martinaberastegue.com"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Martin Aberastegue",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://www.martinaberastegue.com/images/martin-aberastegue.jpg"
+            }
+        },
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.martinaberastegue.com/notes/building-stealth-phishing-detection-system.html"
+        }
+    }
+    </script>
+</body>
+</html>
