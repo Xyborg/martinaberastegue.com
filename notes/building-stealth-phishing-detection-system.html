@@ -715,7 +715,7 @@
                     </div>
                 </div>
 
-                <p>This happened to several companies I know. The real damage is often to your reputation—people might think the brand was involved or responsible, even though the attack came from scam ads or fake profiles on social networks. I wanted to build something that could catch these attacks the moment they happen, not days or weeks later, and definitely not only after the company gets several complaints about purchases on those fake sites.</p>
+                <p>This happened to several companies I know. The real damage is often to your reputation, people might think the brand was involved or responsible, even though the attack came from scam ads or fake profiles on social networks. I wanted to build something that could catch these attacks the moment they happen, not days or weeks later, and definitely not only after the company gets several complaints about purchases on those fake sites.</p>
 
                 <div class="note-text">
                     <strong>Disclaimer:</strong> I'm not an infosec expert. I'm a marketing technology (MarTech) guy with some tech and infosec background, but that's not what I do for a living, at least not yet. My approach here might be biased, wrong, and/or not perfect, but I tried to explain my way of thinking and building this system in this article. Any feedback is more than appreciated!
@@ -929,7 +929,7 @@
 
                 <h3 id="why-cloudflare-workers">Why Cloudflare Workers?</h3>
 
-                <p>The decision to build entirely on Cloudflare Workers wasn't just about cost—it was about performance, global reach, and honestly, a much better developer experience. Traditional server-based solutions would need multiple servers across regions to get the same coverage. With Workers, every request is processed at the edge, closest to the user, and I didn't have to mess with hard config, complex setup, or slow deploys. I don't rule out testing or moving to <strong>AWS</strong> or <strong>Azure</strong> in the future, but for me, Cloudflare made it dead simple to launch and iterate fast. For an MVP, it's more than enough.</p>
+                <p>The decision to build entirely on Cloudflare Workers wasn't just about cost, it was about performance, global reach, and honestly, a much better developer experience. Traditional server-based solutions would need multiple servers across regions to get the same coverage. With Workers, every request is processed at the edge, closest to the user, and I didn't have to mess with hard config, complex setup, or slow deploys. I don't rule out testing or moving to <strong>AWS</strong> or <strong>Azure</strong> in the future, but for me, Cloudflare made it dead simple to launch and iterate fast. For an MVP, it's more than enough.</p>
 
                 <p>From a cost perspective, the free tier covers 100,000 requests per day, which is more than enough for testing and small deployments. The pay-per-request model scales naturally with usage, and there are no infrastructure costs to worry about, no servers to provision, maintain, or monitor, etc.</p>
 
