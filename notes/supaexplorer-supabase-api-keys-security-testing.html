@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="utf-8">
+    <title>SupaExplorer: Building a Supabase Security Testing & API Key Leak Detector Extension - Martin Aberastegue</title>
+    <meta name="description" content="How I built SupaExplorer, a Chrome extension for security testing Supabase databases and detecting API key leaks across 30+ services without leaving the browser." />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="SupaExplorer: Building a Supabase Security Testing & API Key Leak Detector Extension - Martin Aberastegue" />
+    <meta property="og:description" content="How I built SupaExplorer, a Chrome extension for security testing Supabase databases and detecting API key leaks across 30+ services without leaving the browser." />
+    <meta property="og:url" content="https://www.martinaberastegue.com/notes/supaexplorer-supabase-api-keys-security-testing.html" />
+    <meta property="og:site_name" content="Martin Aberastegue 🚀" />
+    <meta name="image" property="og:image" content="https://www.martinaberastegue.com/images/notes/supaexplorer-preview.png" />
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@Xyborg">
+    <meta name="twitter:title" content="SupaExplorer: Building a Supabase Security Testing & API Key Leak Detector Extension - Martin Aberastegue">
+    <meta name="twitter:description" content="How I built SupaExplorer, a Chrome extension for security testing Supabase databases and detecting API key leaks across 30+ services without leaving the browser.">
+    <meta name="twitter:image" content="https://www.martinaberastegue.com/images/notes/supaexplorer-preview.png">
+    <meta name="author" content="Martin Aberastegue">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="canonical" href="https://www.martinaberastegue.com/notes/supaexplorer-supabase-api-keys-security-testing.html" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Ctext%20x='0'%20y='14'%3E🚀%3C/text%3E%3C/svg%3E" type="image/svg+xml" />
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --primary: #6366F1;
+            --text: #1f2937;
+            --background: #ffffff;
+            --secondary-bg: #f8fafc;
+            --border: #e2e8f0;
+            --card-bg: #ffffff;
+            --highlight: #818cf8;
+        }
+
+        .dark {
+            --primary: #818cf8;
+            --text: #f8fafc;
+            --background: #0f172a;
+            --secondary-bg: #1e293b;
+            --border: #334155;
+            --card-bg: #1e293b;
+            --highlight: #6366F1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--background);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: nowrap;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-left: auto;
+        }
+
+        .brand {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .nav-link {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+            display: inline-flex; 
+            align-items: center;  
+            gap: 0.375rem;
+        }
+
+        .nav-link i {
+            color: var(--primary);
+        }
+
+        .nav-link:hover {
+            opacity: 1;
+        }
+
+        .main-content {
+            margin-top: 5rem;
+            padding: 2rem 0;
+        }
+
+        .article-header {
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .article-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text);
+            line-height: 1.2;
+        }
+
+        .article-meta {
+            color: var(--text);
+            opacity: 0.8;
+            font-size: 0.875rem;
+            margin-bottom: 2rem;
+        }
+
+        .article-image {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border-radius: 1rem;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .article-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .article-content {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: var(--text);
+        }
+
+        .article-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .article-content h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin: 2.5rem 0 1rem;
+            color: var(--text);
+        }
+
+        .article-content h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+            color: var(--text);
+        }
+
+        .article-content ul, 
+        .article-content ol {
+            margin: 1rem 0 1.5rem 1.5rem;
+        }
+
+        .article-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .article-content blockquote {
+            border-left: 4px solid var(--primary);
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            opacity: 0.9;
+        }
+
+        .article-content code {
+            background: var(--secondary-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-size: 0.875em;
+        }
+
+        .article-content pre {
+            background: var(--secondary-bg);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        .article-content pre code {
+            background: none;
+            padding: 0;
+        }
+
+        .mermaid {
+            text-align: center;
+            margin: 2em 0;
+            padding: 20px;
+            background: var(--secondary-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .highlight-text {
+            background: #fff9c4;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .note-text {
+            background: #f0f4f7d2;
+            padding: 16px;
+            border-radius: 6px;
+            margin-bottom: 24px;
+            font-size: 1em;
+        }
+
+        .table-of-contents {
+            background: var(--secondary-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .table-of-contents h2 {
+            font-size: 1.5rem;
+            margin: 0 0 1rem 0;
+            color: var(--text);
+        }
+
+        .table-of-contents ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .table-of-contents > ul > li {
+            margin-bottom: 0.6rem;
+        }
+
+        .table-of-contents ul ul {
+            margin: 0.4rem 0 0.4rem 1.5rem;
+        }
+
+        .table-of-contents ul ul li {
+            margin-bottom: 0.3rem;
+            font-size: 0.95em;
+        }
+
+        .table-of-contents a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .table-of-contents a:hover {
+            color: var(--highlight);
+            text-decoration: underline;
+        }
+
+        .table-of-contents .toc-hidden {
+            display: none !important;
+        }
+
+        .table-of-contents.toc-collapsed .toc-hidden {
+            display: none !important;
+        }
+
+        .table-of-contents.js-toc-expanded .toc-hidden {
+            display: block !important;
+        }
+
+        .table-of-contents.toc-collapsed > ul {
+            max-height: 7.8rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .table-of-contents.toc-collapsed > ul::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3rem;
+            background: linear-gradient(to bottom, transparent, var(--secondary-bg) 90%);
+            pointer-events: none;
+        }
+
+        .toc-subsection {
+            display: none;
+        }
+        .toc-subsection.expanded {
+            display: block;
+        }
+
+        .table-of-contents.toc-collapsed .toc-expand-button {
+            display: flex !important; 
+        }
+        .table-of-contents .toc-expand-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 0.75rem 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--primary);
+            opacity: 0.8;
+            transition: opacity 0.2s ease;
+            margin-top: 1rem;
+            font-size: inherit;
+        }
+        .table-of-contents .toc-expand-button:hover {
+            opacity: 1;
+        }
+
+        .toc-expand-button i {
+            transition: transform 0.2s ease;
+            font-size: 1em;
+        }
+        .toc-expand-button.expanded i {
+            transform: rotate(180deg);
+        }
+
+        .toc-toggle i {
+            transition: transform 0.2s ease;
+            color: var(--primary);
+            font-size: 1em;
+            opacity: 0.8;
+        }
+        .toc-toggle:hover i {
+            opacity: 1;
+        }
+        .toc-toggle.expanded i {
+            transform: rotate(180deg);
+        }
+
+        .toc-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .toc-toggle {
+            cursor: pointer;
+            margin-left: 0.5rem;
+        }
+
+        .author-section {
+            margin: 4rem 0;
+            padding: 2rem;
+            background: var(--secondary-bg);
+            border-radius: 1rem;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .author-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .author-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .author-info h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .author-info p {
+            color: var(--text);
+            opacity: 0.8;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .author-social {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .author-social a {
+            color: var(--text);
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+
+        .author-social a:hover {
+            color: var(--primary);
+            opacity: 1;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 2rem;
+            position: relative;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .footer p {
+            color: var(--text);
+            opacity: 0.8;
+            font-size: 0.875rem;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            font-size: 1.25rem;
+            color: var(--text);
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            opacity: 1;
+        }
+
+        .footer-theme-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            margin-top: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .footer-theme-toggle:hover {
+            background: var(--secondary-bg);
+            transform: translateY(-1px);
+        }
+
+        .theme-text {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .language-switcher {
+            display: flex;
+            gap: 0.25rem;
+            margin-right: 0.75rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 0.25rem;
+            border-radius: 2rem;
+        }
+
+        .lang-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.75rem;
+            border-radius: 1.5rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            opacity: 0.7;
+        }
+
+        .lang-link:hover {
+            opacity: 1;
+            transform: translateY(-1px);
+        }
+
+        .lang-link.active {
+            background: var(--primary);
+            color: white;
+            opacity: 1;
+        }
+
+        .lang-link .flag {
+            width: 1rem;
+            height: 0.75rem;
+            border-radius: 2px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .get-in-touch {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--primary);
+            color: white !important;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            text-decoration: none;
+            opacity: 1 !important;
+            transition: all 0.3s ease;
+        }
+
+        .get-in-touch:hover {
+            background: var(--highlight);
+            transform: translateY(-2px);
+        }
+
+        .get-in-touch .icon {
+            display: none;
+        }
+
+        .get-in-touch .text {
+            display: inline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .nav-links {
+                padding: 0.75rem 1rem;
+            }
+
+            .article-title {
+                font-size: 2rem;
+            }
+
+            .article-content {
+                font-size: 1rem;
+            }
+
+            .author-section {
+                flex-direction: column;
+                text-align: center;
+                padding: 1.5rem;
+            }
+
+            .author-social {
+                justify-content: center;
+            }
+
+            .footer-theme-toggle {
+                padding: 0.375rem 0.75rem;
+                font-size: 0.75rem;
+            }
+
+            .theme-text {
+                font-size: 0.75rem;
+            }
+
+            .language-switcher {
+                margin-right: 0.75rem;
+                padding: 0.25rem;
+            }
+
+            .lang-link {
+                padding: 0.375rem 0.625rem;
+            }
+
+            .get-in-touch {
+                padding: 0.5rem;
+                width: 2.5rem;
+                height: 2.5rem;
+                justify-content: center;
+                border-radius: 0.5rem;
+            }
+
+            .get-in-touch .icon {
+                display: block;
+                font-size: 1.25rem;
+            }
+
+            .get-in-touch .text {
+                display: none;
+            }
+
+            .nav-right {
+                gap: 0.75rem;
+            }
+        }
+
+        [id] {
+            scroll-margin-top: 5rem;
+        }
+    </style>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-126284-9"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-126284-9');
+    </script>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-links">
+            <a href="https://www.martinaberastegue.com/" class="brand">Martin Aberastegue</a>
+            <div class="nav-right">
+                <a href="/notes/" class="nav-link"><i class="fas fa-file-alt"></i> Notes</a>
+                <div class="language-switcher">
+                    <a href="https://www.martinaberastegue.com/es/" class="lang-link" title="Español">
+                        <svg class="flag" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480">
+                            <path fill="#c60b1e" d="M0 0h640v480H0z"/>
+                            <path fill="#ffc400" d="M0 120h640v240H0z"/>
+                        </svg>
+                        ES
+                    </a>
+                    <a href="https://www.martinaberastegue.com/" class="lang-link active" title="English">
+                        <svg class="flag" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480">
+                            <path fill="#012169" d="M0 0h640v480H0z"/>
+                            <path fill="#FFF" d="m75 0 244 181L562 0h78v62L400 241l240 178v61h-80L320 301 81 480H0v-60l239-178L0 64V0h75z"/>
+                            <path fill="#C8102E" d="m424 281 216 159v40L369 281h55zm-184 20 6 35L54 480H0l240-179zM640 0v3L391 191l2-44L590 0h50zM0 0l239 176h-60L0 42V0z"/>
+                            <path fill="#FFF" d="M241 0v480h160V0H241zM0 160v160h640V160H0z"/>
+                            <path fill="#C8102E" d="M0 193v96h640v-96H0zM273 0v480h96V0h-96z"/>
+                        </svg>
+                        EN
+                    </a>
+                </div>
+                <a href="https://www.linkedin.com/in/aberastegue/" class="get-in-touch" rel="noreferrer noopener" title="Get in Touch">
+                    <i class="fas fa-envelope icon"></i>
+                    <span class="text">Get in Touch</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container main-content">
+        <article>
+            <header class="article-header">
+                <h1 class="article-title">SupaExplorer: Building a Supabase Security Testing & API Key Leak Detector Extension</h1>
+                <div class="article-meta">
+                    <time datetime="2025-11-03">Nov 3, 2025</time>
+                    <span> • </span>
+                    <span>15 min read</span>
+                </div>
+                <div class="article-image">
+                    <img src="/images/notes/supaexplorer-preview.png" alt="SupaExplorer extension preview" loading="lazy">
+                </div>
+            </header>
+
+            <div class="article-content">
+                <p>When auditing web applications built on <img src="https://www.google.com/s2/favicons?domain=supabase.com" alt="Supabase" style="width: 1em; height: 1em; vertical-align: middle; margin-right: 0.2em; border-radius: 3px;"><a href="https://supabase.com" target="_blank" rel="noopener noreferrer">Supabase</a>, we (developers and security reviewers) need tools that let us inspect database traffic, test Row Level Security (RLS) policies, and detect API key leaks—all without leaving the browser or switching to external tools like Postman or cURL. That’s why I built <img src="https://www.google.com/s2/favicons?domain=streamlit.app" alt="SupaHack - Streamlit app" style="width: 1em; height: 1em; vertical-align: middle; margin-right: 0.2em; border-radius: 3px;"><a href="https://supahack.streamlit.app" title="SupaHack - Streamlit app" target="_blank" rel="noopener noreferrer"><strong>SupaHack</strong></a> in the first place, and now I'm releasing it as <strong>SupaExplorer</strong>, a Chrome extension that brings Supabase security testing plus comprehensive API key leak detection together in one tool.</p>
+
+                <p>SupaHack, enabled you to explorer a Supabase instance by copy and pasting your project ID, and keys. It was a great tool, but it was way too technical for most people, and you needed to go through you page network requests to find the credentials. That's why I decided to simplify it, and build a Chrome extension that would automatically detect Supabase traffic, and provide an in-page database explorer.</p>
+
+                <p>SupaExplorer enables us to stress-test Supabase RLS policies and catch exposed credentials from 30+ popular services, all while staying in context on the page under test. The extension automatically detects Supabase traffic, captures credentials in real-time, provides an in-page database explorer, and scans network responses for leaked API keys.</p>
+
+                <div class="table-of-contents">
+                    <h2>In this article</h2>
+                    <ul>
+                        <li><a href="#the-problem">The problem: Why existing tools fall short</a></li>
+                        <li><a href="#supabase-testing">Supabase security testing features</a></li>
+                        <li class="toc-hidden">
+                            <div class="toc-section">
+                                <a href="#architecture-design">Architecture and technical design</a>
+                                <span class="toc-toggle" aria-label="Toggle subsections">
+                                    <i class="fas fa-chevron-down"></i>
+                                </span>
+                            </div>
+                            <ul class="toc-subsection">
+                                <li><a href="#manifest-v3">Manifest V3 and service workers</a></li>
+                                <li><a href="#request-detection">Request detection and interception</a></li>
+                                <li><a href="#ui-components">UI components and integration</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#api-key-detection">API key leak detection system</a></li>
+                        <li class="toc-hidden">
+                            <div class="toc-section">
+                                <a href="#building-process">The building process</a>
+                                <span class="toc-toggle" aria-label="Toggle subsections">
+                                    <i class="fas fa-chevron-down"></i>
+                                </span>
+                            </div>
+                            <ul class="toc-subsection">
+                                <li><a href="#initial-prototype">Initial prototype and challenges</a></li>
+                                <li><a href="#iterative-development">Iterative development</a></li>
+                                <li><a href="#key-decisions">Key technical decisions</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#use-cases">Real-world use cases</a></li>
+                        <li><a href="#privacy-security">Privacy and security considerations</a></li>
+                        <li><a href="#future-directions">Future directions and improvements</a></li>
+                    </ul>
+                    <button class="toc-expand-button" aria-label="Expand table of contents">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+
+                <h2 id="the-problem">The problem: Why existing tools fall short</h2>
+
+                <p>When security testing Supabase applications, you typically need to:</p>
+
+                <ol>
+                    <li><strong>Capture live credentials</strong> from the application's network traffic</li>
+                    <li><strong>Test RLS policies</strong> by querying tables with different authentication contexts</li>
+                    <li><strong>Browse database schemas</strong> to understand table structures and relationships</li>
+                    <li><strong>Detect API key leaks</strong> in bundled JavaScript and network responses</li>
+                    <li><strong>Generate security reports</strong> documenting findings and recommendations</li>
+                </ol>
+
+                <p>Back when I started security testing Supabase apps, I used to follow the same multi-step process Khaled details in his excellent article <img src="https://www.google.com/s2/favicons?domain=deepstrike.io" alt="DeepStrike" style="width: 1em; height: 1em; vertical-align: middle; margin-right: 0.2em; border-radius: 3px;"><a href="https://deepstrike.io/blog/hacking-thousands-of-misconfigured-supabase-instances-at-scale" target="_blank" rel="noopener"><i>"Hacking Thousands of Misconfigured Supabase Instances"</i></a>: open DevTools, copy network headers, switch to Postman or another tool, configure requests, test and document findings, then switch back, and repeat. This routine is tedious, prone to errors, and constantly disrupts your flow state. Plus, it’s easy to miss credentials hidden in JavaScript bundles or only notice Supabase connections after manually digging through network traffic.</p>
+
+                <p><span class="highlight-text">The core insight: security testing tools should keep you in context, not force you to juggle multiple applications.</span> If you're testing a Supabase app, you should be able to explore its database directly from the page, using the exact same credentials the page is using. At least, that's my personal preference.</p>
+
+                <h2 id="supabase-testing">Supabase security testing features</h2>
+
+                <p>SupaExplorer addresses these pain points with several integrated features:</p>
+
+                <h3>Automatic request detection</h3>
+
+                <p>The extension instruments both <code>fetch</code> and <code>XMLHttpRequest</code> to detect Supabase API calls in real-time. When it sees a request to <code>*.supabase.co</code>, it extracts the project ID, API key, and schema, then normalizes these credentials for use in the explorer. This happens automatically, without any manual configuration needed.</p>
+
+                <div class="mermaid">
+                    flowchart TD
+                        A[Page makes Supabase request] --> B[Content script intercepts]
+                        B --> C[Extract credentials]
+                        C --> D[Store in chrome.storage.local]
+                        D --> E[Show detection bubble]
+                        E --> F[User opens side panel]
+                </div>
+
+                <h3>Side panel for table browsing</h3>
+
+                <p>I tired different approaches, like using a modal overlay, or a floating window. But in the end, I decided to use Chrome's side panel API, because it provides a persistent UI that doesn't clutter the page or mess with its content. SupaExplorer uses it to display:</p>
+
+                <ul>
+                    <li><strong>Auto-filled connection form</strong> with detected project ID and API key</li>
+                    <li><strong>Schema selector</strong> to switch between different database schemas</li>
+                    <li><strong>Table list</strong> with row count probes that surface 401/permission-denied responses</li>
+                    <li><strong>RLS status indicators</strong> showing which tables are accessible and which are blocked</li>
+                </ul>
+
+                <p>Row counts are particularly useful: if a table returns a 401 error, you know RLS is blocking access. If it returns a count, you can see how many rows are exposed, which is critical for understanding data exposure risk. As an example, a quick count of a high profile table count can tell you something is definitely off and you should investigate further.</p>
+
+                <h3>In-page explorer overlay</h3>
+
+                <p>Double-clicking a table (or clicking "Open Explorer") launches a full-screen overlay that lets you browse data, run filtered queries, and test CRUD operations. The overlay reuses the exact headers the page sent, so you're testing with the same authentication context the application uses.</p>
+
+                <p>The explorer includes:</p>
+
+                <ul>
+                    <li><strong>Browse tab</strong>: View table data with pagination and column selection</li>
+                    <li><strong>Insert tab</strong>: Test write permissions by inserting rows</li>
+                    <li><strong>Update tab</strong>: Modify existing rows to test update policies</li>
+                    <li><strong>Delete tab</strong>: Verify delete restrictions are properly enforced</li>
+                </ul>
+
+                <div class="alert notice" style="background: #fef3c7; border: 1px solid #fde68a; color: #92400e; padding: 16px; border-radius: 6px; margin-bottom: 24px;">
+                    <strong>Notice:</strong> You should only use these security testing features on projects you own or are explicitly authorized to test. Unauthorized testing of systems you do not control can be illegal and unethical.
+                </div>
+
+                <h3>DevTools integration</h3>
+
+                <p>The DevTools panel shows a live feed of Supabase requests, making it easy to see what the application is doing. More importantly, it scans captured JavaScript bundles and JSON responses for hard-coded Supabase credentials. Even if no request has fired yet, if a bundle contains a Supabase URL and API key, SupaExplorer will surface it. <span class="highlight-text">This is particularly useful for detecting API key leaks</span> in preloaded bundles, like Next.js chunks, or <span class="highlight-text">in instances where a regular extension is not allowed to peak due to browser policies.</span></p>
+
+                <h3>Security report generation</h3>
+
+                <p>Clicking "Generate Security Report" compiles a printable PDF-friendly summary that includes:</p>
+
+                <ul>
+                    <li>All detected tables and their row counts</li>
+                    <li>RLS policy findings (which tables are protected, which are exposed)</li>
+                    <li>Risk assessment and remediation recommendations</li>
+                    <li>Exposed API keys and credentials found during scanning</li>
+                </ul>
+
+                <p>I didn't thought about this initially, but it was suggested by <strong>Ariel Mathov</strong> from <img src="https://www.google.com/s2/favicons?domain=from021.io" alt="021" style="width: 1em; height: 1em; vertical-align: middle; margin-right: 0.2em; border-radius: 3px;"><a href="https://from021.io" target="_blank" rel="noopener">021</a>, and I believe it was a great addition.</p>
+
+                <h2 id="architecture-design">Architecture and technical design</h2>
+
+                <p>SupaExplorer is built on Manifest V3, Chrome's latest extension architecture. The extension consists of several interconnected components:</p>
+
+                <div class="mermaid">
+                    flowchart TD
+                        subgraph Tab["Active tab (page context)"]
+                            detector["content/detector.js<br/>hooks fetch/XHR"]
+                            bubble["content/bubble.js<br/>detection UI"]
+                            overlay["content/content.js<br/>overlay bridge"]
+                            explorer["explorer/explorer.html/js<br/>database UI"]
+                        end
+
+                        subgraph Background["background/background.js<br/>service worker"]
+                            bg["Handles detection, storage,<br/>messaging, side panel control"]
+                        end
+
+                        subgraph DevTools["DevTools panel"]
+                            devtools["devtools_panel.html/js<br/>captures & forwards credentials"]
+                            leaksTab["Leaks tab<br/>displays detected API keys"]
+                        end
+
+                        subgraph LeakDetection["Leak Detection"]
+                            scanner["shared/leak_scanner.js<br/>pattern matching"]
+                            interceptor["webRequest listener<br/>captures responses"]
+                        end
+
+                        storage[("chrome.storage.local<br/>connection + report data")]
+                        supabase[("Supabase REST endpoints")]
+
+                        detector -->|"SBDE_SUPABASE_REQUEST"| bg
+                        devtools -->|"SBDE_APPLY_CONNECTION"| bg
+                        bg -->|"store connection"| storage
+                        bg -->|"openSidePanel"| sidepanel
+                        bg -->|"SBDE_OPEN_OVERLAY"| overlay
+                        overlay --> explorer
+                        sidepanel -->|"fetch OpenAPI"| supabase
+                        explorer -->|"browse/modify tables"| supabase
+                        interceptor --> scanner
+                        scanner --> leaksTab
+                </div>
+
+                <h3 id="manifest-v3">Manifest V3 and service workers</h3>
+
+                <p>Unlike Manifest V2's persistent background pages, V3 uses service workers that can be terminated and restarted. This required careful state management: credentials and connection state are stored in <code>chrome.storage.local</code> rather than in-memory variables. The service worker handles:</p>
+
+                <ul>
+                    <li>Message passing between content scripts, side panel, and DevTools</li>
+                    <li>Opening and managing the side panel via <code>chrome.sidePanel</code> API</li>
+                    <li>Web request interception for API key leak scanning</li>
+                    <li>State synchronization across all extension components</li>
+                </ul>
+
+                <h3 id="request-detection">Request detection and interception</h3>
+
+                <p>The extension injects a content script (<code>detector_inject.js</code>) that wraps the native <code>fetch</code> and <code>XMLHttpRequest</code> APIs. When a request is made to <code>*.supabase.co</code>, the wrapper:</p>
+
+                <ol>
+                    <li>Extracts the project ID from the URL pattern</li>
+                    <li>Captures the <code>apikey</code> header or query parameter</li>
+                    <li>Identifies the schema (defaults to <code>public</code> if not specified)</li>
+                    <li>Sends a message to the background service worker with the credentials</li>
+                </ol>
+
+                <p>The background worker normalizes and stores these credentials, then sends a message back to show the detection bubble UI.</p>
+
+                <h3 id="ui-components">UI components and integration</h3>
+
+                <p>SupaExplorer uses three main UI surfaces:</p>
+
+                <ol>
+                    <li><strong>Side panel</strong>: Built with vanilla JavaScript, connects to the background via <code>chrome.runtime.sendMessage</code> and listens to storage changes via <code>chrome.storage.onChanged</code></li>
+                    <li><strong>Explorer overlay</strong>: An iframe injected into the page, loaded from <code>explorer/explorer.html</code>, communicates with the background via postMessage</li>
+                    <li><strong>DevTools panel</strong>: Uses the DevTools API to capture network requests and display them in a custom panel</li>
+                </ol>
+
+                <p>All three components read connection state from <code>chrome.storage.local</code>, ensuring they stay in sync. When you navigate away from the page or credentials disappear, the background worker clears the stored connection to prevent stale data.</p>
+
+                <h2 id="api-key-detection">API key leak detection system</h2>
+
+                <p>Beyond Supabase testing, SupaExplorer includes a comprehensive API key leak scanner that detects exposed credentials from 30+ popular services. The scanner recognizes patterns for:</p>
+
+                <ul>
+                    <li><strong>Cloud providers</strong>: AWS, Google Cloud, Azure, Heroku</strong></li>
+                    <li><strong>Payment processors</strong>: Stripe, PayPal</li>
+                    <li><strong>APIs and services</strong>: OpenAI, GitHub, SendGrid, Twilio, Slack, Mailgun</li>
+                    <li><strong>And many more</strong>: Firebase, Auth0, Datadog, and others</li>
+                </ul>
+
+                <h3>How the scanner works</h3>
+
+                <p>The scanner intercepts network responses via Chrome's <code>webRequest</code> API. When a response is received, it:</p>
+
+                <ol>
+                    <li><strong>Filters content types</strong>: Automatically excludes CSS, fonts, and binary files by default</li>
+                    <li><strong>Extracts text content</strong>: Parses JavaScript, HTML, and JSON responses</li>
+                    <li><strong>Runs pattern matching</strong>: Tests each pattern against the content using regex</li>
+                    <li><strong>Validates matches</strong>: Uses entropy analysis for AWS keys, checks format validity</li>
+                    <li><strong>Filters false positives</strong>: Maintains a deny list of known false positives</li>
+                    <li><strong>Deduplicates</strong>: Shows each unique leak only once per source</li>
+                </ol>
+
+                <p>When a leak is detected, it appears immediately in the DevTools "Leaks" tab with the matched value, pattern type, surrounding context, and source URL. All scanning happens locally, no data leaves your machine.</p>
+
+                <h3>Smart filtering to reduce false positives</h3>
+
+                <p>False positives are a major challenge in API key detection. SupaExplorer uses several techniques to minimize them:</p>
+
+                <ul>
+                    <li><strong>File extension filtering</strong>: Excludes <code>.css</code>, <code>.scss</code>, <code>.woff</code>, <code>.ttf</code> and other non-code files</li>
+                    <li><strong>Base64 detection</strong>: Skips base64-encoded font/image data URIs that might trigger false matches</li>
+                    <li><strong>Entropy analysis</strong>: For AWS keys, checks Shannon entropy to filter out repetitive patterns (e.g., "AAAAAAA...")</li>
+                    <li><strong>Deny list</strong>: Maintains a list of known false positive patterns to ignore</li>
+                </ul>
+
+                <p>I had to work a lot on improving this, because I was getting way to many false positives, specially for AWS keys.</p>
+
+                <h2 id="building-process">The building process</h2>
+
+                <h3 id="initial-prototype">Initial prototype and challenges</h3>
+
+                <p>I started with a simple prototype that only detected Supabase requests and displayed them in DevTools. The initial challenge was understanding Manifest V3's service worker lifecycle, credentials stored in memory would disappear when the worker was terminated. Moving state to <code>chrome.storage.local</code> solved this, but introduced new complexity around state synchronization.</p>
+
+                <p>Another early challenge was the side panel API, which is relatively new. The panel needs to be registered per tab, and opening it programmatically required careful timing. I also learned that content scripts can't directly access the side panel's DOM, all communication must go through the background worker.</p>
+
+                <h3 id="iterative-development">Iterative development</h3>
+
+                <p>The extension grew organically. After getting basic detection working, I added:</p>
+
+                <ol>
+                    <li><strong>Table enumeration</strong>: Fetching the PostgREST OpenAPI schema to list tables</li>
+                    <li><strong>Row count probes</strong>: Testing SELECT permissions by attempting count queries</li>
+                    <li><strong>Explorer overlay</strong>: Building a full CRUD interface that reuses page credentials</li>
+                    <li><strong>Report generation</strong>: Compiling findings into a printable security report</li>
+                    <li><strong>API key scanning</strong>: Adding comprehensive leak detection beyond Supabase</li>
+                </ol>
+
+                <p>Each feature required testing against real Supabase applications. I found edge cases around schema switching, RLS error handling, and credential expiration that weren't obvious from the documentation.</p>
+
+                <h3 id="key-decisions">Key technical decisions</h3>
+
+                <p>Several decisions shaped the extension's architecture:</p>
+
+                <ul>
+                    <li><strong>Vanilla JavaScript</strong>: No framework dependencies means faster load times and easier debugging</li>
+                    <li><strong>PostgREST API</strong>: Directly using Supabase's PostgREST endpoints rather than the client library keeps the codebase simpler</li>
+                    <li><strong>Storage-based state</strong>: Using <code>chrome.storage.local</code> for all state ensures persistence across service worker restarts</li>
+                    <li><strong>Pattern-based scanning</strong>: For API key detection, regex patterns are more maintainable than ML models for this use case</li>
+                    <li><strong>Local-only processing</strong>: All scanning and analysis happens in the browser, no external API calls</li>
+                </ul>
+
+                <p>I tend to avoid frameworks and libraries when possible, because they add complexity and can be a source of bugs. I also prefer to keep the codebase simple and easy to understand to anybody that wants to contribute to the project.</p>
+
+                <h2 id="use-cases">Real-world use cases</h2>
+
+                <p>SupaExplorer is designed for several distinct user groups:</p>
+
+                <h3>Security engineers</h3>
+
+                <p>When validating Supabase RLS policies before production launch, security engineers can use SupaExplorer to:</p>
+
+                <ul>
+                    <li>Quickly identify tables with missing or overly permissive RLS policies</li>
+                    <li>Test whether authenticated users can access data they shouldn't</li>
+                    <li>Generate security reports for compliance documentation</li>
+                    <li>Scan for accidentally committed API keys in bundled JavaScript</li>
+                </ul>
+
+                <h3>Red teams and penetration testers</h3>
+
+                <p>During security engagements, red teams can use SupaExplorer to:</p>
+
+                <ul>
+                    <li>Map out the database schema without manual inspection</li>
+                    <li>Probe RLS policies to find potential bypasses</li>
+                    <li>Identify exposed credentials in client-side code</li>
+                    <li>Document findings for penetration test reports</li>
+                </ul>
+
+                <h3>Developers auditing their own apps</h3>
+
+                <p>Developers can use SupaExplorer during code review to:</p>
+
+                <ul>
+                    <li>Catch hard-coded Supabase keys before they reach production</li>
+                    <li>Verify RLS policies are correctly configured</li>
+                    <li>Test database access patterns during development</li>
+                    <li>Ensure no sensitive data is exposed through overly permissive queries</li>
+                </ul>
+
+                <h2 id="privacy-security">Privacy and security considerations</h2>
+
+                <p>Privacy and security were top priorities when building SupaExplorer:</p>
+
+                <ul>
+                    <li><strong>Local-only processing</strong>: All credentials, leak reports, and analysis stay in <code>chrome.storage.local</code>. Nothing leaves your machine,no telemetry, no external API calls, no data transmission.</li>
+                    <li><strong>Automatic cleanup</strong>: When you navigate away from a page or credentials disappear, the extension automatically clears stored connection data to prevent stale credentials.</li>
+                    <li><strong>Respects RLS</strong>: SupaExplorer highlights permission errors rather than trying to bypass them. It's a security testing tool, not an exploit.</li>
+                    <li><strong>Minimal permissions</strong>: The extension only requests the permissions it needs: <code>sidePanel</code>, <code>tabs</code>, <code>scripting</code>, and <code>webRequest</code>.</li>
+                </ul>
+
+                <p>However, it's important to note that <span class="highlight-text">SupaExplorer is a powerful tool that can expose sensitive data if used inappropriately. It should only be used for authorized security testing, code reviews, and incident response, never for malicious purposes.</span></p>
+
+                <h2 id="future-directions">Future directions and improvements</h2>
+
+                <p>There are several areas where SupaExplorer could evolve:</p>
+
+                <ul>
+                    <li><strong>Enhanced RLS testing</strong>: Automated policy testing with different user roles and authentication contexts</li>
+                    <li><strong>Query builder improvements</strong>: More sophisticated filtering, sorting, and relationship traversal in the explorer</li>
+                    <li><strong>Export formats</strong>: CSV/JSON export for table data, more report formats beyond PDF</li>
+                    <li><strong>Pattern library expansion</strong>: Adding more API key patterns for additional services</li>
+                    <li><strong>Collaboration features</strong>: Sharing scan results and findings with team members</li>
+                    <li><strong>Integration with other tools</strong>: Exporting findings to ticketing systems or security platforms</li>
+                </ul>
+
+                <p>The extension is open-source, so contributions and feedback are welcome. The codebase is structured to make it easy to add new features, and the pattern-based approach for API key detection makes adding new services straightforward.</p>
+
+                <h2>Final thoughts</h2>
+
+                <p>Building SupaExplorer made me learn more about Chrome extension development, Manifest V3's service worker model, and the challenges of building security testing tools that stay in context. The extension solves a real problem for security reviewers and developers working with Supabase applications, and I'm happy to share it with the community.</p>
+
+                <p>I thought a lot about making the extension paid, or with certain features only available to paying users. But in the end, I decided to keep it free and open-source, because I want to help the community and make it easier for everyone to audit their Supabase applications.</p>
+
+                <p>If you're working with Supabase applications or doing security testing, I encourage you to try SupaExplorer. The extension is available on GitHub, and feedback from the security community helps drive improvements.</p>
+
+                <div class="note-text">
+                    <strong>Note:</strong> SupaExplorer is available as an open-source Chrome extension. You can load it as an unpacked extension from the <a href="https://github.com/ToritoIO/SupaExplorer" target="_blank" rel="noopener noreferrer">GitHub repository</a>. Always use security testing tools responsibly and only with proper authorization. And, as soon Google approves the extension, I will publish it in the Chrome Web Store.
+                </div>
+            </div>
+
+            <section class="author-section">
+                <div class="author-image">
+                    <img src="https://www.martinaberastegue.com/images/martin-aberastegue.jpg" alt="Martin Aberastegue" loading="lazy">
+                </div>
+                <div class="author-info">
+                    <h3>Martin Aberastegue</h3>
+                    <p>Digital Marketing & Technology Leader with 23+ years of experience driving growth through SEO, MarTech, and Data-Driven Strategy. Expert in scaling businesses through innovative digital solutions.</p>
+                    <p>Based in Germany, working globally to transform businesses through technology and strategic digital initiatives.</p>
+                    <div class="author-social">
+                        <a href="https://www.linkedin.com/in/aberastegue/" target="_blank" rel="noreferrer noopener" title="LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="https://x.com/Xyborg" target="_blank" rel="noreferrer noopener" title="Twitter">
+                            <i class="fab fa-x-twitter"></i>
+                        </a>
+                        <a href="https://github.com/Xyborg" target="_blank" rel="noreferrer noopener" title="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </article>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <p>© 2002 - 2025 Martin Aberastegue</p>
+                <button class="theme-toggle footer-theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                    <span class="theme-text">Toggle Theme</span>
+                </button>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+            updateThemeIcon();
+        }
+
+        function updateThemeIcon() {
+            const isDark = document.documentElement.classList.contains('dark');
+            const themeIcons = document.querySelectorAll('.theme-toggle i');
+            themeIcons.forEach(icon => {
+                icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+            });
+        }
+
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        if (savedTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+        }
+        updateThemeIcon();
+
+        mermaid.initialize({ startOnLoad: true, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default' });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const tocContainer = document.querySelector('.table-of-contents');
+            const tocExpandButton = document.querySelector('.toc-expand-button');
+            const tocHiddenItems = document.querySelectorAll('.toc-hidden');
+            const subsectionToggles = document.querySelectorAll('.toc-toggle');
+
+            if (!tocContainer || !tocExpandButton || tocHiddenItems.length === 0) {
+                return;
+            }
+
+            tocContainer.classList.add('toc-collapsed');
+            tocContainer.classList.remove('js-toc-expanded');
+            tocExpandButton.classList.remove('expanded');
+            tocHiddenItems.forEach(item => {
+                item.style.display = 'none';
+            });
+            
+            document.querySelectorAll('.toc-subsection').forEach(sub => {
+                sub.classList.remove('expanded');
+            });
+            subsectionToggles.forEach(toggle => {
+                toggle.classList.remove('expanded');
+            });
+
+            const tocStoredAsExpanded = localStorage.getItem('toc-expanded') === 'true';
+            if (tocStoredAsExpanded) {
+                tocContainer.classList.remove('toc-collapsed');
+                tocContainer.classList.add('js-toc-expanded');
+                tocExpandButton.classList.add('expanded');
+                tocHiddenItems.forEach(item => {
+                    item.style.display = 'block';
+                });
+            }
+
+            tocExpandButton.addEventListener('click', function() {
+                const isCurrentlyCollapsed = tocContainer.classList.contains('toc-collapsed');
+                if (isCurrentlyCollapsed) {
+                    tocContainer.classList.remove('toc-collapsed');
+                    tocContainer.classList.add('js-toc-expanded');
+                    this.classList.add('expanded');
+                    tocHiddenItems.forEach(item => { item.style.display = 'block'; });
+                    localStorage.setItem('toc-expanded', 'true');
+                } else {
+                    tocContainer.classList.add('toc-collapsed');
+                    tocContainer.classList.remove('js-toc-expanded');
+                    this.classList.remove('expanded');
+                    tocHiddenItems.forEach(item => { item.style.display = 'none'; });
+                    localStorage.setItem('toc-expanded', 'false');
+                }
+            });
+
+            subsectionToggles.forEach(toggle => {
+                const sectionLi = toggle.closest('li');
+                if (!sectionLi) {
+                    return;
+                }
+                const subsection = sectionLi.querySelector('.toc-subsection');
+                if (!subsection) {
+                    return;
+                }
+
+                const firstLinkInSubsection = subsection.querySelector('a');
+                const sectionId = firstLinkInSubsection ? firstLinkInSubsection.getAttribute('href') : null;
+                const storageKey = sectionId ? `toc-subsection-${sectionId}` : null;
+
+                if (storageKey && localStorage.getItem(storageKey) === 'true') {
+                    subsection.classList.add('expanded');
+                    toggle.classList.add('expanded');
+                } else {
+                    subsection.classList.remove('expanded');
+                    toggle.classList.remove('expanded');
+                }
+
+                toggle.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const isNowExpanded = subsection.classList.toggle('expanded');
+                    this.classList.toggle('expanded', isNowExpanded);
+                    if (storageKey) {
+                        localStorage.setItem(storageKey, isNowExpanded);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <!-- Schema.org data -->
+    <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "Article",
+        "headline": "SupaExplorer: Building a Supabase Security Testing & API Key Leak Detector Extension",
+        "description": "How I built SupaExplorer, a Chrome extension for security testing Supabase databases and detecting API key leaks across 30+ services without leaving the browser.",
+        "image": "https://www.martinaberastegue.com/images/notes/supaexplorer-preview.png",
+        "datePublished": "2025-01-20",
+        "dateModified": "2025-01-20",
+        "author": {
+            "@type": "Person",
+            "name": "Martin Aberastegue",
+            "url": "https://www.martinaberastegue.com"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Martin Aberastegue",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://www.martinaberastegue.com/images/martin-aberastegue.jpg"
+            }
+        },
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.martinaberastegue.com/notes/supaexplorer-supabase-api-keys-security-testing.html"
+        }
+    }
+    </script>
+</body>
+</html>
+
