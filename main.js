@@ -1,30 +1,6 @@
 (function () {
   'use strict';
 
-  // ---- Theme ----
-  function toggleTheme() {
-    document.documentElement.classList.toggle('dark');
-    var isDark = document.documentElement.classList.contains('dark');
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    updateThemeIcon();
-  }
-
-  function updateThemeIcon() {
-    var isDark = document.documentElement.classList.contains('dark');
-    var icons = document.querySelectorAll('.footer__theme-toggle i');
-    icons.forEach(function (icon) {
-      icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
-    });
-  }
-
-  var savedTheme = localStorage.getItem('theme') || 'light';
-  if (savedTheme === 'dark') {
-    document.documentElement.classList.add('dark');
-  }
-  updateThemeIcon();
-
-  window.toggleTheme = toggleTheme;
-
   // ---- Navbar scroll shadow ----
   var navbar = document.getElementById('navbar');
   if (navbar) {
@@ -78,7 +54,8 @@
       'dog': ['fa-dog'],
       'link': ['fa-link'],
       'child': ['fa-child'],
-      'chart-bar': ['fa-chart-bar']
+      'chart-bar': ['fa-chart-bar'],
+      'code': ['fa-code']
     };
 
     filters.forEach(function (filter) {

@@ -9,9 +9,9 @@
   --color-text: #1a1a1a;
   --color-text-secondary: #5c5c5c;
   --color-text-muted: #8a8a8a;
-  --color-accent: #2d5a3d;
-  --color-accent-hover: #1e3d2a;
-  --color-accent-light: rgba(45, 90, 61, 0.08);
+  --color-accent: #1a365d;
+  --color-accent-hover: #12264a;
+  --color-accent-light: rgba(26, 54, 93, 0.08);
   --color-border: #e2e0db;
   --color-grid: #e8e6e1;
 
@@ -30,20 +30,6 @@
   --radius-sm: 6px;
 
   --transition: 0.2s ease;
-}
-
-html.dark {
-  --color-bg: #161614;
-  --color-bg-alt: #1e1e1c;
-  --color-surface: #242422;
-  --color-text: #e4e2dd;
-  --color-text-secondary: #9a9890;
-  --color-text-muted: #6a6862;
-  --color-accent: #5a9a6d;
-  --color-accent-hover: #6fb882;
-  --color-accent-light: rgba(90, 154, 109, 0.1);
-  --color-border: #2e2e2c;
-  --color-grid: #1e1e1c;
 }
 
 /* ---- Reset ---- */
@@ -104,16 +90,8 @@ img {
   transition: box-shadow var(--transition), background-color 0.3s ease;
 }
 
-html.dark .navbar {
-  background: rgba(22, 22, 20, 0.85);
-}
-
 .navbar--scrolled {
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
-}
-
-html.dark .navbar--scrolled {
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
 }
 
 .navbar__inner {
@@ -213,15 +191,6 @@ html.dark .navbar--scrolled {
 .btn--primary:hover {
   background: var(--color-accent);
   color: #fff;
-}
-
-html.dark .btn--primary {
-  background: var(--color-accent);
-  color: #fff;
-}
-
-html.dark .btn--primary:hover {
-  background: var(--color-accent-hover);
 }
 
 .btn--ghost {
@@ -344,7 +313,7 @@ html.dark .btn--primary:hover {
   right: 0;
   bottom: 0;
   border-radius: 16px;
-  border: 1.5px solid rgba(170, 210, 195, 0.55);
+  border: 1.5px solid rgba(120, 160, 210, 0.55);
   pointer-events: none;
 }
 
@@ -356,11 +325,6 @@ html.dark .btn--primary:hover {
 .hero__image::after {
   transform: translate(10px, 10px);
   z-index: 3;
-}
-
-html.dark .hero__image::before,
-html.dark .hero__image::after {
-  border-color: rgba(90, 154, 109, 0.3);
 }
 
 /* ---- Sections ---- */
@@ -442,10 +406,6 @@ html.dark .hero__image::after {
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
 }
 
-html.dark .logo-grid__item:hover {
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
-}
-
 .logo-grid__wrapper {
   aspect-ratio: 16/9;
   width: 100%;
@@ -458,11 +418,6 @@ html.dark .logo-grid__item:hover {
 .logo-grid__wrapper img {
   max-height: 100%;
   object-fit: contain;
-}
-
-html.dark .logo-grid__wrapper {
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: var(--radius-sm);
 }
 
 .logo-grid__name {
@@ -536,10 +491,6 @@ html.dark .logo-grid__wrapper {
   border-color: var(--color-text-muted);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
   transform: translateY(-3px);
-}
-
-html.dark .project-card:hover {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .project-image {
@@ -622,6 +573,9 @@ html.dark .project-card:hover {
 
 .project-badge i.fa-chart-bar { color: #8b5cf6; }
 .project-badge:has(.fa-chart-bar) { background: rgba(139, 92, 246, 0.08); }
+
+.project-badge i.fa-code { color: #0d9488; }
+.project-badge:has(.fa-code) { background: rgba(13, 148, 136, 0.08); }
 
 .project-title {
   color: var(--color-text);
@@ -766,10 +720,6 @@ html.dark .project-card:hover {
   border-color: var(--color-accent);
   transform: translateY(-2px);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-}
-
-html.dark .article-card:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 .article-card__image {
@@ -971,13 +921,9 @@ body.page-article {
 }
 
 .highlight-text {
-  background: rgba(45, 90, 61, 0.1);
+  background: rgba(26, 54, 93, 0.1);
   padding: 2px 4px;
   border-radius: 4px;
-}
-
-html.dark .highlight-text {
-  background: rgba(90, 154, 109, 0.15);
 }
 
 .note-text {
@@ -1266,27 +1212,6 @@ html.dark .highlight-text {
 .footer__copy {
   font-size: 0.8rem;
   color: var(--color-text-muted);
-}
-
-.footer__theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.4rem 1rem;
-  border-radius: 100px;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  color: var(--color-text-secondary);
-  font-family: var(--font-main);
-  font-size: 0.8rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all var(--transition);
-}
-
-.footer__theme-toggle:hover {
-  border-color: var(--color-text-muted);
-  color: var(--color-text);
 }
 
 /* ---- Fade-in Animation ---- */
