@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="light">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <title>Notes - Martin Aberastegue</title>
@@ -8,431 +8,19 @@
     <meta property="og:title" content="Notes - Martin Aberastegue" />
     <meta property="og:description" content="A collection of notes and articles by Martin Aberastegue on technology, security, and web development." />
     <meta property="og:url" content="https://www.martinaberastegue.com/notes/" />
-    <meta property="og:site_name" content="Martin Aberastegue 🚀" />
+    <meta property="og:site_name" content="Martin Aberastegue" />
     <meta name="image" property="og:image" content="https://www.martinaberastegue.com/images/notes/og-notes-general.png" />
     <meta name="author" content="Martin Aberastegue">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="canonical" href="https://www.martinaberastegue.com/notes/" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
     <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Ctext%20x='0'%20y='14'%3E🚀%3C/text%3E%3C/svg%3E" type="image/svg+xml" />
-    <style>
-        :root {
-            --primary: #6366F1;
-            --text: #1f2937;
-            --background: #ffffff;
-            --secondary-bg: #f8fafc;
-            --border: #e2e8f0;
-            --card-bg: #ffffff;
-            --highlight: #818cf8;
-        }
 
-        .dark {
-            --primary: #818cf8;
-            --text: #f8fafc;
-            --background: #0f172a;
-            --secondary-bg: #1e293b;
-            --border: #334155;
-            --card-bg: #1e293b;
-            --highlight: #6366F1;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--background);
-            color: var(--text);
-            line-height: 1.6;
-            transition: all 0.3s ease;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background-color: var(--background);
-            backdrop-filter: blur(10px);
-            z-index: 100;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .nav-links {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            flex-wrap: nowrap;
-        }
-
-        .nav-left {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-left: auto;
-        }
-
-        .brand {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--primary);
-            text-decoration: none;
-            white-space: nowrap;
-        }
-
-        .nav-link {
-            color: var(--text);
-            text-decoration: none;
-            font-size: 0.875rem;
-            font-weight: 500;
-            opacity: 0.8;
-            transition: opacity 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.375rem;
-        }
-
-        .nav-link i {
-            color: var(--primary);
-        }
-
-        .nav-link:hover {
-            opacity: 1;
-        }
-
-        .main-content {
-            margin-top: 5rem;
-            padding: 2rem 0;
-        }
-
-        .page-header {
-            margin-bottom: 3rem;
-            text-align: center;
-        }
-
-        .page-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: var(--text);
-            line-height: 1.2;
-        }
-
-        .page-description {
-            font-size: 1.125rem;
-            color: var(--text);
-            opacity: 0.8;
-            margin-bottom: 3rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .article-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .article-list-item {
-            margin-bottom: 2.5rem;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 1rem;
-            overflow: hidden; /* To contain the image within rounded corners */
-            transition: all 0.3s ease;
-        }
-
-        .article-list-item:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.07);
-        }
-
-        .article-list-image-link {
-            display: block;
-            overflow: hidden;
-        }
-
-        .article-list-image {
-            width: 100%;
-            height: auto;
-            aspect-ratio: 16/9;
-            object-fit: cover;
-            border-bottom: 1px solid var(--border);
-            transition: transform 0.3s ease;
-        }
-
-        .article-list-item:hover .article-list-image {
-            transform: scale(1.03);
-        }
-        
-        .article-list-content {
-            padding: 1.5rem;
-        }
-
-        .article-list-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--primary);
-            text-decoration: none;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        .article-list-title:hover {
-            text-decoration: underline;
-        }
-
-        .article-list-meta {
-            font-size: 0.875rem;
-            color: var(--text);
-            opacity: 0.7;
-            margin-bottom: 0.75rem;
-        }
-
-        .article-list-description {
-            font-size: 1rem;
-            color: var(--text);
-            opacity: 0.9;
-        }
-
-        .read-more-link {
-            display: inline-block;
-            margin-top: 1rem;
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-
-        .read-more-link:hover {
-            text-decoration: underline;
-        }
-
-        .footer {
-            text-align: center;
-            padding: 3rem 0;
-            margin-top: 2rem;
-            position: relative;
-        }
-
-        .footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--border), transparent);
-        }
-
-        .footer-content {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            align-items: center;
-        }
-
-        .footer p {
-            color: var(--text);
-            opacity: 0.8;
-            font-size: 0.875rem;
-        }
-
-        .theme-toggle {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0.5rem;
-            font-size: 1.25rem;
-            color: var(--text);
-            opacity: 0.8;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .theme-toggle:hover {
-            opacity: 1;
-        }
-
-        .footer-theme-toggle {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            border-radius: 2rem;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            margin-top: 1rem;
-            font-size: 0.875rem;
-        }
-
-        .footer-theme-toggle:hover {
-            background: var(--secondary-bg);
-            transform: translateY(-1px);
-        }
-
-        .theme-text {
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
-
-        .language-switcher {
-            display: flex;
-            gap: 0.25rem;
-            margin-right: 0.75rem;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            padding: 0.25rem;
-            border-radius: 2rem;
-        }
-
-        .lang-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.375rem;
-            padding: 0.375rem 0.75rem;
-            border-radius: 1.5rem;
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: var(--text);
-            text-decoration: none;
-            transition: all 0.2s ease;
-            opacity: 0.7;
-        }
-
-        .lang-link:hover {
-            opacity: 1;
-            transform: translateY(-1px);
-        }
-
-        .lang-link.active {
-            background: var(--primary);
-            color: white;
-            opacity: 1;
-        }
-
-        .lang-link .flag {
-            width: 1rem;
-            height: 0.75rem;
-            border-radius: 2px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-        }
-
-        .get-in-touch {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: var(--primary);
-            color: white !important;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            font-weight: 500;
-            text-decoration: none;
-            opacity: 1 !important;
-            transition: all 0.3s ease;
-        }
-
-        .get-in-touch:hover {
-            background: var(--highlight);
-            transform: translateY(-2px);
-        }
-
-        .get-in-touch .icon {
-            display: none;
-        }
-
-        .get-in-touch .text {
-            display: inline;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 0 1rem;
-            }
-
-            .nav-links {
-                padding: 0.75rem 1rem;
-            }
-
-            .page-title {
-                font-size: 2rem;
-            }
-
-            .page-description {
-                font-size: 1rem;
-                margin-bottom: 2rem;
-            }
-
-            .article-list-title {
-                font-size: 1.25rem;
-            }
-
-            .footer-theme-toggle {
-                padding: 0.375rem 0.75rem;
-                font-size: 0.75rem;
-            }
-
-            .theme-text {
-                font-size: 0.75rem;
-            }
-
-            .language-switcher {
-                margin-right: 0.75rem;
-                padding: 0.25rem;
-            }
-
-            .lang-link {
-                padding: 0.375rem 0.625rem;
-            }
-
-            .get-in-touch {
-                padding: 0.5rem;
-                width: 2.5rem;
-                height: 2.5rem;
-                justify-content: center;
-                border-radius: 0.5rem;
-            }
-
-            .get-in-touch .icon {
-                display: block;
-                font-size: 1.25rem;
-            }
-
-            .get-in-touch .text {
-                display: none;
-            }
-
-            .nav-right {
-                gap: 0.75rem;
-            }
-        }
-    </style>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-126284-9"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -442,172 +30,152 @@
     </script>
 </head>
 <body>
-    <header class="header">
-        <nav class="nav-links">
-            <a href="https://www.martinaberastegue.com/" class="brand">Martin Aberastegue</a>
-            <div class="nav-right">
-                <a href="/notes/" class="nav-link active"><i class="fas fa-file-alt"></i> Notes</a>
-                <div class="language-switcher">
-                    <a href="https://www.martinaberastegue.com/es/" class="lang-link" title="Español">
-                        <svg class="flag" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480">
-                            <path fill="#c60b1e" d="M0 0h640v480H0z"/>
-                            <path fill="#ffc400" d="M0 120h640v240H0z"/>
-                        </svg>
-                        ES
-                    </a>
-                    <a href="https://www.martinaberastegue.com/" class="lang-link active" title="English">
-                        <svg class="flag" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480">
-                            <path fill="#012169" d="M0 0h640v480H0z"/>
-                            <path fill="#FFF" d="m75 0 244 181L562 0h78v62L400 241l240 178v61h-80L320 301 81 480H0v-60l239-178L0 64V0h75z"/>
-                            <path fill="#C8102E" d="m424 281 216 159v40L369 281h55zm-184 20 6 35L54 480H0l240-179zM640 0v3L391 191l2-44L590 0h50zM0 0l239 176h-60L0 42V0z"/>
-                            <path fill="#FFF" d="M241 0v480h160V0H241zM0 160v160h640V160H0z"/>
-                            <path fill="#C8102E" d="M0 193v96h640v-96H0zM273 0v480h96V0h-96z"/>
-                        </svg>
-                        EN
-                    </a>
-                </div>
-                <a href="https://www.linkedin.com/in/aberastegue/" class="get-in-touch" rel="noreferrer noopener" title="Get in Touch">
-                    <i class="fas fa-envelope icon"></i>
-                    <span class="text">Get in Touch</span>
-                </a>
-            </div>
-        </nav>
-    </header>
 
-    <div class="container main-content">
-        <header class="page-header">
-            <h1 class="page-title">Notes & Articles</h1>
-            <p class="page-description">Welcome to my personal collection of notes and articles. Here I share insights, reflections, and findings on topics I'm passionate about, including technology, web development, security, and digital trends. Hope you find something useful or thought-provoking!</p>
-        </header>
-
-        <ul class="article-list">
-            <li class="article-list-item">
-                <a href="supaexplorer-supabase-api-keys-security-testing.html" class="article-list-image-link">
-                    <img src="/images/notes/supaexplorer-preview.png" alt="SupaExplorer: Building a Supabase Security Testing & API Key Leak Detector Extension" class="article-list-image" loading="lazy">
-                </a>
-                <div class="article-list-content">
-                    <a href="supaexplorer-supabase-api-keys-security-testing.html" class="article-list-title">SupaExplorer: Building a Supabase Security Testing & API Key Leak Detector Extension</a>
-                    <div class="article-list-meta">
-                        <time datetime="2025-11-03">Nov 3, 2025</time>
-                        <span> • </span>
-                        <span>15 min read</span>
-                    </div>
-                    <p class="article-list-description">How I built SupaExplorer, a Chrome extension for security testing Supabase databases and detecting API key leaks across 30+ services without leaving the browser.</p>
-                    <a href="supaexplorer-supabase-api-keys-security-testing.html" class="read-more-link">Read article &rarr;</a>
-                </div>
-            </li>
-
-            <li class="article-list-item">
-                <a href="building-stealth-phishing-detection-system.html" class="article-list-image-link">
-                    <img src="/images/notes/building-stealth-phishing-detection-system.png" alt="How I built a Stealth Phishing Detection System" class="article-list-image" loading="lazy">
-                </a>
-                <div class="article-list-content">
-                    <a href="building-stealth-phishing-detection-system.html" class="article-list-title">How I built a Stealth Phishing Detection System</a>
-                    <div class="article-list-meta">
-                        <time datetime="2025-09-01">Sep 1, 2025</time>
-                        <span> • </span>
-                        <span>15 min read</span>
-                    </div>
-                    <p class="article-list-description">A detailed guide on building a stealth phishing detection system using web beacons and Cloudflare Workers, designed for small and medium businesses.</p>
-                    <a href="building-stealth-phishing-detection-system.html" class="read-more-link">Read article &rarr;</a>
-                </div>
-            </li>
-
-            <li class="article-list-item">
-                <a href="url-abstraction-phishing-risks.html" class="article-list-image-link">
-                    <img src="/images/notes/main_clean-urls-vs-epiarc.png" alt="Illustration comparing clean URLs vs Epiarc abstraction" class="article-list-image" loading="lazy">
-                </a>
-                <div class="article-list-content">
-                    <a href="url-abstraction-phishing-risks.html" class="article-list-title">The Hidden Danger of URL Abstraction: How Epiarc Could Backfire Against Phishing</a>
-                    <div class="article-list-meta">
-                        <time datetime="2025-05-17">May 17, 2025</time>
-                        <span> • </span>
-                        <span>10 min read</span>
-                    </div>
-                    <p class="article-list-description">An analysis of how URL abstraction systems like Epiarc could potentially increase phishing risks instead of reducing them, and why transparency might be a better approach.</p>
-                    <a href="url-abstraction-phishing-risks.html" class="read-more-link">Read article &rarr;</a>
-                </div>
-            </li>
-            <!-- More articles will be listed here -->
-        </ul>
-    </div>
-
-    <footer class="footer">
-        <div class="footer-content">
-            <p>© 2002 - 2025 Martin Aberastegue</p>
-            <button class="theme-toggle footer-theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
-                <i class="fas fa-moon"></i>
-                <span class="theme-text">Toggle Theme</span>
-            </button>
+  <header class="navbar" id="navbar">
+    <div class="container navbar__inner">
+      <a href="https://www.martinaberastegue.com/" class="navbar__logo">Martin Aberastegue<span class="navbar__logo-dot">.</span></a>
+      <div class="navbar__right">
+        <div class="navbar__lang">
+          <svg class="navbar__lang-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <a href="https://www.martinaberastegue.com/" class="navbar__lang-link navbar__lang-link--active" title="English">EN</a>
+          <span class="navbar__lang-sep">/</span>
+          <a href="https://www.martinaberastegue.com/es/" class="navbar__lang-link" title="Español">ES</a>
         </div>
-    </footer>
+        <a href="https://www.linkedin.com/in/aberastegue/" class="btn btn--primary btn--nav" rel="noreferrer noopener" title="Get in Touch">
+          <i class="fas fa-envelope btn__icon-only"></i>
+          <span class="btn__label">Get in Touch</span>
+        </a>
+      </div>
+    </div>
+  </header>
 
-    <script>
-        function toggleTheme() {
-            document.documentElement.classList.toggle('dark');
-            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-            updateThemeIcon();
-        }
+  <main>
+    <section class="section notes-page">
+      <div class="container">
+        <span class="section__label">Notes</span>
+        <h1 class="section__title">Notes & Articles</h1>
+        <p class="notes-page__intro">Insights and findings on technology, web development, security, and digital trends.</p>
 
-        function updateThemeIcon() {
-            const isDark = document.documentElement.classList.contains('dark');
-            const themeIcons = document.querySelectorAll('.theme-toggle i');
-            themeIcons.forEach(icon => {
-                icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
-            });
-        }
+        <div class="notes-page__list">
 
-        // Check for saved theme preference
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        if (savedTheme === 'dark') {
-            document.documentElement.classList.add('dark');
-        }
-        updateThemeIcon();
-    </script>
+          <a href="supaexplorer-supabase-api-keys-security-testing.html" class="article-card fade-in">
+            <div class="article-card__image">
+              <img src="/images/notes/supaexplorer-preview.png" alt="SupaExplorer: Building a Supabase Security Testing & API Key Leak Detector Extension" loading="lazy">
+            </div>
+            <div class="article-card__body">
+              <h2 class="article-card__title">SupaExplorer: Building a Supabase Security Testing & API Key Leak Detector Extension</h2>
+              <p class="article-card__meta"><time datetime="2025-11-03">Nov 3, 2025</time> · 15 min read</p>
+              <p class="article-card__desc">How I built SupaExplorer, a Chrome extension for security testing Supabase databases and detecting API key leaks across 30+ services without leaving the browser.</p>
+            </div>
+          </a>
 
-    <!-- Schema.org data -->
-    <script type="application/ld+json">
-    {
-        "@context": "http://schema.org",
-        "@type": "WebPage",
-        "name": "Notes - Martin Aberastegue",
-        "description": "A collection of notes and articles by Martin Aberastegue on various topics including technology, security, and web development.",
-        "url": "https://www.martinaberastegue.com/notes/",
-        "author": {
-            "@type": "Person",
-            "name": "Martin Aberastegue",
-            "url": "https://www.martinaberastegue.com"
-        },
-        "publisher": {
-            "@type": "Organization",
-            "name": "Martin Aberastegue",
-            "logo": {
-                "@type": "ImageObject",
-                "url": "https://www.martinaberastegue.com/images/martin-aberastegue.jpg" 
-            }
-        },
-        "mainEntity": {
-            "@type": "ItemList",
-            "itemListElement": [
-                {
-                    "@type": "ListItem",
-                    "position": 1,
-                    "item": {
-                        "@type": "Article",
-                        "headline": "The Hidden Danger of URL Abstraction: How Epiarc Could Backfire Against Phishing",
-                        "url": "https://www.martinaberastegue.com/notes/url-abstraction-phishing-risks.html",
-                        "datePublished": "2025-05-17",
-                        "description": "An analysis of how URL abstraction systems like Epiarc could potentially increase phishing risks instead of reducing them, and why transparency might be a better approach.",
-                         "image": "https://www.martinaberastegue.com/images/notes/main_clean-urls-vs-epiarc.png",
-                         "author": {
-                            "@type": "Person",
-                            "name": "Martin Aberastegue"
-                         }
-                    }
-                }
-            ]
-        }
-    }
-    </script>
+          <a href="building-stealth-phishing-detection-system.html" class="article-card fade-in">
+            <div class="article-card__image">
+              <img src="/images/notes/building-stealth-phishing-detection-system.png" alt="How I built a Stealth Phishing Detection System" loading="lazy">
+            </div>
+            <div class="article-card__body">
+              <h2 class="article-card__title">How I Built a Stealth Phishing Detection System</h2>
+              <p class="article-card__meta"><time datetime="2025-09-01">Sep 1, 2025</time> · 15 min read</p>
+              <p class="article-card__desc">A detailed guide on building a stealth phishing detection system using web beacons and Cloudflare Workers, designed for small and medium businesses.</p>
+            </div>
+          </a>
+
+          <a href="url-abstraction-phishing-risks.html" class="article-card fade-in">
+            <div class="article-card__image">
+              <img src="/images/notes/main_clean-urls-vs-epiarc.png" alt="Illustration comparing clean URLs vs Epiarc abstraction" loading="lazy">
+            </div>
+            <div class="article-card__body">
+              <h2 class="article-card__title">The Hidden Danger of URL Abstraction: How Epiarc Could Backfire Against Phishing</h2>
+              <p class="article-card__meta"><time datetime="2025-05-17">May 17, 2025</time> · 10 min read</p>
+              <p class="article-card__desc">An analysis of how URL abstraction systems like Epiarc could potentially increase phishing risks instead of reducing them, and why transparency might be a better approach.</p>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <span class="footer__logo">Martin Aberastegue<span class="navbar__logo-dot">.</span></span>
+        <span class="footer__copy">© 2002 - 2026</span>
+      </div>
+      <button class="footer__theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+        <i class="fas fa-moon"></i>
+        <span>Toggle Theme</span>
+      </button>
+    </div>
+  </footer>
+
+  <script src="../main.js"></script>
+
+  <script type="application/ld+json">
+  {
+      "@context": "http://schema.org",
+      "@type": "WebPage",
+      "name": "Notes - Martin Aberastegue",
+      "description": "A collection of notes and articles by Martin Aberastegue on various topics including technology, security, and web development.",
+      "url": "https://www.martinaberastegue.com/notes/",
+      "author": {
+          "@type": "Person",
+          "name": "Martin Aberastegue",
+          "url": "https://www.martinaberastegue.com"
+      },
+      "publisher": {
+          "@type": "Organization",
+          "name": "Martin Aberastegue",
+          "logo": {
+              "@type": "ImageObject",
+              "url": "https://www.martinaberastegue.com/images/martin-aberastegue.jpg"
+          }
+      },
+      "mainEntity": {
+          "@type": "ItemList",
+          "itemListElement": [
+              {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "item": {
+                      "@type": "Article",
+                      "headline": "SupaExplorer: Building a Supabase Security Testing & API Key Leak Detector Extension",
+                      "url": "https://www.martinaberastegue.com/notes/supaexplorer-supabase-api-keys-security-testing.html",
+                      "datePublished": "2025-11-03",
+                      "description": "How I built SupaExplorer, a Chrome extension for security testing Supabase databases and detecting API key leaks across 30+ services without leaving the browser.",
+                      "image": "https://www.martinaberastegue.com/images/notes/supaexplorer-preview.png",
+                      "author": { "@type": "Person", "name": "Martin Aberastegue" }
+                  }
+              },
+              {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "item": {
+                      "@type": "Article",
+                      "headline": "How I built a Stealth Phishing Detection System",
+                      "url": "https://www.martinaberastegue.com/notes/building-stealth-phishing-detection-system.html",
+                      "datePublished": "2025-09-01",
+                      "description": "A detailed guide on building a stealth phishing detection system using web beacons and Cloudflare Workers, designed for small and medium businesses.",
+                      "image": "https://www.martinaberastegue.com/images/notes/building-stealth-phishing-detection-system.png",
+                      "author": { "@type": "Person", "name": "Martin Aberastegue" }
+                  }
+              },
+              {
+                  "@type": "ListItem",
+                  "position": 3,
+                  "item": {
+                      "@type": "Article",
+                      "headline": "The Hidden Danger of URL Abstraction: How Epiarc Could Backfire Against Phishing",
+                      "url": "https://www.martinaberastegue.com/notes/url-abstraction-phishing-risks.html",
+                      "datePublished": "2025-05-17",
+                      "description": "An analysis of how URL abstraction systems like Epiarc could potentially increase phishing risks instead of reducing them, and why transparency might be a better approach.",
+                      "image": "https://www.martinaberastegue.com/images/notes/main_clean-urls-vs-epiarc.png",
+                      "author": { "@type": "Person", "name": "Martin Aberastegue" }
+                  }
+              }
+          ]
+      }
+  }
+  </script>
 </body>
-</html> 
+</html>

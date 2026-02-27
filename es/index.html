@@ -1,1303 +1,552 @@
 <!DOCTYPE html>
-<html lang="es" class="light">
+<html lang="es">
 <head>
-    <meta charset="utf-8">
-    <title>Martin Aberastegue - Experto en SEO y Tecnología de Marketing</title>
-    <meta name="description" content="Martin Aberastegue. Consultor en Marketing y Tecnología. Especialista en SEO y MarTech. Consultoría, Capacitaciones. +23 años de experiencia." />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Martin Aberastegue - Experto en SEO y Tecnología de Marketing" />
-    <meta property="og:description" content="Martin Aberastegue. Consultor en Marketing y Tecnología. Especialista en SEO y MarTech. Consultoría, Capacitaciones. +23 años de experiencia." />
-    <meta property="og:url" content="https://www.martinaberastegue.com/es/" />
-    <meta property="og:site_name" content="Martin Aberastegue 🚀" />
-    <meta name="image" property="og:image" content="https://www.martinaberastegue.com/images/martin-aberastegue.jpg" />
-    <meta name="author" content="Martin Aberastegue">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="canonical" href="https://www.martinaberastegue.com/es/" />
-    <link rel="alternate" hreflang="x-default" href="https://www.martinaberastegue.com/"/>
-    <link rel="alternate" hreflang="es" href="https://www.martinaberastegue.com/es/"/>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Ctext%20x='0'%20y='14'%3E🚀%3C/text%3E%3C/svg%3E" type="image/svg+xml" />
-    <style>
-      :root {
-          --primary: #6366F1;
-          --text: #1f2937;
-          --background: #ffffff;
-          --secondary-bg: #f8fafc;
-          --border: #e2e8f0;
-          --card-bg: #ffffff;
-          --highlight: #818cf8;
-      }
-
-      .dark {
-          --primary: #818cf8;
-          --text: #f8fafc;
-          --background: #0f172a;
-          --secondary-bg: #1e293b;
-          --border: #334155;
-          --card-bg: #1e293b;
-          --highlight: #6366F1;
-      }
-
-      * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-      }
-
-      body {
-          font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-          background-color: var(--background);
-          color: var(--text);
-          line-height: 1.6;
-          transition: all 0.3s ease;
-      }
-
-      .container {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 0 2rem;
-      }
-
-      .header {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          background-color: var(--background);
-          backdrop-filter: blur(10px);
-          z-index: 100;
-          border-bottom: 1px solid var(--border);
-      }
-
-      .nav-links {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 0.75rem 2rem;
-          max-width: 1200px;
-          margin: 0 auto;
-          flex-wrap: nowrap;
-      }
-
-      .nav-left {
-          display: flex;
-          align-items: center;
-          gap: 2rem;
-      }
-
-      .nav-right {
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          margin-left: auto;
-      }
-
-      .brand {
-          font-size: 1.25rem;
-          font-weight: 600;
-          color: var(--primary);
-          text-decoration: none;
-          white-space: nowrap;
-      }
-
-      .nav-link {
-          color: var(--text);
-          text-decoration: none;
-          font-size: 0.875rem;
-          font-weight: 500;
-          opacity: 0.8;
-          transition: opacity 0.3s ease;
-      }
-
-      .nav-link:hover {
-          opacity: 1;
-      }
-
-      .nav-button {
-          background: none;
-          border: none;
-          cursor: pointer;
-          padding: 0.5rem;
-          font-size: 1.25rem;
-          color: var(--text);
-          opacity: 0.8;
-          transition: all 0.3s ease;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 2.5rem;
-          height: 2.5rem;
-          border-radius: 0.5rem;
-      }
-
-      .nav-button:hover {
-          opacity: 1;
-          background: var(--secondary-bg);
-          transform: translateY(-1px);
-      }
-
-      .nav-button.primary {
-          background: var(--primary);
-          color: white;
-          opacity: 1;
-      }
-
-      .nav-button.primary:hover {
-          background: var(--highlight);
-      }
-
-      .main-content {
-          margin-top: 5rem;
-      }
-
-      .hero {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 4rem;
-          align-items: center;
-          padding: 4rem 0;
-      }
-
-      .hero-content h1 {
-          font-size: 3.5rem;
-          font-weight: 700;
-          margin-bottom: 1rem;
-          background: linear-gradient(135deg, var(--primary) 0%, #818cf8 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          line-height: 1.2;
-      }
-
-      .hero-content h2 {
-          font-size: 1.5rem;
-          color: var(--text);
-          font-weight: 500;
-          margin-bottom: 1.5rem;
-      }
-
-      .hero-content p {
-          color: var(--text);
-          opacity: 0.8;
-          margin-bottom: 2rem;
-          font-size: 1.125rem;
-      }
-
-      .social-links {
-          display: flex;
-          gap: 2rem;
-          margin-top: 2rem;
-      }
-
-      .social-link {
-          color: var(--text);
-          text-decoration: none;
-          font-size: 1.5rem;
-          opacity: 0.8;
-          transition: all 0.3s ease;
-      }
-
-      .social-link:hover {
-          color: var(--primary);
-          opacity: 1;
-          transform: translateY(-2px);
-      }
-
-      .hero-image {
-          position: relative;
-          border-radius: 1rem;
-          overflow: hidden;
-          aspect-ratio: 4/3;
-      }
-
-      .hero-image img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          transition: transform 0.3s ease;
-      }
-
-      .section {
-          padding: 4rem 0;
-      }
-
-      .section-title {
-          font-size: 2rem;
-          font-weight: 600;
-          margin-bottom: 3rem;
-          color: var(--text);
-      }
-
-      .projects-grid {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 2rem;
-      }
-
-      .project-card {
-          background: var(--card-bg);
-          border: 1px solid var(--border);
-          border-radius: 1rem;
-          overflow: hidden;
-          text-decoration: none;
-          transition: all 0.3s ease;
-          display: flex;
-          flex-direction: column;
-      }
-
-      .project-card:hover {
-          transform: translateY(-5px);
-          border-color: var(--primary);
-          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-      }
-
-      .project-image {
-          width: 100%;
-          aspect-ratio: 16/9;
-          background: var(--secondary-bg);
-          position: relative;
-      }
-
-      .project-image img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-      }
-
-      .project-content {
-          padding: 1.5rem;
-      }
-
-      .featured-overlay {
-          position: absolute;
-          top: 1rem;
-          right: 1rem;
-          background: #22c55e;
-          background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-          color: white;
-          padding: 0.5rem 1rem;
-          border-radius: 2rem;
-          font-size: 0.75rem;
-          font-weight: 500;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          z-index: 10;
-          box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
-      }
-
-      .featured-overlay i {
-          font-size: 0.875rem;
-      }
-
-      .project-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.5rem;
-          color: var(--text);
-          padding: 0.5rem 1rem;
-          border-radius: 2rem;
-          font-size: 0.75rem;
-          font-weight: 500;
-          margin-bottom: 1rem;
-          transition: all 0.3s ease;
-      }
-
-      /* Pet Tech */
-      .project-badge i.fa-dog {
-          color: #8b5cf6;
-      }
-      .project-badge:has(.fa-dog) {
-          background: rgba(139, 92, 246, 0.1);
-      }
-
-      /* Security/Identity */
-      .project-badge i.fa-shield-alt {
-          color: #3b82f6;
-      }
-      .project-badge:has(.fa-shield-alt) {
-          background: rgba(59, 130, 246, 0.1);
-      }
-
-      /* Travel */
-      .project-badge i.fa-plane-departure,
-      .project-badge i.fa-plane,
-      .project-badge i.fa-globe {
-          color: #ec4899;
-      }
-      .project-badge:has(.fa-plane-departure),
-      .project-badge:has(.fa-plane),
-      .project-badge:has(.fa-globe) {
-          background: rgba(236, 72, 153, 0.1);
-      }
-
-      /* Social/Links */
-      .project-badge i.fa-link {
-          color: #f59e0b;
-      }
-      .project-badge:has(.fa-link) {
-          background: rgba(245, 158, 11, 0.1);
-      }
-
-      /* Jobs */
-      .project-badge i.fa-briefcase {
-          color: #10b981;
-      }
-      .project-badge:has(.fa-briefcase) {
-          background: rgba(16, 185, 129, 0.1);
-      }
-
-      /* Citizenship */
-      .project-badge i.fa-passport {
-          color: #6366f1;
-      }
-      .project-badge:has(.fa-passport) {
-          background: rgba(99, 102, 241, 0.1);
-      }
-
-      /* Security Blog */
-      .project-badge i.fa-lock {
-          color: #dc2626;
-      }
-      .project-badge:has(.fa-lock) {
-          background: rgba(220, 38, 38, 0.1);
-      }
-
-      .project-badge:hover {
-          transform: translateY(-1px);
-          opacity: 1;
-      }
-
-      .project-title {
-          color: var(--text);
-          font-size: 1.25rem;
-          font-weight: 600;
-          margin-bottom: 0.5rem;
-      }
-
-      .project-description {
-          color: var(--text);
-          opacity: 0.8;
-          font-size: 0.875rem;
-      }
-
-      .contact-section {
-          text-align: center;
-          padding: 4rem 2rem;
-          background: var(--secondary-bg);
-          border-radius: 1.5rem;
-          margin: 4rem 0;
-          position: relative;
-          overflow: hidden;
-      }
-
-      .contact-section::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 1px;
-          background: linear-gradient(90deg, transparent, var(--primary), transparent);
-      }
-
-      .contact-section::after {
-          content: '';
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          height: 1px;
-          background: linear-gradient(90deg, transparent, var(--primary), transparent);
-      }
-
-      .contact-section .section-title {
-          margin-bottom: 1.5rem;
-      }
-
-      .contact-section p {
-          max-width: 600px;
-          margin: 0 auto 2rem;
-          opacity: 0.8;
-          font-size: 1.125rem;
-      }
-
-      .contact-button {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.75rem;
-          background: var(--primary);
-          color: white;
-          padding: 1rem 2rem;
-          border-radius: 0.75rem;
-          text-decoration: none;
-          font-weight: 500;
-          transition: all 0.3s ease;
-          font-size: 1.125rem;
-      }
-
-      .contact-button:hover {
-          background: var(--highlight);
-          transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
-      }
-
-      .contact-button i {
-          font-size: 1.25rem;
-      }
-
-      .footer {
-          text-align: center;
-          padding: 3rem 0;
-          margin-top: 2rem;
-          position: relative;
-      }
-
-      .footer::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 200px;
-          height: 1px;
-          background: linear-gradient(90deg, transparent, var(--border), transparent);
-      }
-
-      .footer-content {
-          display: flex;
-          flex-direction: column;
-          gap: 1.5rem;
-          align-items: center;
-      }
-
-      .footer p {
-          color: var(--text);
-          opacity: 0.8;
-          font-size: 0.875rem;
-      }
-
-      .language-switcher {
-          display: flex;
-          gap: 0.25rem;
-          margin-right: 0.75rem;
-          background: var(--card-bg);
-          border: 1px solid var(--border);
-          padding: 0.25rem;
-          border-radius: 2rem;
-      }
-
-      .lang-link {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.375rem;
-          padding: 0.375rem 0.75rem;
-          border-radius: 1.5rem;
-          font-size: 0.75rem;
-          font-weight: 500;
-          color: var(--text);
-          text-decoration: none;
-          transition: all 0.2s ease;
-          opacity: 0.7;
-      }
-
-      .lang-link:hover {
-          opacity: 1;
-          transform: translateY(-1px);
-      }
-
-      .lang-link.active {
-          background: var(--primary);
-          color: white;
-          opacity: 1;
-      }
-
-      .lang-link .flag {
-          width: 1rem;
-          height: 0.75rem;
-          border-radius: 2px;
-          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-      }
-
-      @media (max-width: 768px) {
-          .contact-section {
-              padding: 3rem 1.5rem;
-              margin: 2rem 0;
-          }
-
-          .contact-section p {
-              font-size: 1rem;
-          }
-
-          .contact-button {
-              padding: 0.875rem 1.75rem;
-              font-size: 1rem;
-          }
-
-          .footer {
-              padding: 2rem 0;
-          }
-
-          .language-switcher {
-              margin-right: 0.75rem;
-              padding: 0.25rem;
-          }
-
-          .lang-link {
-              padding: 0.375rem 0.625rem;
-          }
-
-          .footer-theme-toggle {
-              padding: 0.375rem 0.75rem;
-              font-size: 0.75rem;
-          }
-
-          .theme-text {
-              font-size: 0.75rem;
-          }
-
-          .nav-right {
-              gap: 0.75rem;
-          }
-      }
-
-      .get-in-touch {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.5rem;
-          background: var(--primary);
-          color: white !important;
-          padding: 0.5rem 1rem;
-          border-radius: 0.5rem;
-          font-weight: 500;
-          text-decoration: none;
-          opacity: 1 !important;
-          transition: all 0.3s ease;
-      }
-
-      .get-in-touch:hover {
-          background: var(--highlight);
-          transform: translateY(-2px);
-      }
-
-      .get-in-touch .icon {
-          display: none;
-      }
-
-      .get-in-touch .text {
-          display: inline;
-      }
-
-      .theme-toggle {
-          background: none;
-          border: none;
-          cursor: pointer;
-          padding: 0.5rem;
-          font-size: 1.25rem;
-          color: var(--text);
-          opacity: 0.8;
-          transition: all 0.3s ease;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-      }
-
-      .theme-toggle:hover {
-          opacity: 1;
-      }
-
-      @media (max-width: 768px) {
-          .container {
-              padding: 0 1rem;
-          }
-
-          .nav-links {
-              padding: 0.75rem 1rem;
-              justify-content: space-between;
-          }
-
-          .nav-right {
-              margin-left: auto;
-          }
-
-          .nav-left, .nav-right {
-              width: auto;
-              justify-content: flex-end;
-          }
-
-          .header {
-              padding: 0;
-          }
-
-          .main-content {
-              margin-top: 6rem;
-          }
-
-          .hero {
-              grid-template-columns: 1fr;
-              text-align: center;
-              gap: 2rem;
-              padding: 2rem 0;
-          }
-
-          .hero-content {
-              order: 2;
-          }
-
-          .hero-image {
-              order: 1;
-          }
-
-          .social-links {
-              justify-content: center;
-              gap: 2.5rem;
-          }
-
-          .social-link {
-              font-size: 1.75rem;
-          }
-
-          .featured-overlay {
-              top: 0.75rem;
-              right: 0.75rem;
-              padding: 0.375rem 0.75rem;
-          }
-
-          .projects-grid {
-              grid-template-columns: 1fr;
-          }
-
-          .get-in-touch {
-              padding: 0.5rem;
-              width: 2.5rem;
-              height: 2.5rem;
-              justify-content: center;
-              border-radius: 0.5rem;
-          }
-
-          .get-in-touch .icon {
-              display: block;
-              font-size: 1.25rem;
-          }
-
-          .get-in-touch .text {
-              display: none;
-          }
-
-          .section {
-              padding: 2rem 0;
-          }
-      }
-
-      .badge-filters {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 0.75rem;
-          margin-bottom: 2rem;
-          justify-content: center;
-      }
-
-      .badge-filter {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.5rem;
-          padding: 0.5rem 1rem;
-          border-radius: 2rem;
-          font-size: 0.875rem;
-          font-weight: 500;
-          background: var(--card-bg);
-          border: 1px solid var(--border);
-          color: var(--text);
-          cursor: pointer;
-          transition: all 0.3s ease;
-          opacity: 0.7;
-      }
-
-      .badge-filter:hover {
-          opacity: 1;
-          transform: translateY(-1px);
-      }
-
-      .badge-filter.active {
-          background: var(--primary);
-          color: white;
-          border-color: var(--primary);
-          opacity: 1;
-      }
-
-      @media (max-width: 768px) {
-          .badge-filters {
-              gap: 0.5rem;
-          }
-
-          .badge-filter {
-              font-size: 0.75rem;
-              padding: 0.375rem 0.75rem;
-          }
-      }
-
-      /* Family & Kids */
-      .project-badge i.fa-child {
-          color: #ff7e5f;
-      }
-      .project-badge:has(.fa-child) {
-          background: rgba(255, 126, 95, 0.1);
-      }
-
-      /* Analytics Tools */
-      .project-badge i.fa-chart-bar {
-          color: #8b5cf6;
-      }
-      .project-badge:has(.fa-chart-bar) {
-          background: rgba(139, 92, 246, 0.1);
-      }
-
-      .stealth-projects {
-          text-align: center;
-          color: var(--text);
-          opacity: 0.7;
-          font-size: 0.875rem;
-          margin-top: 2rem;
-          font-style: italic;
-      }
-
-      .nav-language-links {
-          margin-right: 1rem;
-      }
-
-      .nav-language-links .language-link {
-          padding: 0.5rem;
-          font-size: 0.75rem;
-      }
-
-      .nav-language-links .flag {
-          width: 1rem;
-          height: 0.75rem;
-      }
-
-      @media (max-width: 768px) {
-          .nav-language-links {
-              margin-right: 0.5rem;
-          }
-          
-          .nav-language-links .language-link {
-              padding: 0.25rem;
-          }
-          
-          .language-link .flag {
-              width: 1rem;
-              height: 0.75rem;
-          }
-      }
-
-      .footer-theme-toggle {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.5rem;
-          padding: 0.5rem 1rem;
-          border-radius: 2rem;
-          background: var(--card-bg);
-          border: 1px solid var(--border);
-          margin-top: 1rem;
-          font-size: 0.875rem;
-      }
-
-      .footer-theme-toggle:hover {
-          background: var(--secondary-bg);
-          transform: translateY(-1px);
-      }
-
-      .theme-text {
-          font-size: 0.875rem;
-          font-weight: 500;
-      }
-      @media (max-width: 600px) {
-            .book-embed-container {
-                margin: 10px !important;
-                border-radius: 8px !important;
-            }
-            .book-embed-badge {
-                top: 8px !important;
-                right: 8px !important;
-                padding: 4px 10px !important;
-                font-size: 0.7em !important;
-            }
-            .book-embed-content {
-                flex-direction: column !important;
-                text-align: center !important;
-                padding: 15px !important;
-                gap: 15px !important;
-            }
-            .book-embed-image {
-                width: 140px !important;
-                margin: 0 auto !important;
-            }
-            .book-embed-text {
-                padding-right: 0 !important;
-            }
-            .book-embed-title {
-                font-size: 1.4em !important;
-            }
-            .book-embed-author {
-                font-size: 0.9em !important;
-            }
-            .book-embed-tagline {
-                font-size: 1em !important;
-                margin-bottom: 20px !important;
-            }
-            .book-embed-button {
-                padding: 14px 32px !important;
-                font-size: 1em !important;
-            }
-        }
-    </style>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-126284-9"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'UA-126284-9');
-    </script>
+  <meta charset="utf-8">
+  <title>Martin Aberastegue - Experto en SEO y Tecnología de Marketing</title>
+  <meta name="description" content="Martin Aberastegue. Consultor en Marketing y Tecnología. Especialista en SEO y MarTech. Consultoría, Capacitaciones. +23 años de experiencia.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Martin Aberastegue - Experto en SEO y Tecnología de Marketing">
+  <meta property="og:description" content="Martin Aberastegue. Consultor en Marketing y Tecnología. Especialista en SEO y MarTech. Consultoría, Capacitaciones. +23 años de experiencia.">
+  <meta property="og:url" content="https://www.martinaberastegue.com/es/">
+  <meta property="og:site_name" content="Martin Aberastegue">
+  <meta name="image" property="og:image" content="https://www.martinaberastegue.com/images/martin-aberastegue.jpg">
+  <meta name="author" content="Martin Aberastegue">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://www.martinaberastegue.com/es/">
+  <link rel="alternate" hreflang="x-default" href="https://www.martinaberastegue.com/">
+  <link rel="alternate" hreflang="es" href="https://www.martinaberastegue.com/es/">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Ctext%20x='0'%20y='14'%3E🚀%3C/text%3E%3C/svg%3E" type="image/svg+xml">
+
+  <link rel="stylesheet" href="../style.css">
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-126284-9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-126284-9');
+  </script>
 </head>
 <body>
-    <header class="header">
-        <nav class="nav-links">
-            <a href="https://www.martinaberastegue.com/" class="brand">Martin Aberastegue</a>
-            <div class="nav-right">
-                <div class="language-switcher">
-                    <a href="https://www.martinaberastegue.com/es/" class="lang-link active" title="Español">
-                        <svg class="flag" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480">
-                            <path fill="#c60b1e" d="M0 0h640v480H0z"/>
-                            <path fill="#ffc400" d="M0 120h640v240H0z"/>
-                        </svg>
-                        ES
-                    </a>
-                    <a href="https://www.martinaberastegue.com/" class="lang-link" title="English">
-                        <svg class="flag" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480">
-                            <path fill="#012169" d="M0 0h640v480H0z"/>
-                            <path fill="#FFF" d="m75 0 244 181L562 0h78v62L400 241l240 178v61h-80L320 301 81 480H0v-60l239-178L0 64V0h75z"/>
-                            <path fill="#C8102E" d="m424 281 216 159v40L369 281h55zm-184 20 6 35L54 480H0l240-179zM640 0v3L391 191l2-44L590 0h50zM0 0l239 176h-60L0 42V0z"/>
-                            <path fill="#FFF" d="M241 0v480h160V0H241zM0 160v160h640V160H0z"/>
-                            <path fill="#C8102E" d="M0 193v96h640v-96H0zM273 0v480h96V0h-96z"/>
-                        </svg>
-                        EN
-                    </a>
-                </div>
-                <a href="https://www.linkedin.com/in/aberastegue/" class="get-in-touch" rel="noreferrer noopener" title="Contactar">
-                    <i class="fas fa-envelope icon"></i>
-                    <span class="text">Contactar</span>
-                </a>
-            </div>
-        </nav>
-    </header>
 
-    <div class="container main-content">
-        <section class="hero">
-            <div class="hero-content">
-                <h1>Martin Aberastegue</h1>
-                <h2>Experto en SEO y Tecnología de Marketing</h2>
-                <p>Con más de 23 años de experiencia en tecnología de marketing, me especializo en <strong>SEO</strong>, <strong>MarTech</strong> y <strong>Estrategia Digital</strong>. Desde Alemania, ayudo a empresas de todo el mundo a alcanzar sus objetivos digitales.</p>
-                <div class="social-links">
-                    <a href="https://www.linkedin.com/in/aberastegue/" class="social-link" rel="noreferrer noopener" title="LinkedIn">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                    <a href="https://x.com/Xyborg" class="social-link" rel="noreferrer noopener" title="Twitter">
-                        <i class="fab fa-x-twitter"></i>
-                    </a>
-                    <a href="https://www.instagram.com/aberastegue/" class="social-link" rel="noreferrer noopener" title="Instagram">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="https://github.com/Xyborg" class="social-link" rel="noreferrer noopener" title="GitHub">
-                        <i class="fab fa-github"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="hero-image">
-                <img src="https://www.martinaberastegue.com/images/martin-aberastegue.webp" alt="Martin Aberastegue" loading="lazy">
-            </div>
-        </section>
+  <!-- Navbar -->
+  <header class="navbar" id="navbar">
+    <div class="container navbar__inner">
+      <a href="https://www.martinaberastegue.com/" class="navbar__logo">Martin Aberastegue<span class="navbar__logo-dot">.</span></a>
+      <div class="navbar__right">
+        <div class="navbar__lang">
+          <svg class="navbar__lang-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <a href="https://www.martinaberastegue.com/" class="navbar__lang-link" title="English">EN</a>
+          <span class="navbar__lang-sep">/</span>
+          <a href="https://www.martinaberastegue.com/es/" class="navbar__lang-link navbar__lang-link--active" title="Español">ES</a>
+        </div>
+        <a href="https://www.linkedin.com/in/aberastegue/" class="btn btn--primary btn--nav" rel="noreferrer noopener" title="Contactar">
+          <i class="fas fa-envelope btn__icon-only"></i>
+          <span class="btn__label">Contactar</span>
+        </a>
+      </div>
+    </div>
+  </header>
 
-        <!-- La Paradoja de Medianoche - Embed Code -->
-        <div class="book-embed-container" style="max-width:650px;margin:20px auto;border:1px solid #ddd;border-radius:10px;overflow:hidden;font-family:Arial,sans-serif;box-sizing:border-box;box-shadow:0 4px 12px rgba(0,0,0,0.1);position:relative;">
-            <div class="book-embed-badge" style="position:absolute;top:12px;right:15px;background:linear-gradient(45deg,#ffd700,#ffed4e);color:#1a1a2e;padding:5px 14px;border-radius:15px;font-size:0.75em;font-weight:bold;z-index:10;box-shadow:0 3px 8px rgba(0,0,0,0.25);text-transform:uppercase;letter-spacing:0.5px;">Mi Libro</div>
-            <div class="book-embed-content" style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);color:white;padding:20px;box-sizing:border-box;display:flex;align-items:center;gap:20px;">
-                <div style="flex-shrink:0;">
-                    <img class="book-embed-image" src="https://laparadojademedianoche.com/la-paradoja-de-medianoche-tapa.webp" alt="La Paradoja de Medianoche" style="width:120px;height:auto;border-radius:5px;">
-                </div>
-                <div class="book-embed-text" style="flex:1;padding-right:40px;text-align:center;">
-                    <h3 class="book-embed-title" style="margin:0 0 8px 0;color:#ffd700;font-size:1.3em;font-weight:bold;line-height:1.2;">La Paradoja de Medianoche</h3>
-                    <p class="book-embed-author" style="margin:0 0 12px 0;font-size:0.85em;color:#b8b8b8;font-weight:500;">La llave del tiempo - Martín Aberastegue</p>
-                    <p class="book-embed-tagline" style="margin:0 0 18px 0;font-size:0.9em;color:#ffd700;font-style:italic;line-height:1.3;">¿Y si parte de nuestra historia no hubiera sucedido nunca?</p>
-                    <a class="book-embed-button" href="https://laparadojademedianoche.com/" target="_blank" rel="noopener" style="display:inline-block;background:linear-gradient(45deg,#ff6b6b,#ee5a52);color:white;padding:12px 28px;text-decoration:none;border-radius:30px;font-weight:bold;font-size:0.9em;transition:all 0.3s ease;text-decoration:none;box-shadow:0 4px 12px rgba(255,107,107,0.3);transform:translateY(0);text-transform:uppercase;letter-spacing:0.5px;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(255,107,107,0.4)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 12px rgba(255,107,107,0.3)'">Comprar Ahora</a>
-                </div>
+  <main>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container hero__grid">
+        <div class="hero__content">
+          <h1 class="hero__h1">Martin Aberastegue</h1>
+          <h2 class="hero__title">
+            <span class="hero__title-bold">SEO & Marketing</span>
+            Experto en Tecnología
+          </h2>
+          <p class="hero__subtitle">Con más de 23 años de experiencia en tecnología de marketing, me especializo en <strong>SEO</strong>, <strong>MarTech</strong> y <strong>Estrategia Digital</strong>. Desde Alemania, ayudo a empresas de todo el mundo a alcanzar sus objetivos digitales.</p>
+          <div class="hero__socials">
+            <a href="https://www.linkedin.com/in/aberastegue/" class="hero__social" rel="noreferrer noopener" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            <a href="https://x.com/Xyborg" class="hero__social" rel="noreferrer noopener" title="Twitter"><i class="fab fa-x-twitter"></i></a>
+            <a href="https://www.instagram.com/aberastegue/" class="hero__social" rel="noreferrer noopener" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://github.com/Xyborg" class="hero__social" rel="noreferrer noopener" title="GitHub"><i class="fab fa-github"></i></a>
+          </div>
+        </div>
+        <div class="hero__image">
+          <img src="https://www.martinaberastegue.com/images/martin-aberastegue.webp" alt="Martin Aberastegue" loading="lazy">
+        </div>
+      </div>
+    </section>
+
+    <!-- Book Embed -->
+    <section class="section">
+      <div class="container">
+        <div class="book-embed-container" style="max-width:650px;margin:0 auto;border:1px solid var(--color-border);border-radius:10px;overflow:hidden;font-family:var(--font-main);box-sizing:border-box;box-shadow:0 4px 12px rgba(0,0,0,0.1);position:relative;">
+          <div class="book-embed-badge" style="position:absolute;top:12px;right:15px;background:linear-gradient(45deg,#ffd700,#ffed4e);color:#1a1a2e;padding:5px 14px;border-radius:15px;font-size:0.75em;font-weight:bold;z-index:10;box-shadow:0 3px 8px rgba(0,0,0,0.25);text-transform:uppercase;letter-spacing:0.5px;">Mi Libro</div>
+          <div class="book-embed-content" style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);color:white;padding:20px;box-sizing:border-box;display:flex;align-items:center;gap:20px;">
+            <div style="flex-shrink:0;">
+              <img class="book-embed-image" src="https://laparadojademedianoche.com/la-paradoja-de-medianoche-tapa.webp" alt="La Paradoja de Medianoche" style="width:120px;height:auto;border-radius:5px;">
             </div>
-            <div style="padding:15px;background:white;box-sizing:border-box;">
-                <p style="margin:0;font-size:0.85em;color:#666;line-height:1.4;">Un thriller histórico con tintes de ciencia ficción que desafía todo lo que creemos saber sobre el pasado.</p>
+            <div class="book-embed-text" style="flex:1;padding-right:40px;text-align:center;">
+              <h3 class="book-embed-title" style="margin:0 0 8px 0;color:#ffd700;font-size:1.3em;font-weight:bold;line-height:1.2;">La Paradoja de Medianoche</h3>
+              <p class="book-embed-author" style="margin:0 0 12px 0;font-size:0.85em;color:#b8b8b8;font-weight:500;">La llave del tiempo - Martín Aberastegue</p>
+              <p class="book-embed-tagline" style="margin:0 0 18px 0;font-size:0.9em;color:#ffd700;font-style:italic;line-height:1.3;">¿Y si parte de nuestra historia no hubiera sucedido nunca?</p>
+              <a class="book-embed-button" href="https://laparadojademedianoche.com/" target="_blank" rel="noopener" style="display:inline-block;background:linear-gradient(45deg,#ff6b6b,#ee5a52);color:white;padding:12px 28px;text-decoration:none;border-radius:30px;font-weight:bold;font-size:0.9em;transition:all 0.3s ease;box-shadow:0 4px 12px rgba(255,107,107,0.3);text-transform:uppercase;letter-spacing:0.5px;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(255,107,107,0.4)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 12px rgba(255,107,107,0.3)'">Comprar Ahora</a>
             </div>
+          </div>
+          <div style="padding:15px;background:var(--color-surface);box-sizing:border-box;">
+            <p style="margin:0;font-size:0.85em;color:var(--color-text-secondary);line-height:1.4;">Un thriller histórico con tintes de ciencia ficción que desafía todo lo que creemos saber sobre el pasado.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trabajo Profesional -->
+    <section class="section" id="work">
+      <div class="container">
+        <span class="section__label">Trabajo Profesional</span>
+        <h2 class="section__title">Empresas con las que he trabajado</h2>
+        <p class="section__intro">Proyectos seleccionados de SEO y MarTech a lo largo de mi carrera.</p>
+
+        <div class="logo-grid">
+          <div class="logo-grid__item fade-in">
+            <div class="logo-grid__wrapper">
+              <img src="https://img.logo.dev/petsdeli.de?token=pk_EQtx9dH4Tzi1drokN7vUfA" alt="Pets Deli" loading="lazy">
+            </div>
+            <span class="logo-grid__name">Pets Deli</span>
+          </div>
+          <div class="logo-grid__item fade-in">
+            <div class="logo-grid__wrapper">
+              <img src="https://img.logo.dev/naranjax.com?token=pk_EQtx9dH4Tzi1drokN7vUfA" alt="Naranja X" loading="lazy">
+            </div>
+            <span class="logo-grid__name">Naranja X</span>
+          </div>
+          <div class="logo-grid__item fade-in">
+            <div class="logo-grid__wrapper">
+              <img src="https://img.logo.dev/intel.com?token=pk_EQtx9dH4Tzi1drokN7vUfA" alt="Intel" loading="lazy">
+            </div>
+            <span class="logo-grid__name">Intel</span>
+          </div>
+          <div class="logo-grid__item fade-in">
+            <div class="logo-grid__wrapper">
+              <img src="https://img.logo.dev/comparaencasa.com?token=pk_EQtx9dH4Tzi1drokN7vUfA" alt="Compara en Casa" loading="lazy">
+            </div>
+            <span class="logo-grid__name">Compara en Casa</span>
+          </div>
+          <div class="logo-grid__item fade-in">
+            <div class="logo-grid__wrapper">
+              <img src="https://img.logo.dev/ecipsa.com?token=pk_EQtx9dH4Tzi1drokN7vUfA" alt="Ecipsa" loading="lazy">
+            </div>
+            <span class="logo-grid__name">Ecipsa</span>
+          </div>
+          <div class="logo-grid__item fade-in">
+            <div class="logo-grid__wrapper">
+              <img src="https://img.logo.dev/ubp.edu.ar?token=pk_EQtx9dH4Tzi1drokN7vUfA" alt="Universidad Blas Pascal" loading="lazy">
+            </div>
+            <span class="logo-grid__name">Universidad Blas Pascal</span>
+          </div>
+          <div class="logo-grid__item fade-in">
+            <div class="logo-grid__wrapper">
+              <img src="https://img.logo.dev/neolo.com?token=pk_EQtx9dH4Tzi1drokN7vUfA" alt="Neolo" loading="lazy">
+            </div>
+            <span class="logo-grid__name">Neolo</span>
+          </div>
+          <div class="logo-grid__item fade-in">
+            <div class="logo-grid__wrapper">
+              <img src="https://img.logo.dev/taringa.net?token=pk_EQtx9dH4Tzi1drokN7vUfA" alt="Taringa" loading="lazy">
+            </div>
+            <span class="logo-grid__name">Taringa</span>
+          </div>
+          <div class="logo-grid__item fade-in">
+            <div class="logo-grid__wrapper">
+              <img src="https://img.logo.dev/nycpooch.com?token=pk_EQtx9dH4Tzi1drokN7vUfA" alt="NYC Pooch" loading="lazy">
+            </div>
+            <span class="logo-grid__name">NYC Pooch</span>
+          </div>
+          <div class="logo-grid__item fade-in">
+            <div class="logo-grid__wrapper">
+              <img src="https://img.logo.dev/betanbauer.com?token=pk_EQtx9dH4Tzi1drokN7vUfA" alt="Betan Bauer" loading="lazy">
+            </div>
+            <span class="logo-grid__name">Betan Bauer</span>
+          </div>
+          <div class="logo-grid__item fade-in">
+            <div class="logo-grid__wrapper">
+              <img src="https://img.logo.dev/cordoba.gob.ar?token=pk_EQtx9dH4Tzi1drokN7vUfA" alt="Municipalidad de Córdoba" loading="lazy">
+            </div>
+            <span class="logo-grid__name">Municipalidad de Córdoba</span>
+          </div>
+          <div class="logo-grid__item fade-in">
+            <div class="logo-grid__wrapper">
+              <img src="https://img.logo.dev/cba.gov.ar?token=pk_EQtx9dH4Tzi1drokN7vUfA" alt="Gobierno de Córdoba" loading="lazy">
+            </div>
+            <span class="logo-grid__name">Gobierno de Córdoba</span>
+          </div>
+          <div class="logo-grid__item fade-in">
+            <div class="logo-grid__wrapper">
+              <img src="https://img.logo.dev/21.edu.ar?token=pk_EQtx9dH4Tzi1drokN7vUfA" alt="Siglo 21" loading="lazy">
+            </div>
+            <span class="logo-grid__name">Universidad Siglo 21</span>
+          </div>
+          <div class="logo-grid__item fade-in">
+            <div class="logo-grid__wrapper">
+              <img src="https://img.logo.dev/verizia.com?token=pk_EQtx9dH4Tzi1drokN7vUfA" alt="Verizia" loading="lazy">
+            </div>
+            <span class="logo-grid__name">Verizia</span>
+          </div>
+          <div class="logo-grid__item fade-in">
+            <div class="logo-grid__wrapper">
+              <img src="https://img.logo.dev/tacticalsecurity.net?token=pk_EQtx9dH4Tzi1drokN7vUfA" alt="Tactical Security" loading="lazy">
+            </div>
+            <span class="logo-grid__name">Tactical Security</span>
+          </div>
+          <div class="logo-grid__item fade-in">
+            <div class="logo-grid__wrapper">
+              <img src="https://img.logo.dev/pixel2html.com?token=pk_EQtx9dH4Tzi1drokN7vUfA" alt="Pixel2HTML" loading="lazy">
+            </div>
+            <span class="logo-grid__name">Pixel2HTML</span>
+          </div>
+          <div class="logo-grid__item fade-in">
+            <div class="logo-grid__wrapper">
+              <img src="https://img.logo.dev/sirchandler.com.ar?token=pk_EQtx9dH4Tzi1drokN7vUfA" alt="Sir Chandler" loading="lazy">
+            </div>
+            <span class="logo-grid__name">Sir Chandler</span>
+          </div>
+          <div class="logo-grid__item fade-in">
+            <div class="logo-grid__wrapper">
+              <img src="https://img.logo.dev/puntoseco.com?token=pk_EQtx9dH4Tzi1drokN7vUfA" alt="Punto Seco" loading="lazy">
+            </div>
+            <span class="logo-grid__name">Punto Seco</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Proyectos Personales -->
+    <section class="section section--alt" id="projects">
+      <div class="container">
+        <span class="section__label">Proyectos Personales</span>
+        <h2 class="section__title">Cosas que construyo</h2>
+
+        <div class="filters">
+          <button class="filters__btn filters__btn--active" data-filter="all">
+            <i class="fas fa-th-large"></i>
+            Todos los Proyectos
+          </button>
+          <button class="filters__btn" data-filter="shield-alt">
+            <i class="fas fa-shield-alt"></i>
+            Seguridad
+          </button>
+          <button class="filters__btn" data-filter="plane">
+            <i class="fas fa-plane"></i>
+            Viajes
+          </button>
+          <button class="filters__btn" data-filter="dog">
+            <i class="fas fa-dog"></i>
+            Pet Tech
+          </button>
+          <button class="filters__btn" data-filter="link">
+            <i class="fas fa-link"></i>
+            Social
+          </button>
+          <button class="filters__btn" data-filter="child">
+            <i class="fas fa-child"></i>
+            Familia y Niños
+          </button>
+          <button class="filters__btn" data-filter="chart-bar">
+            <i class="fas fa-chart-bar"></i>
+            Herramientas Publicitarias
+          </button>
         </div>
 
-        <section id="projects" class="section">
-            <h2 class="section-title">Proyectos Personales</h2>
-            <div class="badge-filters">
-                <button class="badge-filter active" data-filter="all">
-                    <i class="fas fa-th-large"></i>
-                    Todos los Proyectos
-                </button>
-                <button class="badge-filter" data-filter="dog">
-                    <i class="fas fa-dog"></i>
-                    Pet Tech
-                </button>
-                <button class="badge-filter" data-filter="shield-alt">
-                    <i class="fas fa-shield-alt"></i>
-                    Seguridad
-                </button>
-                <button class="badge-filter" data-filter="plane">
-                    <i class="fas fa-plane"></i>
-                    Viajes
-                </button>
-                <button class="badge-filter" data-filter="link">
-                    <i class="fas fa-link"></i>
-                    Social
-                </button>
-                <button class="badge-filter" data-filter="briefcase">
-                    <i class="fas fa-briefcase"></i>
-                    Empleo
-                </button>
-                <button class="badge-filter" data-filter="passport">
-                    <i class="fas fa-passport"></i>
-                    Ciudadanía
-                </button>
-                <button class="badge-filter" data-filter="child">
-                    <i class="fas fa-child"></i>
-                    Familia y Niños
-                </button>
-                <button class="badge-filter" data-filter="chart-bar">
-                    <i class="fas fa-chart-bar"></i>
-                    Herramientas Publicitarias
-                </button>
+        <div class="projects-grid">
+          <a href="https://supaexplorer.com/?utm_source=martinaberastegue.com&utm_medium=referral&utm_campaign=ma-links" class="project-card fade-in">
+            <div class="project-image">
+              <span class="featured-overlay"><i class="fas fa-star"></i> Destacado</span>
+              <img src="https://api.microlink.io/?url=https://supaexplorer.com&screenshot=true&embed=screenshot.url" alt="Vista previa de SupaExplorer" loading="lazy">
             </div>
-            <div class="projects-grid">
-                <a href="https://www.martinaberastegue.com/free-gclid-decoder.html" class="project-card">
-                    <div class="project-image">
-                        <img src="https://api.microlink.io/?url=https://www.martinaberastegue.com/free-gclid-decoder.html&screenshot=true&embed=screenshot.url" alt="Vista previa del Decodificador GCLID Google Ads" loading="lazy">
-                    </div>
-                    <div class="project-content">
-                        <span class="project-badge">
-                            <i class="fas fa-chart-bar"></i>
-                            Herramientas Publicitarias
-                        </span>
-                        <h3 class="project-title">Decodificador Google Ads GCLID Gratuito</h3>
-                        <p class="project-description">Decodifica Google Click IDs para extraer timestamps y datos de seguimiento</p>
-                    </div>
-                </a>
-
-                <a href="https://datosargentinos.com/?utm_source=martinaberastegue.com&utm_medium=referral&utm_campaign=ma-links" class="project-card">
-                    <div class="project-image">
-                        <span class="featured-overlay">
-                            <i class="fas fa-star"></i>
-                            Destacado
-                        </span>
-                        <img src="https://api.microlink.io/?url=https://datosargentinos.com&screenshot=true&embed=screenshot.url" alt="Vista previa de Safe ID" loading="lazy">
-                    </div>
-                    <div class="project-content">
-                        <span class="project-badge">
-                            <i class="fas fa-shield-alt"></i>
-                            Protección de Identidad
-                        </span>
-                        <h3 class="project-title">Safe ID - DatosArgentinos.com</h3>
-                        <p class="project-description">Protege tu DNI con tecnología de Marca de Agua Inteligente</p>
-                    </div>
-                </a>
-
-                <a href="https://reclamacionaerea.co/?utm_source=martinaberastegue.com&utm_medium=referral&utm_campaign=ma-links" class="project-card">
-                    <div class="project-image">
-                        <span class="featured-overlay">
-                            <i class="fas fa-star"></i>
-                            Destacado
-                        </span>
-                        <img src="https://api.microlink.io/?url=https://reclamacionaerea.co&screenshot=true&embed=screenshot.url" alt="Vista previa de Compensaciones por Retrasos de Vuelos" loading="lazy">
-                    </div>
-                    <div class="project-content">
-                        <span class="project-badge">
-                            <i class="fas fa-plane-departure"></i>
-                            Plataforma de Derechos del Viajero
-                        </span>
-                        <h3 class="project-title">Compensaciones por Retrasos de Vuelos</h3>
-                        <p class="project-description">Ayudamos a pasajeros a reclamar compensaciones por retrasos y cancelaciones</p>
-                    </div>
-                </a>
-
-                <a href="https://waulog.com/?utm_source=martinaberastegue.com&utm_medium=referral&utm_campaign=ma-links" class="project-card">
-                    <div class="project-image">
-                        <span class="featured-overlay">
-                            <i class="fas fa-star"></i>
-                            Destacado
-                        </span>
-                        <img src="https://api.microlink.io/?url=https://waulog.com&screenshot=true&embed=screenshot.url" alt="Vista previa de Waulog" loading="lazy">
-                    </div>
-                    <div class="project-content">
-                        <span class="project-badge">
-                            <i class="fas fa-dog"></i>
-                            Cuidado y Salud Canina
-                        </span>
-                        <h3 class="project-title">Waulog</h3>
-                        <p class="project-description">Tu Compañero Digital Canino</p>
-                    </div>
-                </a>
-
-                <a href="https://igbio.co/?utm_source=martinaberastegue.com&utm_medium=referral&utm_campaign=ma-links" class="project-card">
-                    <div class="project-image">
-                        <img src="https://api.microlink.io/?url=https://igbio.co&screenshot=true&embed=screenshot.url" alt="Vista previa de IGBIO" loading="lazy">
-                    </div>
-                    <div class="project-content">
-                        <span class="project-badge">
-                            <i class="fas fa-link"></i>
-                            Herramienta Social
-                        </span>
-                        <h3 class="project-title">IGBIO</h3>
-                        <p class="project-description">Genera más tráfico con una micro-landing page que convierte</p>
-                    </div>
-                </a>
-
-                <a href="http://www.viajo.org/?utm_source=martinaberastegue.com&utm_medium=referral&utm_campaign=ma-links" class="project-card">
-                    <div class="project-image">
-                        <img src="https://api.microlink.io/?url=http://www.viajo.org&screenshot=true&embed=screenshot.url" alt="Vista previa de Viajo" loading="lazy">
-                    </div>
-                    <div class="project-content">
-                        <span class="project-badge">
-                            <i class="fas fa-globe"></i>
-                            Blog de Viajes
-                        </span>
-                        <h3 class="project-title">Viajo</h3>
-                        <p class="project-description">Blog de Viajes y Experiencias - En línea desde 2007</p>
-                    </div>
-                </a>
-
-                <a href="http://destinos.viajo.org/?utm_source=martinaberastegue.com&utm_medium=referral&utm_campaign=ma-links" class="project-card">
-                    <div class="project-image">
-                        <img src="https://api.microlink.io/?url=http://destinos.viajo.org&screenshot=true&embed=screenshot.url" alt="Vista previa de Itinerarios de Viaje IA" loading="lazy">
-                    </div>
-                    <div class="project-content">
-                        <span class="project-badge">
-                            <i class="fas fa-plane"></i>
-                            Itinerarios de Viaje IA
-                        </span>
-                        <h3 class="project-title">Itinerarios de Viaje IA</h3>
-                        <p class="project-description">Planificación Inteligente de Viajes con IA</p>
-                    </div>
-                </a>
-
-                <a href="https://www.miciudadaniaitaliana.com/?utm_source=martinaberastegue.com&utm_medium=referral&utm_campaign=ma-links" class="project-card">
-                    <div class="project-image">
-                        <img src="https://api.microlink.io/?url=https://www.miciudadaniaitaliana.com&screenshot=true&embed=screenshot.url" alt="Vista previa de Ciudadanía Italiana" loading="lazy">
-                    </div>
-                    <div class="project-content">
-                        <span class="project-badge">
-                            <i class="fas fa-passport"></i>
-                            Ciudadanía
-                        </span>
-                        <h3 class="project-title">Ciudadanía Italiana</h3>
-                        <p class="project-description">Guía completa para obtener la ciudadanía italiana</p>
-                    </div>
-                </a>
-
-                <a href="https://www.rzw.com.ar/?utm_source=martinaberastegue.com&utm_medium=referral&utm_campaign=ma-links" class="project-card">
-                    <div class="project-image">
-                        <img src="https://api.microlink.io/?url=https://www.rzw.com.ar&screenshot=true&embed=screenshot.url" alt="Vista previa de Blog InfoSec" loading="lazy">
-                    </div>
-                    <div class="project-content">
-                        <span class="project-badge">
-                            <i class="fas fa-shield-alt"></i>
-                            Blog InfoSec
-                        </span>
-                        <h3 class="project-title">Blog InfoSec</h3>
-                        <p class="project-description">Blog de Seguridad Informática - En línea desde 2002</p>
-                    </div>
-                </a>
-
-                <a href="https://spielplaetze.co/?utm_source=martinaberastegue.com&utm_medium=referral&utm_campaign=ma-links" class="project-card">
-                    <div class="project-image">
-                        <img src="https://api.microlink.io/?url=https://spielplaetze.co&screenshot=true&embed=screenshot.url" alt="Vista previa de Spielplätze" loading="lazy">
-                    </div>
-                    <div class="project-content">
-                        <span class="project-badge">
-                            <i class="fas fa-child"></i>
-                            Familia y Niños
-                        </span>
-                        <h3 class="project-title">Spielplätze</h3>
-                        <p class="project-description">El catálogo de parques infantiles más grande de Alemania - Encuentra parques en tu zona</p>
-                    </div>
-                </a>
+            <div class="project-content">
+              <span class="project-badge"><i class="fas fa-shield-alt"></i> Ciberseguridad</span>
+              <h3 class="project-title">SupaExplorer</h3>
+              <p class="project-description">Encuentra claves API expuestas y credenciales de Supabase en 30 segundos</p>
             </div>
-            <p class="stealth-projects">Y más de 30 proyectos en modo sigiloso 🤫</p>
-        </section>
+          </a>
 
-        <section class="contact-section">
-            <h2 class="section-title">Conectemos</h2>
-            <p>¿Buscas experiencia en SEO, MarTech o estrategia digital? Hablemos sobre cómo puedo ayudar a tu empresa a crecer.</p>
-            <a href="https://www.linkedin.com/in/aberastegue/" class="contact-button" rel="noreferrer noopener">
-                <i class="fab fa-linkedin"></i>
-                Conectar en LinkedIn
-            </a>
-        </section>
-
-        <footer class="footer">
-            <div class="footer-content">
-                <p>© 2002 - 2025 Martin Aberastegue</p>
-                <button class="theme-toggle footer-theme-toggle" onclick="toggleTheme()" title="Cambiar Tema">
-                    <i class="fas fa-moon"></i>
-                    <span class="theme-text">Cambiar Tema</span>
-                </button>
+          <a href="https://torito.io/?utm_source=martinaberastegue.com&utm_medium=referral&utm_campaign=ma-links" class="project-card fade-in">
+            <div class="project-image">
+              <img src="https://api.microlink.io/?url=https://torito.io&screenshot=true&embed=screenshot.url" alt="Vista previa de Torito" loading="lazy">
             </div>
-        </footer>
+            <div class="project-content">
+              <span class="project-badge"><i class="fas fa-shield-alt"></i> Seguridad y Privacidad</span>
+              <h3 class="project-title">Torito</h3>
+              <p class="project-description">Herramientas de seguridad y privacidad para la web moderna</p>
+            </div>
+          </a>
+
+          <a href="https://beacky.com/?utm_source=martinaberastegue.com&utm_medium=referral&utm_campaign=ma-links" class="project-card fade-in">
+            <div class="project-image">
+              <img src="https://api.microlink.io/?url=https://beacky.com&screenshot=true&embed=screenshot.url" alt="Vista previa de Beacky" loading="lazy">
+            </div>
+            <div class="project-content">
+              <span class="project-badge"><i class="fas fa-shield-alt"></i> Detección de Phishing</span>
+              <h3 class="project-title">Beacky</h3>
+              <p class="project-description">Protección invisible contra phishing y clonación de sitios web</p>
+            </div>
+          </a>
+
+          <a href="http://www.viajo.org/?utm_source=martinaberastegue.com&utm_medium=referral&utm_campaign=ma-links" class="project-card fade-in">
+            <div class="project-image">
+              <img src="https://api.microlink.io/?url=http://www.viajo.org&screenshot=true&embed=screenshot.url" alt="Vista previa de Viajo" loading="lazy">
+            </div>
+            <div class="project-content">
+              <span class="project-badge"><i class="fas fa-globe"></i> Blog de Viajes</span>
+              <h3 class="project-title">Viajo</h3>
+              <p class="project-description">Blog de Viajes y Experiencias - En línea desde 2007</p>
+            </div>
+          </a>
+
+          <a href="https://www.rzw.com.ar/?utm_source=martinaberastegue.com&utm_medium=referral&utm_campaign=ma-links" class="project-card fade-in">
+            <div class="project-image">
+              <img src="https://api.microlink.io/?url=https://www.rzw.com.ar&screenshot=true&embed=screenshot.url" alt="Vista previa de Blog InfoSec" loading="lazy">
+            </div>
+            <div class="project-content">
+              <span class="project-badge"><i class="fas fa-shield-alt"></i> Blog InfoSec</span>
+              <h3 class="project-title">Blog InfoSec</h3>
+              <p class="project-description">Blog de Seguridad Informática - En línea desde 2002</p>
+            </div>
+          </a>
+
+          <a href="https://igbio.co/?utm_source=martinaberastegue.com&utm_medium=referral&utm_campaign=ma-links" class="project-card fade-in">
+            <div class="project-image">
+              <img src="https://api.microlink.io/?url=https://igbio.co&screenshot=true&embed=screenshot.url" alt="Vista previa de IGBIO" loading="lazy">
+            </div>
+            <div class="project-content">
+              <span class="project-badge"><i class="fas fa-link"></i> Herramienta Social</span>
+              <h3 class="project-title">IGBIO</h3>
+              <p class="project-description">Genera más tráfico con una micro-landing page que convierte</p>
+            </div>
+          </a>
+
+          <a href="https://datosargentinos.com/?utm_source=martinaberastegue.com&utm_medium=referral&utm_campaign=ma-links" class="project-card fade-in">
+            <div class="project-image">
+              <span class="featured-overlay"><i class="fas fa-star"></i> Destacado</span>
+              <img src="https://api.microlink.io/?url=https://datosargentinos.com&screenshot=true&embed=screenshot.url" alt="Vista previa de Safe ID" loading="lazy">
+            </div>
+            <div class="project-content">
+              <span class="project-badge"><i class="fas fa-shield-alt"></i> Protección de Identidad</span>
+              <h3 class="project-title">Safe ID - DatosArgentinos.com</h3>
+              <p class="project-description">Protege tu DNI con tecnología de Marca de Agua Inteligente</p>
+            </div>
+          </a>
+
+          <a href="https://reclamacionaerea.co/?utm_source=martinaberastegue.com&utm_medium=referral&utm_campaign=ma-links" class="project-card fade-in">
+            <div class="project-image">
+              <span class="featured-overlay"><i class="fas fa-star"></i> Destacado</span>
+              <img src="https://api.microlink.io/?url=https://reclamacionaerea.co&screenshot=true&embed=screenshot.url" alt="Vista previa de Compensaciones por Retrasos de Vuelos" loading="lazy">
+            </div>
+            <div class="project-content">
+              <span class="project-badge"><i class="fas fa-plane-departure"></i> Plataforma de Derechos del Viajero</span>
+              <h3 class="project-title">Compensaciones por Retrasos de Vuelos</h3>
+              <p class="project-description">Ayudamos a pasajeros a reclamar compensaciones por retrasos y cancelaciones</p>
+            </div>
+          </a>
+
+          <a href="https://waulog.com/?utm_source=martinaberastegue.com&utm_medium=referral&utm_campaign=ma-links" class="project-card fade-in">
+            <div class="project-image">
+              <span class="featured-overlay"><i class="fas fa-star"></i> Destacado</span>
+              <img src="https://api.microlink.io/?url=https://waulog.com&screenshot=true&embed=screenshot.url" alt="Vista previa de Waulog" loading="lazy">
+            </div>
+            <div class="project-content">
+              <span class="project-badge"><i class="fas fa-dog"></i> Cuidado y Salud Canina</span>
+              <h3 class="project-title">Waulog</h3>
+              <p class="project-description">Tu Compañero Digital Canino</p>
+            </div>
+          </a>
+
+          <a href="https://www.martinaberastegue.com/free-gclid-decoder.html" class="project-card fade-in">
+            <div class="project-image">
+              <img src="https://api.microlink.io/?url=https://www.martinaberastegue.com/free-gclid-decoder.html&screenshot=true&embed=screenshot.url" alt="Vista previa del Decodificador GCLID Google Ads" loading="lazy">
+            </div>
+            <div class="project-content">
+              <span class="project-badge"><i class="fas fa-chart-bar"></i> Herramientas Publicitarias</span>
+              <h3 class="project-title">Decodificador Google Ads GCLID Gratuito</h3>
+              <p class="project-description">Decodifica Google Click IDs para extraer timestamps y datos de seguimiento</p>
+            </div>
+          </a>
+
+          <a href="http://destinos.viajo.org/?utm_source=martinaberastegue.com&utm_medium=referral&utm_campaign=ma-links" class="project-card fade-in">
+            <div class="project-image">
+              <img src="https://api.microlink.io/?url=http://destinos.viajo.org&screenshot=true&embed=screenshot.url" alt="Vista previa de Itinerarios de Viaje IA" loading="lazy">
+            </div>
+            <div class="project-content">
+              <span class="project-badge"><i class="fas fa-plane"></i> Itinerarios de Viaje IA</span>
+              <h3 class="project-title">Itinerarios de Viaje IA</h3>
+              <p class="project-description">Planificación Inteligente de Viajes con IA</p>
+            </div>
+          </a>
+
+          <a href="https://spielplaetze.co/?utm_source=martinaberastegue.com&utm_medium=referral&utm_campaign=ma-links" class="project-card fade-in">
+            <div class="project-image">
+              <img src="https://api.microlink.io/?url=https://spielplaetze.co&screenshot=true&embed=screenshot.url" alt="Vista previa de Spielplätze" loading="lazy">
+            </div>
+            <div class="project-content">
+              <span class="project-badge"><i class="fas fa-child"></i> Familia y Niños</span>
+              <h3 class="project-title">Spielplätze</h3>
+              <p class="project-description">El catálogo de parques infantiles más grande de Alemania - Encuentra parques en tu zona</p>
+            </div>
+          </a>
+        </div>
+
+        <p class="stealth-projects">Y más de 30 proyectos en modo sigiloso</p>
+      </div>
+    </section>
+
+    <!-- Contacto -->
+    <!-- Notas -->
+    <section class="section section--notes">
+      <div class="container">
+        <span class="section__label">Notas</span>
+        <h2 class="section__title">Últimas Notas <span class="lang-badge">EN</span></h2>
+        <div class="notes-list">
+          <a href="/notes/supaexplorer-supabase-api-keys-security-testing.html" class="note-row fade-in">
+            <div class="note-row__text">
+              <h3 class="note-row__title">SupaExplorer: Detector de Vulnerabilidades y API Keys en Supabase</h3>
+              <p class="note-row__desc">Una extensión de Chrome para testear la seguridad de bases de datos Supabase y detectar leaks de API keys en 30+ servicios.</p>
+            </div>
+            <svg class="note-row__arrow" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+          <a href="/notes/building-stealth-phishing-detection-system.html" class="note-row fade-in">
+            <div class="note-row__text">
+              <h3 class="note-row__title">Cómo Construí un Sistema Stealth de Detección de Phishing</h3>
+              <p class="note-row__desc">Detección stealth de phishing con web beacons y Cloudflare Workers para pequeñas y medianas empresas.</p>
+            </div>
+            <svg class="note-row__arrow" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+          <a href="/notes/url-abstraction-phishing-risks.html" class="note-row fade-in">
+            <div class="note-row__text">
+              <h3 class="note-row__title">El Peligro de la Abstracción de URLs: Cómo Epiarc Podría Facilitar el Phishing</h3>
+              <p class="note-row__desc">Por qué los sistemas de abstracción de URLs podrían aumentar los riesgos de phishing en lugar de reducirlos.</p>
+            </div>
+            <svg class="note-row__arrow" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div style="text-align: center; margin-top: var(--space-lg);">
+          <a href="/notes/" class="btn btn--ghost">Ver todas las notas <i class="fas fa-arrow-right" style="font-size: 0.75rem; margin-left: 0.25rem;"></i></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--contact">
+      <div class="container">
+        <span class="section__label">Contacto</span>
+        <h2 class="section__title">Conectemos</h2>
+        <p class="section__intro">¿Buscas experiencia en SEO, MarTech o estrategia digital? Hablemos sobre cómo puedo ayudar a tu empresa a crecer.</p>
+        <a href="https://www.linkedin.com/in/aberastegue/" class="btn btn--primary btn--lg" rel="noreferrer noopener">
+          <i class="fab fa-linkedin"></i>
+          Conectar en LinkedIn
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <span class="footer__logo">Martin Aberastegue<span class="navbar__logo-dot">.</span></span>
+        <span class="footer__copy">© 2002 - 2026</span>
+      </div>
+      <button class="footer__theme-toggle" onclick="toggleTheme()" title="Cambiar Tema">
+        <i class="fas fa-moon"></i>
+        <span>Cambiar Tema</span>
+      </button>
     </div>
+  </footer>
 
-    <script>
-        function toggleTheme() {
-            document.documentElement.classList.toggle('dark');
-            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-            updateThemeIcon();
-        }
+  <script src="../main.js"></script>
 
-        function updateThemeIcon() {
-            const isDark = document.documentElement.classList.contains('dark');
-            const themeIcon = document.querySelector('.theme-toggle i');
-            themeIcon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
-        }
-
-        // Check for saved theme preference
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        if (savedTheme === 'dark') {
-            document.documentElement.classList.add('dark');
-        }
-        updateThemeIcon();
-
-        // Project filtering
-        document.addEventListener('DOMContentLoaded', function() {
-            const filters = document.querySelectorAll('.badge-filter');
-            const projects = document.querySelectorAll('.project-card');
-
-            const iconMap = {
-                'plane': ['fa-plane', 'fa-plane-departure', 'fa-globe'],
-                'shield-alt': ['fa-shield-alt', 'fa-lock'],
-                'dog': ['fa-dog'],
-                'link': ['fa-link'],
-                'briefcase': ['fa-briefcase'],
-                'passport': ['fa-passport'],
-                'child': ['fa-child'],
-                'chart-bar': ['fa-chart-bar']
-            };
-
-            filters.forEach(filter => {
-                filter.addEventListener('click', function() {
-                    filters.forEach(f => f.classList.remove('active'));
-                    this.classList.add('active');
-
-                    const filterValue = this.getAttribute('data-filter');
-
-                    projects.forEach(project => {
-                        if (filterValue === 'all') {
-                            project.style.display = '';
-                            return;
-                        }
-
-                        const badge = project.querySelector('.project-badge i');
-                        const iconVariations = iconMap[filterValue] || [];
-                        const matchesFilter = iconVariations.some(icon => 
-                            badge && badge.classList.contains(icon)
-                        );
-
-                        project.style.display = matchesFilter ? '' : 'none';
-                    });
-                });
-            });
-        });
-    </script>
-
-    <!-- Schema.org data -->
-    <script type="application/ld+json">
-        {
-            "@context": "http://schema.org",
-            "@type": "ProfilePage",
-            "@id": "https://www.martinaberastegue.com/es/",
-            "url": "https://www.martinaberastegue.com/es/",
-            "inLanguage":"es-ES",
-            "mainEntity": {
-                "@type": "Person",
-                "@id": "https://www.martinaberastegue.com/#schema-author",
-                "name": "Martin Aberastegue",
-                "familyName": "Aberastegue",
-                "givenName": "Martin",
-                "nationality": "Argentine-Italian",
-                "email": "martin@aberastegue.com.ar",
-                "description": "Martin Aberastegue tiene más de 23 años de experiencia trabajando en tecnología aplicada al marketing. Se ha desempeñado en puestos de Paid Media, SEO, MarTech y Owned Media a lo largo de su carrera profesional.",
-                "workLocation": {
-                    "@type": "Place",
-                    "address": {
-                        "@type": "PostalAddress",
-                        "addressCountry": "Germany"
-                    }
-                },
-                "worksFor": {
-                    "@type": "OrganizationRole",
-                    "@id": "https://www.martinaberastegue.com/#organization",
-                    "name": "Martin Aberastegue",
-                    "url": "https://www.martinaberastegue.com"
-                },
-                "jobTitle": "Lead SEO/SEA Manager",
-                "occupation": {
-                    "@type": "Occupation",
-                    "name": "Experto en SEO y Tecnología de Marketing",
-                    "skills": ["Optimización para Motores de Búsqueda", "Marketing Digital", "Tecnología de Marketing", "Estrategia Digital"]
-                },
-                "knowsAbout": [
-                    "Optimización para Motores de Búsqueda",
-                    "SEO Técnico",
-                    "Marketing de Contenidos",
-                    "SEO On-Page",
-                    "Tecnología de Marketing",
-                    "Analítica Digital",
-                    "Publicidad Digital",
-                    "Link Building",
-                    "Seguridad Informática",
-                    "Estrategia Digital",
-                    "Analítica Web",
-                    "Automatización de Marketing"
-                ],
-                "skills": [
-                    "Google Analytics",
-                    "Google Ads",
-                    "Herramientas SEO",
-                    "Stack de Tecnología de Marketing",
-                    "Estrategia de Marketing Digital",
-                    "Optimización Técnica",
-                    "Estrategia de Contenidos",
-                    "Análisis de Datos"
-                ],
-                "contactPoint": {
-                    "@type": "ContactPoint",
-                    "contactType": "professional",
-                    "url": "https://www.linkedin.com/in/aberastegue/"
-                },
-                "image": "https://www.martinaberastegue.com/images/martin-aberastegue.jpg",
-                "gender": "Male",
-                "sameAs": [
-                    "https://www.twitter.com/Xyborg",
-                    "https://www.linkedin.com/in/aberastegue/",
-                    "https://www.instagram.com/aberastegue/",
-                    "https://www.crunchbase.com/person/martin-aberastegue",
-                    "https://www.slideshare.net/xyborg",
-                    "https://www.youtube.com/channel/UCtw3D4Qld_nNvqTVkGbYR2Q",
-                    "https://igbio.co/Xyborg",
-                    "https://www.pulsiondigital.com/member/martin-aberastegue/",
-                    "https://github.com/Xyborg",
-                    "https://www.producthunt.com/@xyborg"
-                ]
-            }
-        }
-    </script>
+  <!-- Schema.org data -->
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "ProfilePage",
+      "@id": "https://www.martinaberastegue.com/es/",
+      "url": "https://www.martinaberastegue.com/es/",
+      "inLanguage":"es-ES",
+      "mainEntity": {
+        "@type": "Person",
+        "@id": "https://www.martinaberastegue.com/#schema-author",
+        "name": "Martin Aberastegue",
+        "familyName": "Aberastegue",
+        "givenName": "Martin",
+        "nationality": "Argentine-Italian",
+        "email": "martin@aberastegue.com.ar",
+        "description": "Martin Aberastegue tiene más de 23 años de experiencia trabajando en tecnología aplicada al marketing. Se ha desempeñado en puestos de Paid Media, SEO, MarTech y Owned Media a lo largo de su carrera profesional.",
+        "workLocation": {
+          "@type": "Place",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Germany"
+          }
+        },
+        "worksFor": {
+          "@type": "OrganizationRole",
+          "@id": "https://www.martinaberastegue.com/#organization",
+          "name": "Martin Aberastegue",
+          "url": "https://www.martinaberastegue.com"
+        },
+        "jobTitle": "Lead SEO/SEA Manager",
+        "occupation": {
+          "@type": "Occupation",
+          "name": "Experto en SEO y Tecnología de Marketing",
+          "skills": ["Optimización para Motores de Búsqueda", "Marketing Digital", "Tecnología de Marketing", "Estrategia Digital"]
+        },
+        "knowsAbout": [
+          "Optimización para Motores de Búsqueda",
+          "SEO Técnico",
+          "Marketing de Contenidos",
+          "SEO On-Page",
+          "Tecnología de Marketing",
+          "Analítica Digital",
+          "Publicidad Digital",
+          "Link Building",
+          "Seguridad Informática",
+          "Estrategia Digital",
+          "Analítica Web",
+          "Automatización de Marketing"
+        ],
+        "skills": [
+          "Google Analytics",
+          "Google Ads",
+          "Herramientas SEO",
+          "Stack de Tecnología de Marketing",
+          "Estrategia de Marketing Digital",
+          "Optimización Técnica",
+          "Estrategia de Contenidos",
+          "Análisis de Datos"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "professional",
+          "url": "https://www.linkedin.com/in/aberastegue/"
+        },
+        "image": "https://www.martinaberastegue.com/images/martin-aberastegue.jpg",
+        "gender": "Male",
+        "sameAs": [
+          "https://www.twitter.com/Xyborg",
+          "https://www.linkedin.com/in/aberastegue/",
+          "https://www.instagram.com/aberastegue/",
+          "https://www.crunchbase.com/person/martin-aberastegue",
+          "https://www.slideshare.net/xyborg",
+          "https://www.youtube.com/channel/UCtw3D4Qld_nNvqTVkGbYR2Q",
+          "https://igbio.co/Xyborg",
+          "https://www.pulsiondigital.com/member/martin-aberastegue/",
+          "https://github.com/Xyborg",
+          "https://www.producthunt.com/@xyborg"
+        ]
+      }
+    }
+  </script>
 </body>
 </html>
