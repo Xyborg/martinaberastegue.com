@@ -77,7 +77,12 @@
             return badge && badge.classList.contains(icon);
           });
 
-          project.style.display = matchesFilter ? '' : 'none';
+          if (matchesFilter) {
+            project.style.display = '';
+            project.classList.add('is-visible');
+          } else {
+            project.style.display = 'none';
+          }
         });
       });
     });
