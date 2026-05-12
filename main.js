@@ -54,7 +54,7 @@
       'dog': ['fa-dog'],
       'link': ['fa-link'],
       'child': ['fa-child'],
-      'chart-bar': ['fa-chart-bar'],
+      'bullhorn': ['fa-bullhorn', 'fa-chart-bar'],
       'code': ['fa-code']
     };
 
