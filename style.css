@@ -570,6 +570,9 @@ img {
 .project-badge i.fa-code { color: #0d9488; }
 .project-badge:has(.fa-code) { background: rgba(13, 148, 136, 0.08); }
 
+.project-badge i.fa-hand-holding-heart { color: #dc2626; }
+.project-badge:has(.fa-hand-holding-heart) { background: rgba(220, 38, 38, 0.08); }
+
 .project-title {
   color: var(--color-text);
   font-size: 0.95rem;
