@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Ctext%20x='0'%20y='14'%3E🚀%3C/text%3E%3C/svg%3E" type="image/svg+xml">
 
-  <link rel="stylesheet" href="/style.css?v=1.0.1">
+  <link rel="stylesheet" href="/style.css?v=1.0.6">
 
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-126284-9"></script>
@@ -437,6 +437,75 @@
       </div>
     </section>
 
+    <!-- Books -->
+    <section class="section section--books" aria-labelledby="books-title">
+      <div class="container">
+        <span class="section__label">Books</span>
+        <h2 class="section__title" id="books-title">My books</h2>
+        <p class="section__intro">Essays and fiction that look at the present and history from a different angle.</p>
+
+        <div class="books-showcase">
+          <article class="book-card book-card--featured book-card--new fade-in">
+            <div class="book-card__media">
+              <img src="/images/books/home-sapiens.webp" width="700" height="1120" alt="Cover of Home Sapiens: La generación que dejó de salir" loading="lazy">
+            </div>
+            <div class="book-card__body">
+              <div class="book-card__badges">
+                <span class="book-card__badge book-card__badge--new">New</span>
+                <span class="book-card__badge book-card__badge--language">In Spanish</span>
+              </div>
+              <h3 class="book-card__title">Home Sapiens</h3>
+              <p class="book-card__subtitle">La generación que dejó de salir</p>
+              <p class="book-card__description">An essay about the quiet shift that made leaving home optional—and what we gain and lose when the world comes to us.</p>
+              <a class="btn btn--primary book-card__cta" href="https://www.amazon.es/dp/B0H9ZJ1F1Y" target="_blank" rel="noopener noreferrer" data-book-title="Home Sapiens" data-book-destination="Amazon">
+                Buy on Amazon
+                <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
+              </a>
+            </div>
+          </article>
+
+          <div class="books-secondary-grid">
+            <article class="book-card book-card--secondary fade-in">
+              <div class="book-card__media">
+                <img src="/images/books/815.webp" width="700" height="1050" alt="Cover of 8:15: A Novel of Modern War" loading="lazy">
+              </div>
+              <div class="book-card__body">
+                <div class="book-card__badges">
+                  <span class="book-card__badge book-card__badge--free">Free to read</span>
+                  <span class="book-card__badge book-card__badge--language">In English</span>
+                </div>
+                <h3 class="book-card__title">8:15</h3>
+                <p class="book-card__subtitle">A Novel of Modern War</p>
+                <p class="book-card__description">Time always catches up.</p>
+                <a class="btn btn--primary book-card__cta" href="https://815novel.com/" target="_blank" rel="noopener noreferrer" data-book-title="8:15" data-book-destination="Official site">
+                  Read it free
+                  <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                </a>
+              </div>
+            </article>
+
+            <article class="book-card book-card--secondary fade-in">
+              <div class="book-card__media">
+                <img src="/images/books/la-paradoja-de-medianoche.webp" width="700" height="1050" alt="Cover of La Paradoja de Medianoche" loading="lazy">
+              </div>
+              <div class="book-card__body">
+                <div class="book-card__badges">
+                  <span class="book-card__badge book-card__badge--language">In Spanish</span>
+                </div>
+                <h3 class="book-card__title">La Paradoja de Medianoche</h3>
+                <p class="book-card__subtitle">La llave del tiempo</p>
+                <p class="book-card__description">A historical thriller with a touch of science fiction that challenges everything we think we know about the past.</p>
+                <a class="btn btn--ghost book-card__cta" href="https://laparadojademedianoche.com/" target="_blank" rel="noopener noreferrer" data-book-title="La Paradoja de Medianoche" data-book-destination="Official site">
+                  Discover the book
+                  <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                </a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Contact -->
     <!-- Notes -->
     <section class="section section--notes">
@@ -497,7 +566,7 @@
     </div>
   </footer>
 
-  <script src="main.js?v=1.0.1"></script>
+  <script src="main.js?v=1.0.2"></script>
 
   <!-- Schema.org data -->
   <script type="application/ld+json">
@@ -578,7 +647,49 @@
           "https://github.com/Xyborg",
           "https://www.producthunt.com/@xyborg"
         ]
-      }
+      },
+      "mentions": [
+        {
+          "@type": "Book",
+          "@id": "https://www.martinaberastegue.com/es/#home-sapiens",
+          "name": "Home Sapiens: La generación que dejó de salir",
+          "url": "https://www.amazon.es/dp/B0H9ZJ1F1Y",
+          "image": "https://www.martinaberastegue.com/images/books/home-sapiens.webp",
+          "description": "An essay about the quiet shift that made leaving home optional—and what we gain and lose when the world comes to us.",
+          "inLanguage": "es",
+          "bookFormat": "https://schema.org/Paperback",
+          "author": {
+            "@id": "https://www.martinaberastegue.com/#schema-author"
+          }
+        },
+        {
+          "@type": "Book",
+          "@id": "https://www.martinaberastegue.com/es/#la-paradoja-de-medianoche",
+          "name": "La Paradoja de Medianoche",
+          "alternateName": "La llave del tiempo",
+          "url": "https://laparadojademedianoche.com/",
+          "image": "https://www.martinaberastegue.com/images/books/la-paradoja-de-medianoche.webp",
+          "description": "A historical thriller with a touch of science fiction that challenges everything we think we know about the past.",
+          "inLanguage": "es",
+          "author": {
+            "@id": "https://www.martinaberastegue.com/#schema-author"
+          }
+        },
+        {
+          "@type": "Book",
+          "@id": "https://www.martinaberastegue.com/#815",
+          "name": "8:15",
+          "alternateName": "A Novel of Modern War",
+          "url": "https://815novel.com/",
+          "image": "https://www.martinaberastegue.com/images/books/815.webp",
+          "description": "Time always catches up.",
+          "inLanguage": "en",
+          "isAccessibleForFree": true,
+          "author": {
+            "@id": "https://www.martinaberastegue.com/#schema-author"
+          }
+        }
+      ]
     }
   </script>
 </body>

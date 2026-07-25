@@ -40,4 +40,22 @@
       el.classList.add('is-visible');
     });
   }
+
+  // ---- Book CTA tracking ----
+  var bookLinks = document.querySelectorAll('[data-book-title]');
+
+  bookLinks.forEach(function (link) {
+    link.addEventListener('click', function () {
+      if (typeof window.gtag !== 'function') {
+        return;
+      }
+
+      window.gtag('event', 'book_cta_click', {
+        event_category: 'Books',
+        event_label: link.getAttribute('data-book-title'),
+        destination: link.getAttribute('data-book-destination'),
+        transport_type: 'beacon'
+      });
+    });
+  });
 })();
