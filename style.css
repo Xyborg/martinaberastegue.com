@@ -1560,6 +1560,67 @@ body.page-article {
   color: var(--color-text-muted);
 }
 
+.footer__privacy {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* ---- Privacy policy ---- */
+.privacy-policy {
+  max-width: 800px;
+  padding-top: 140px;
+  padding-bottom: var(--space-xl);
+  overflow-wrap: anywhere;
+}
+
+.privacy-policy h1 {
+  margin-top: var(--space-sm);
+  font-size: clamp(2rem, 6vw, 3rem);
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+}
+
+.privacy-policy__updated {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.privacy-policy section {
+  margin-top: var(--space-lg);
+}
+
+.privacy-policy h2 {
+  font-size: 1.3rem;
+  line-height: 1.4;
+}
+
+.privacy-policy p,
+.privacy-policy ul {
+  margin-top: var(--space-sm);
+}
+
+.privacy-policy ul {
+  padding-left: var(--space-md);
+}
+
+.privacy-policy li + li {
+  margin-top: var(--space-sm);
+}
+
+.privacy-policy a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.privacy-policy a:focus-visible,
+.footer__privacy:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
 /* ---- Fade-in Animation ---- */
 .fade-in {
   opacity: 0;
